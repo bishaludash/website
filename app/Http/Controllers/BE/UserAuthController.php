@@ -21,18 +21,14 @@ class UserAuthController extends Controller
         $creadentials['email'] = $input['be_email'];
         $creadentials['password'] = $input['be_password'];
 
-        try{
-           // Check if the credentials are valid, the login
-            if(Auth::attempt($creadentials)){
-                return redirect()->route('blog.home');
-            }else {
-                session()->flash('Message', 'Could not Login');
-                return redirect()->route('be.login');
-            }
+        // Check if the credentials are valid, the login
+        if(Auth::attempt($creadentials)){
+            return redirect()->route('dashboard.home');
+        }else {
+            session()->flash('Message', 'Could not Login');
+            return redirect()->route('be.login');
         }
-        catch(\Exception $e){
-            return $e;
-        } 
+        
     }
 
     public function logout(){

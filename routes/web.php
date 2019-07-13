@@ -23,11 +23,19 @@ Route::post('recover-link', 'BE\UserAuthController@recoverPasswordLink');
 // TO make this home
 Route::get('/', 'FE\HomeController@home')->name('home');
 
-// Blog Home
+// Blog
 Route::get('/blog', 'FE\HomeController@blogHome')->name('blog.home');
+Route::get('/blog/{blog}', 'FE\HomeController@show')->name('blog.show');
+Route::post('/blog/{blog}/comment', 'FE\HomeController@show');
 
 
 // Place this into middleware
-Route::get('/dashboard', function(){
-    return view("backend.backend_index");
-});
+Route::get('dashboard', 'BE\DashboardController@index')->name('dashboard.home');
+
+Route::get('dashboard/about-user', 'BE\DashboardController@aboutUser');
+Route::get('dashboard/projects', 'BE\DashboardController@projects');
+Route::get('dashboard/contact', 'BE\DashboardController@contact');
+
+Route::resource('dashboard/blog', 'BE\BlogController');
+Route::resource('dashboard/comments', 'BE\CommentController');
+

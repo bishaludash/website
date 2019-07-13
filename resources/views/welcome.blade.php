@@ -131,7 +131,7 @@
             </ul>
             <div class="title m-b-md">
                 @php
-                    $greet = ['Bonjour', 'Hola', 'Nǐn hǎo', 'नमस्ते'];
+                    $greet = ['Bonjour', 'Hola', 'Nǐn hǎo', 'नमस्ते', 'Namaste'];
                     // French, Spanish, Chinese, Nepali
                     $len = count($greet) - 1;
                     $num = mt_rand(0, $len);
