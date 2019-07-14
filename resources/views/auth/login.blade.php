@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,9 +39,11 @@
 			{!! Form::password('be_password', ['class'=>'form-control', 'placeholder'=>'Password']) !!}
 		</div>
 
+		@include('partials.error')
+		@include('partials.flash')
+		
 		{!! Form::submit('Sign In', ['class'=>'btn btn-primary form-control']) !!}
 		<p class="mt-5 mb-3 text-muted">&copy; {{date('Y')}}</p>
 	{{Form::close()}}
-
 </body>
 </html>

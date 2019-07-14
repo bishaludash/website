@@ -25,17 +25,17 @@ Route::get('/', 'FE\HomeController@home')->name('home');
 
 // Blog
 Route::get('/blog', 'FE\HomeController@blogHome')->name('blog.home');
-Route::get('/blog/{blog}', 'FE\HomeController@show')->name('blog.show');
-Route::post('/blog/{blog}/comment', 'FE\HomeController@show');
+Route::get('/post/{post}', 'FE\HomeController@show')->name('post.show');
+Route::post('/post/{post}/comment', 'FE\HomeController@show');
 
 
 // Place this into middleware
 Route::get('dashboard', 'BE\DashboardController@index')->name('dashboard.home');
 
-Route::get('dashboard/about-user', 'BE\DashboardController@aboutUser');
-Route::get('dashboard/projects', 'BE\DashboardController@projects');
-Route::get('dashboard/contact', 'BE\DashboardController@contact');
+Route::get('dashboard/about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
+Route::post('dashboard/about-user/{user}', 'BE\AboutUserController@storeAboutUser');
 
-Route::resource('dashboard/blog', 'BE\BlogController');
-Route::resource('dashboard/comments', 'BE\CommentController');
+
+Route::resource('dashboard/posts', 'BE\PostController');
+// Route::resource('dashboard/comments', 'BE\CommentController');
 

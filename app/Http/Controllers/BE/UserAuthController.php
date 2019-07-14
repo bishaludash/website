@@ -17,6 +17,12 @@ class UserAuthController extends Controller
     }
 
     public function login(Request $request){
+        // validation
+        $request->validate([
+            'be_email' =>'required',
+            'be_password'=>'required',
+        ]);
+
         $input =  $request->only('be_email', 'be_password');
         $creadentials['email'] = $input['be_email'];
         $creadentials['password'] = $input['be_password'];
@@ -25,7 +31,7 @@ class UserAuthController extends Controller
         if(Auth::attempt($creadentials)){
             return redirect()->route('dashboard.home');
         }else {
-            session()->flash('Message', 'Could not Login');
+            session()->flash('message', 'Could not Login');
             return redirect()->route('be.login');
         }
         
