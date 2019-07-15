@@ -37,5 +37,6 @@ Route::post('dashboard/about-user/{user}', 'BE\AboutUserController@storeAboutUse
 
 
 Route::resource('dashboard/posts', 'BE\PostController');
+Route::resource('dashboard/category', 'BE\CategoryController');
 // Route::resource('dashboard/comments', 'BE\CommentController');
 

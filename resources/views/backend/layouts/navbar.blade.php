@@ -54,7 +54,7 @@
             </li>
 
             <li class="nav-item">
-            <a class="nav-link btn-rotate" href="#pablo">
+            <a class="nav-link btn-rotate" href="{{route('be.logout')}}">
                 <i class="ion-log-out lead"></i>
                 <p>
                 <span class="d-lg-none d-md-block">Account</span>
