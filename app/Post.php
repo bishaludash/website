@@ -15,4 +15,8 @@ class Post extends Model
         'is_featured',
         'archive',
     ];
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

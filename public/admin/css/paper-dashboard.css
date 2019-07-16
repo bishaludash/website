@@ -2256,6 +2256,10 @@ textarea.form-control {
   z-index: 100;
 } */
 
+.full-screen{
+  min-height:80vh
+}
+
 .form-text {
   font-size: 0.8571em;
 }

@@ -25,6 +25,7 @@
 		<!-- End Navbar -->
 		
 		<div class="content">
+			@include('partials.flash')
 			@yield('content')
 		</div>
 
@@ -61,10 +62,14 @@
 	</div>
 	{{-- Wrapper end --}}
 
+	{{-- Modal --}}
+	@include('partials.modal')
+
 	<!--   Core JS Files   -->
 	<script src="{{asset('admin/js/core/jquery.min.js')}}"></script>
 	<script src="{{asset('admin/js/core/popper.min.js')}}"></script>
 	<script src="{{asset('admin/js/core/bootstrap.min.js')}}"></script>
+	<script src="{{asset('js/ajax_script.js')}}"></script>
 	<script src="{{asset('admin/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>
 
 	<!-- Chart JS -->

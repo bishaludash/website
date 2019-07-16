@@ -36,7 +36,9 @@ Route::get('dashboard/about-user/{user}', 'BE\AboutUserController@aboutUser')->n
 Route::post('dashboard/about-user/{user}', 'BE\AboutUserController@storeAboutUser');
 
 
+Route::resource('dashboard/category', 'BE\CategoryController', ['except'=>['create','show']]);
+Route::get('dashboard/category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
+
 Route::resource('dashboard/posts', 'BE\PostController');
-Route::resource('dashboard/category', 'BE\CategoryController');
 // Route::resource('dashboard/comments', 'BE\CommentController');
 

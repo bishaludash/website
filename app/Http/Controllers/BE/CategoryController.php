@@ -15,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return 'index';
+        $categories = Category::all();
+        return view('backend.category.index', compact('categories'));
     }
 
     /**
@@ -25,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return "hi hi hi ";
     }
 
     /**
@@ -36,7 +37,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'cat_name'=>'required'
+        ]);
+
+        $input =  $request->only('cat_name');
+        $cat_name =  strtolower($input['cat_name']);
+
+        $cat_count = Category::where('cat_name', $cat_name)->first();
+        if (!is_null($cat_count)) {
+            session()->flash('message_danger', 'Category already exists.');
+            return back();
+        }
+
+        Category::create([
+            'cat_name'=>$cat_name
+        ]);
+
+        session()->flash('message_success', 'Category created');
+        return back();
     }
 
     /**
@@ -58,7 +77,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('backend.category.edit', compact('category'));
     }
 
     /**
@@ -70,7 +89,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $input = $request->all();
+        $category->update($input);
+
+        session()->flash('message_success', 'Category updated.');
+        return back();
     }
 
     /**
@@ -81,6 +104,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if (count($category->posts) > 0) {
+            session()->flash('message_danger', $category->cat_name.' is used in post. Cannot delete.');
+            return back();
+        }
+
+        $category->delete();
+        session()->flash('message_success', $category->cat_name.' deleted.');
+        return back();
+    }
+
+    public function delete(Category $category){
+        return view('backend.category.delete', compact('category'));
     }
 }

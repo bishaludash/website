@@ -10,7 +10,6 @@
 
 @section('content')
     @include('partials.error')
-    @include('partials.flash')
 
     <div class="row">
         <div class="col-lg-12">

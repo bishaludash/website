@@ -5,6 +5,9 @@ namespace App\Http\Controllers\BE;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Category;
+use App\ImageManager;
+use phpDocumentor\Reflection\Types\Null_;
 
 class PostController extends Controller
 {
@@ -26,7 +29,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('backend.posts.create');
+        $categories = Category::pluck('cat_name', 'id');
+        return view('backend.posts.create', compact('categories'));
     }
 
     /**
@@ -37,16 +41,41 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $input =  $request->all();
+        $request->validate([
+            'post_title' => 'required',
+            'category_id' => 'required',
+            'post_body' => 'required',
+            'is_featured' => 'required',
+        ]);
 
+        // handle image
+        $format = ['jpg', 'jpeg', 'png'];
+        if ($file = $request->file('post_image')) {
+            $ext = $file->getClientOriginalExtension();
+
+            // validate extension
+            if (!in_array(strtolower($ext), $format)) {
+                session()->flash('message_danger', 'Please upload a valid image.');
+                return back();
+            }
+            $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
+        }
+        $input =  $request->all();
+        $input['image_path'] = $request->file('post_image')->storeAs('posts', $file_name, 'uploads');
+
+        // Upload to image manager
+        ImageManager::create([
+            'image_path' => $input['image_path']
+        ]);
+        
         $post = Post::create([
-            'post_title'=>$input['post_title'],
-            'category_id'=>$input['category_id'],
-            'image_path'=>$input['image_path'] ?? 'test text',
-            'post_body'=>$input['post_body'],
-            'user_id'=>auth()->id(),
-            'is_featured'=>$input['is_featured'],
-            'archive'=>$input['archive'] ?? '1',
+            'post_title' => $input['post_title'],
+            'category_id' => $input['category_id'],
+            'image_path' => $input['image_path'] ?? Null,
+            'post_body' => $input['post_body'],
+            'user_id' => auth()->id(),
+            'is_featured' => $input['is_featured'],
+            'archive' => $input['archive'] ?? '0',
         ]);
 
         if (!$post) {
