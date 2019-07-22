@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::latest()->get();
         return view('backend.posts.index', compact('posts'));
     }
 
@@ -47,7 +47,8 @@ class PostController extends Controller
             'post_body' => 'required',
             'is_featured' => 'required',
         ]);
-
+        $input =  $request->all();
+        $input['image_path']=null;
         // handle image
         $format = ['jpg', 'jpeg', 'png'];
         if ($file = $request->file('post_image')) {
@@ -59,23 +60,22 @@ class PostController extends Controller
                 return back();
             }
             $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
-        }
-        $input =  $request->all();
-        $input['image_path'] = $request->file('post_image')->storeAs('posts', $file_name, 'uploads');
+            $input['image_path'] = $request->file('post_image')->storeAs('uploads/posts', $file_name, 'uploads');
 
-        // Upload to image manager
-        ImageManager::create([
-            'image_path' => $input['image_path']
-        ]);
+            // Upload to image manager
+            ImageManager::create([
+                'image_path' => $input['image_path']
+            ]);
+        }
         
         $post = Post::create([
             'post_title' => $input['post_title'],
             'category_id' => $input['category_id'],
-            'image_path' => $input['image_path'] ?? Null,
+            'image_path' => $input['image_path'],
             'post_body' => $input['post_body'],
             'user_id' => auth()->id(),
             'is_featured' => $input['is_featured'],
-            'archive' => $input['archive'] ?? '0',
+            'archive' => $input['archive'] ?? 0,
         ]);
 
         if (!$post) {
@@ -105,7 +105,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return "edit";
+        $categories = Category::pluck('cat_name', 'id');
+        return view('backend.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -117,7 +118,51 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        return "update";
+        $request->validate([
+            'post_title' => 'required',
+            'category_id' => 'required',
+            'post_body' => 'required',
+            'is_featured' => 'required',
+        ]);
+        $input =  $request->all();
+        $input['image_path'] = $post->image_path;
+
+        // handle image
+        $format = ['jpg', 'jpeg', 'png'];
+        if ($file = $request->file('post_image')) {
+            $ext = $file->getClientOriginalExtension();
+
+            // validate extension
+            if (!in_array(strtolower($ext), $format)) {
+                session()->flash('message_danger', 'Please upload a valid image.');
+                return back();
+            }
+            $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
+            $input['image_path'] = $request->file('post_image')->storeAs('uploads/posts', $file_name, 'uploads');
+
+            // Upload to image manager
+            ImageManager::create([
+                'image_path' => $input['image_path']
+            ]);
+        }
+        
+        $post->update([
+            'post_title' => $input['post_title'],
+            'category_id' => $input['category_id'],
+            'image_path' => $input['image_path'],
+            'post_body' => $input['post_body'],
+            'user_id' => auth()->id(),
+            'is_featured' => $input['is_featured'],
+            'archive' => $input['archive'] ?? 0,
+        ]);
+
+        if (!$post) {
+            session()->flash('message_danger', 'Post could not be updated.');
+            return back();
+        }
+        session()->flash('message_success', 'Post updated successfully.');
+        return back();
+
     }
 
     /**
@@ -128,6 +173,18 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        return "delete";
+        // delete files if exist
+        if ($post->image_path) {
+            unlink(public_path('/').$post->image_path);
+        }
+
+        $post->delete();
+        session()->flash('message_success', 'Post deleted');
+
+        return back();
+    }
+
+    public function delete(Post $post){
+        return view('backend.posts.delete', compact('post'));
     }
 }

@@ -24,18 +24,30 @@ class AboutUserController extends Controller
         ]);
         
         $input =  $request->all();
-
+        // return $input;
         $user->update([
             'fname'=>$input['fname'],
             'lname'=>$input['lname'],
             'email'=>$input['email'],
         ]);
-
+        
+        // if about does not exist create
+        if (!$user->aboutUser) {
+            $user->aboutUser()->create([
+                'about'=>$input['about'],
+                'projects'=>$input['projects'],
+                'git_url'=>$input['git_url'],
+                'contact'=>$input['contact'],
+                'experience'=>$input['experience']
+            ]);
+        }
+        
         $user->aboutUser()->update([
             'about'=>$input['about'],
             'projects'=>$input['projects'],
             'git_url'=>$input['git_url'],
-            'contact'=>$input['contact']
+            'contact'=>$input['contact'],
+            'experience'=>$input['experience']
         ]);
 
         session()->flash('message_success','User updated.');

@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->boolean('is_featured')->default(false);
             $table->boolean('archive')->default(false);
             $table->unsignedBigInteger('user_id');
-            $table->string('image_path');
+            $table->string('image_path')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

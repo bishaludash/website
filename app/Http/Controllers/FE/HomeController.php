@@ -11,13 +11,11 @@ class HomeController extends Controller
         return view('welcome');
     }
 
-    /**
-    *Returns view blog ko home
-    *
-    * @param 
-    * @return Response : view(app)
-    */
-    public function blogHome(){
-        return view('app');
+    public function aboutUser(){
+        return "about";
+    }
+
+    public function projects(){
+        return "project";
     }
 }

@@ -1,7 +1,7 @@
 @extends('backend.layouts.main')
 
 @section('title')
-    <title>About</title>
+    About User
 @endsection
 
 @section('page-head')
@@ -16,6 +16,7 @@
             <div class="card">
                 <div class="card-body">
                     {{Form::model($user, ['method'=>'POST', 'action'=>['BE\AboutUserController@storeAboutUser', auth()->id()]])}}
+                    {{-- Name --}}
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-6">
@@ -28,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                    {{-- email --}}
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-6">
@@ -38,34 +39,44 @@
                         
                             <div class="col-lg-6">
                                 {!! Form::label('contact', 'Contact :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::text('contact', $user->aboutUser->contact, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+                                {!! Form::text('contact', $user->aboutUser->contact ?? "", ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                             </div>
                         </div>  
                     </div>
-
+                    {{-- contact --}}
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-8">
                                 {!! Form::label('git_url', 'GIT Url :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::text('git_url', $user->aboutUser->git_url, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+                                {!! Form::text('git_url', $user->aboutUser->git_url ?? "", ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                             </div>
                         </div>   
                     </div>
-                    
+                    {{-- about --}}
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-12">
                                 {!! Form::label('about', 'About :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::textarea('about', $user->aboutUser->about, ['class'=>'form-control']) !!}
+                                {!! Form::textarea('about', $user->aboutUser->about ?? "", ['class'=>'form-control']) !!}
                             </div>
                         </div>
                     </div>
-                    
+                    {{-- Experience --}}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {!! Form::label('experience', 'Experience :', ['class'=>'font-weight-bold']) !!}
+                                {!! Form::textarea('experience', $user->aboutUser->experience ?? "", ['class'=>'form-control']) !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- projects --}}
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-12">
                                 {!! Form::label('projects', 'Projects :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::textarea('projects', $user->aboutUser->projects, ['class'=>'form-control']) !!}
+                                {!! Form::textarea('projects', $user->aboutUser->projects ?? "", ['class'=>'form-control']) !!}
                             </div>
                         </div>
                     </div>

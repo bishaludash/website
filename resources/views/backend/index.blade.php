@@ -1,5 +1,9 @@
 @extends('backend.layouts.main')
 
+@section('title')
+	Dashboard
+@endsection
+
 {{-- PAGE HEADING --}}
 @section('page-head')
     <a class="navbar-brand" href="#pablo">Paper Dashboard 2</a>

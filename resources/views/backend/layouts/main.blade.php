@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 {{-- <link rel="icon" type="image/png" href="../assets/img/favicon.png"> --}}
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-@yield('title')
+<title>@yield('title')</title>
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 <!--     Fonts and icons     -->
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -78,6 +78,7 @@
 	<script src="{{asset('admin/js/plugins/bootstrap-notify.js')}}"></script>
 	<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="{{asset('admin/js/paper-dashboard.min.js?v=2.0.0')}}" type="text/javascript"></script>
+	@yield('footer')
 	</body>
 
 </html>

@@ -123,3 +123,11 @@
   .blog-footer p:last-child {
     margin-bottom: 0;
   }
+
+  .cat_post{
+    padding: 5px 10px;
+    border: 2px solid red;
+    background-color: red;
+    color: #fff;
+    transition: 0.3s;
+  }

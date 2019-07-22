@@ -12,7 +12,7 @@
     <!-- Styles -->
     <style>
         html, body {
-            background-color: #fff;
+            background-color: #000;
             color: #636b6f;
             font-family: 'Nunito', sans-serif;
             font-weight: 200;
@@ -132,18 +132,19 @@
             <div class="title m-b-md">
                 @php
                     $greet = ['Bonjour', 'Hola', 'Nǐn hǎo', 'नमस्ते', 'Namaste'];
+                    $lang = ['French', 'Spanish', 'Chinese', 'Nepali', 'Nepali'];
                     // French, Spanish, Chinese, Nepali
                     $len = count($greet) - 1;
                     $num = mt_rand(0, $len);
                 @endphp 
                 {{-- Namaste --}}
-                <p style="margin-bottom: 30px">{{$greet[$num]}}</p>
+            <p style="margin-bottom: 30px" title={{$lang[$num]}}>{{$greet[$num]}}</p>
             </div>
             
             <div class="links">
-                <a href="https://laravel.com/docs">About</a>
+                <a href="{{route('home.about')}}">About</a>
                 <a href="{{route('blog.home')}}">Blog</a>
-                <a href="{{route('blog.home')}}">Project</a>
+                <a href="{{route('home.projects')}}">Project</a>
                 <a href="https://github.com/bishaludas" target="_blank">GitHub</a>
             </div>
         </div>

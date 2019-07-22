@@ -20,16 +20,18 @@ Route::get('forgot-password', 'BE\UserAuthController@forgotPassword');
 Route::post('recover-password', 'BE\UserAuthController@resetPassword');
 Route::post('recover-link', 'BE\UserAuthController@recoverPasswordLink');
 
-// TO make this home
+// Home
 Route::get('/', 'FE\HomeController@home')->name('home');
+Route::get('about', 'FE\HomeController@aboutUser')->name('home.about');
+Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
 
 // Blog
-Route::get('/blog', 'FE\HomeController@blogHome')->name('blog.home');
-Route::get('/post/{post}', 'FE\HomeController@show')->name('post.show');
-Route::post('/post/{post}/comment', 'FE\HomeController@show');
+Route::get('/blog', 'FE\BlogController@index')->name('blog.home');
+Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
+Route::post('/post/{post}/comment', 'FE\BlogController@show');
 
 
-// Place this into middleware
+// BE (Place this into middleware)
 Route::get('dashboard', 'BE\DashboardController@index')->name('dashboard.home');
 
 Route::get('dashboard/about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
@@ -40,5 +42,6 @@ Route::resource('dashboard/category', 'BE\CategoryController', ['except'=>['crea
 Route::get('dashboard/category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
 
 Route::resource('dashboard/posts', 'BE\PostController');
+Route::get('dashboard/posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
 // Route::resource('dashboard/comments', 'BE\CommentController');
 
