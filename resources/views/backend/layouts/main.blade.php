@@ -13,6 +13,8 @@
 <!-- CSS Files -->
 <link href="{{asset('admin/css/bootstrap.min.css')}}" rel="stylesheet" />
 <link href="{{asset('admin/css/paper-dashboard.css?v=2.0.0')}}" rel="stylesheet" />
+<link href="{{asset('css/switch.css')}}" rel="stylesheet" />
+@yield('css')
 </head>
 	<body class="">
 	<div class="wrapper ">

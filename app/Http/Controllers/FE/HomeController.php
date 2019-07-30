@@ -4,18 +4,16 @@ namespace App\Http\Controllers\FE;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\AboutUser;
 
 class HomeController extends Controller
 {
     public function home(){
-        return view('welcome');
-    }
-
-    public function aboutUser(){
-        return "about";
+        $aboutUser = AboutUser::first(['about']);
+        return view('welcome', compact('aboutUser'));
     }
 
     public function projects(){
-        return "project";
+        return "Comming soon";
     }
 }

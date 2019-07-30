@@ -25,8 +25,9 @@ Route::get('/', 'FE\HomeController@home')->name('home');
 Route::get('about', 'FE\HomeController@aboutUser')->name('home.about');
 Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
 
-// Blog
+// FE Blog
 Route::get('/blog', 'FE\BlogController@index')->name('blog.home');
+Route::get('/blog/{month}/{year}', 'FE\BlogController@getArchive')->name('blog.archive');
 Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
 Route::post('/post/{post}/comment', 'FE\BlogController@show');
 
@@ -42,6 +43,8 @@ Route::resource('dashboard/category', 'BE\CategoryController', ['except'=>['crea
 Route::get('dashboard/category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
 
 Route::resource('dashboard/posts', 'BE\PostController');
+Route::get('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archive')->name('posts.archive');
+Route::post('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archivePost');
 Route::get('dashboard/posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
 // Route::resource('dashboard/comments', 'BE\CommentController');
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Laravel</title>
+    <title>Bishal Udash</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -70,7 +70,7 @@
             border-radius: 5px 20px 5px;
             min-height: 50px;
             width: 50px;
-            background: #BADA55;
+            /* background: #BADA55; */
             list-style: none;
             display: inline-block;
             float: left;
@@ -79,13 +79,24 @@
         }
         
         .leaf-2{
-            background-color: green;
+            /* background-color: green; */
             position: absolute;
             list-style: none;
             margin: 10px;
             width: 29px;
             height: 29px;
             border-radius: 2px 15px 2px;
+        }
+
+        .about_data{
+            text-align:left !important;
+            color: #fff;
+            /* display: none; */
+            visibility: hidden;
+        }
+        .card{
+            border: 1px dashed #636b6f;
+            padding: 2%;
         }
         
 
@@ -99,6 +110,11 @@
                 padding: 0;
                 text-align: center;
                 float: left;
+            }
+            .about_data{
+                text-align:left !important;
+                color: #fff;
+                margin-top: 5%;
             }
         }
     </style>
@@ -114,25 +130,33 @@
             @endauth
         </div>
         
-        
+        @php
+            // leaf 2
+            $inside = ['#FFC312', '#0652DD', '#6F1E51', '#ED4C67', 'green', '#9980FA'];
+            // leaf 1
+            $outside = ['#AE6A07', '#12CBC4', '#d275bd', '#821348', '#BADA55', '#5758BB'];
+            $count = count($inside) -1;
+            $color =  mt_rand(0, $count);
+        @endphp
+
         <div class="content">
             <ul style="display:block">
-                <li class="leaf-1">
+                <li class="leaf-1" style="background:{{$outside[$color]}}">
                     <ul style="margin:0px; padding:0px;">
-                        <li class="leaf-2"></li>
+                        <li class="leaf-2" style="background:{{$inside[$color]}}"></li>
                     </ul>
                 </li>
                 
-                <li class="leaf-1">
-                    <ul style="margin:0px; padding:0px">
-                        <li class="leaf-2"></li>
+                <li class="leaf-1" style="background:{{$inside[$color]}}">
+                    <ul style="margin:0px; padding:0px;">
+                        <li class="leaf-2" style="background:{{$outside[$color]}}"></li>
                     </ul>
                 </li>
             </ul>
             <div class="title m-b-md">
                 @php
-                    $greet = ['Bonjour', 'Hola', 'Nǐn hǎo', 'नमस्ते', 'Namaste'];
-                    $lang = ['French', 'Spanish', 'Chinese', 'Nepali', 'Nepali'];
+                    $greet = ['Bonjour', 'Hola', 'नमस्ते', 'Namaste'];
+                    $lang = ['French', 'Spanish', 'Nepali', 'Nepali'];
                     // French, Spanish, Chinese, Nepali
                     $len = count($greet) - 1;
                     $num = mt_rand(0, $len);
@@ -142,12 +166,34 @@
             </div>
             
             <div class="links">
-                <a href="{{route('home.about')}}">About</a>
+                <a href="#about-data" class="about-data">About</a>
                 <a href="{{route('blog.home')}}">Blog</a>
                 <a href="{{route('home.projects')}}">Project</a>
                 <a href="https://github.com/bishaludas" target="_blank">GitHub</a>
             </div>
+
+            <br><br>
+            <div class="about_data">
+                <div class="card">
+                    <span style="display:block">### Hello world !</span>
+                    {{$aboutUser->about}}
+                </div>
+                
+            </div>
         </div>
     </div>
+
+<script>
+    var display = false;
+    document.querySelector('.about-data').addEventListener('click', function(){
+        if(display == false){
+            document.querySelector('.about_data').style.visibility = 'visible';
+            display = true
+        }else{
+            document.querySelector('.about_data').style.visibility = 'hidden';
+            display = false
+        }
+    });
+</script>
 </body>
 </html>

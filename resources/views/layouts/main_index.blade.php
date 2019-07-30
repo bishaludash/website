@@ -8,8 +8,8 @@
     <title> @yield('title')</title>
     
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css">
-    
+    <link href="{{asset('admin/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -42,9 +42,7 @@
     {{-- Contains the body --}}
     
     <footer class="blog-footer">
-        <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-        <p>
-            <a href="#">Back to top</a>
+        <p>Built with <i class="ion-heart" style="color:#f95959"></i> by <a href="#">@budash</a>.
         </p>
     </footer>
 </body>

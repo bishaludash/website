@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
 use App\ImageManager;
-use phpDocumentor\Reflection\Types\Null_;
 
 class PostController extends Controller
 {
@@ -46,6 +45,7 @@ class PostController extends Controller
             'category_id' => 'required',
             'post_body' => 'required',
             'is_featured' => 'required',
+            'is_pinned' => 'required',
         ]);
         $input =  $request->all();
         $input['image_path']=null;
@@ -56,7 +56,7 @@ class PostController extends Controller
 
             // validate extension
             if (!in_array(strtolower($ext), $format)) {
-                session()->flash('message_danger', 'Please upload a valid image.');
+                session()->flash('message_danger', 'Please upload a valid image. i.e: jpg, jpeg, png');
                 return back();
             }
             $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
@@ -75,7 +75,7 @@ class PostController extends Controller
             'post_body' => $input['post_body'],
             'user_id' => auth()->id(),
             'is_featured' => $input['is_featured'],
-            'archive' => $input['archive'] ?? 0,
+            'is_pinned' => $input['is_pinned'],
         ]);
 
         if (!$post) {
@@ -123,6 +123,7 @@ class PostController extends Controller
             'category_id' => 'required',
             'post_body' => 'required',
             'is_featured' => 'required',
+            'is_pinned' => 'required',
         ]);
         $input =  $request->all();
         $input['image_path'] = $post->image_path;
@@ -134,7 +135,7 @@ class PostController extends Controller
 
             // validate extension
             if (!in_array(strtolower($ext), $format)) {
-                session()->flash('message_danger', 'Please upload a valid image.');
+                session()->flash('message_danger', 'Please upload a valid image. i.e: jpg, jpeg, png');
                 return back();
             }
             $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
@@ -153,7 +154,7 @@ class PostController extends Controller
             'post_body' => $input['post_body'],
             'user_id' => auth()->id(),
             'is_featured' => $input['is_featured'],
-            'archive' => $input['archive'] ?? 0,
+            'is_pinned' => $input['is_pinned'],
         ]);
 
         if (!$post) {
@@ -186,5 +187,22 @@ class PostController extends Controller
 
     public function delete(Post $post){
         return view('backend.posts.delete', compact('post'));
+    }
+
+    // archive view
+    public function archive(Post $post, $archive){
+        return view('backend.posts.archive', compact('post', 'archive'));
+        
+    }
+
+    // archive method
+    public function archivePost(Post $post, $archive){
+        $status = $archive =='archive' ? true : false;
+        $post->update([
+            'archive'=>$status
+        ]);
+
+        session()->flash('message_success', 'Post archived.');
+        return back();
     }
 }

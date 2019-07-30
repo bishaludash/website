@@ -43,7 +43,10 @@
 		@include('partials.flash')
 		
 		{!! Form::submit('Sign In', ['class'=>'btn btn-primary form-control']) !!}
-		<p class="mt-5 mb-3 text-muted">&copy; {{date('Y')}}</p>
+		<p class="mt-5 mb-3 text-muted">
+			&copy; @if(date('Y') > 2019){{date('Y')." - "}}  @endif  {{date('Y')}}
+		</p>
 	{{Form::close()}}
+	
 </body>
 </html>
