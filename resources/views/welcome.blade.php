@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <meta name="theme-color" content="#000" />
     <title>Bishal Udash</title>
     
     <!-- Fonts -->
@@ -176,7 +176,7 @@
             <div class="about_data">
                 <div class="card">
                     <span style="display:block">### Hello world !</span>
-                    {{$aboutUser->about}}
+                    {{$aboutUser->about ?? ''}}
                 </div>
                 
             </div>
