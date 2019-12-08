@@ -88,7 +88,7 @@
             border-radius: 2px 15px 2px;
         }
 
-        .about_data{
+        .about_data, .project_data{
             text-align:left !important;
             color: #fff;
             /* display: none; */
@@ -99,6 +99,10 @@
             padding: 2%;
         }
         
+        .experience_box p{
+            padding: 0px;
+            margin: 0px;
+        }
 
         @media only screen and (max-width: 460px) {
             .title {
@@ -111,7 +115,7 @@
                 text-align: center;
                 float: left;
             }
-            .about_data{
+            .about_data, .project_data{
                 text-align:left !important;
                 color: #fff;
                 margin-top: 5%;
@@ -166,7 +170,7 @@
             </div>
             
             <div class="links">
-                <a href="#about-data" class="about-data">About</a>
+                <a href="#" class="about-data">About</a>
                 <a href="{{route('blog.home')}}">Blog</a>
                 <a href="{{route('home.projects')}}">Project</a>
                 <a href="https://github.com/bishaludas" target="_blank">GitHub</a>
@@ -178,7 +182,6 @@
                     <span style="display:block">### Hello world !</span>
                     {{$aboutUser->about ?? ''}}
                 </div>
-                
             </div>
         </div>
     </div>

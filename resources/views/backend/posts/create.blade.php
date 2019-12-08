@@ -42,5 +42,5 @@
 
 @section('footer')
     <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script>
-    <script>tinymce.init({selector:'textarea'});</script>
+    <script>tinymce.init({selector:'.tiny_mce'});</script>
 @endsection

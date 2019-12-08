@@ -52,7 +52,7 @@
             {!! Form::label('post_body', 'Body :', ['class'=>'font-weight-bold']) !!}
         </div>
         <div class="col-md-10">
-            {!! Form::textarea('post_body', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+            {!! Form::textarea('post_body', null, ['class'=>'form-control tiny_mce', 'autocomplete'=>'off']) !!}
             @if ($errors->has('post_body'))
             <span class="text-danger">{{$errors->first('post_body')}}</span> 
             @endif

@@ -66,7 +66,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 {!! Form::label('experience', 'Experience :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::textarea('experience', $user->aboutUser->experience ?? "", ['class'=>'form-control']) !!}
+                                {!! Form::textarea('experience', $user->aboutUser->experience ?? "", ['class'=>'form-control tiny_mce']) !!}
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 {!! Form::label('projects', 'Projects :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::textarea('projects', $user->aboutUser->projects ?? "", ['class'=>'form-control']) !!}
+                                {!! Form::textarea('projects', $user->aboutUser->projects ?? "", ['class'=>'form-control tiny_mce']) !!}
                             </div>
                         </div>
                     </div>
@@ -93,4 +93,10 @@
             </div>    
         </div>    
     </div>   
+@endsection
+
+
+@section('footer')
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script>
+    <script>tinymce.init({selector:'.tiny_mce'});</script>
 @endsection
