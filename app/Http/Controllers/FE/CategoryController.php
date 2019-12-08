@@ -12,14 +12,18 @@ class CategoryController extends Controller
 
     // view all the post belonging to the category
     public function index(Category $category){
-        // return $post = DB::select($this->get_category_posts,[$category->id]);
-        $post = DB::select('select post_title,substr(post_body, 1, 200) as post_body, created_at, image_path,id from posts where category_id = :id',['id'=>$category->id]);
-        
-        $category['posts'] = $post;
-        foreach($category['posts'] as $cp){
-            echo $cp->post_title;
-        }
-        
-        // return view('fe.category.index');
+        $cat_posts = $this->getCategoryPosts($category);
+        // return $cat_posts;
+        return view('fe.category.cat-list', compact('category', 'cat_posts'));
+    }
+
+    protected function getCategoryPosts($category){
+        $cat_query = "select p.id, p.post_title, p.post_body, p.updated_at::timestamp,
+        concat(u.fname,' ', u.lname) as user
+        from posts p inner join users u on p.user_id = u.id
+        where category_id= :id";
+
+        $res = DB::select($cat_query, ['id'=>$category->id]);
+        return json_decode(json_encode($res), true);
     }
 }

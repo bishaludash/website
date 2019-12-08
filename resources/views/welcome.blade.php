@@ -88,7 +88,7 @@
             border-radius: 2px 15px 2px;
         }
 
-        .about_data, .project_data{
+        .about_data{
             text-align:left !important;
             color: #fff;
             /* display: none; */
@@ -107,18 +107,6 @@
         @media only screen and (max-width: 460px) {
             .title {
                 font-size: 60px;
-            }
-            .links > a{
-                display: inline-block;
-                width: 50%;
-                padding: 0;
-                text-align: center;
-                float: left;
-            }
-            .about_data, .project_data{
-                text-align:left !important;
-                color: #fff;
-                margin-top: 5%;
             }
         }
     </style>
