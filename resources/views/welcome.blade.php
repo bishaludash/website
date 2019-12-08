@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#000" />
+    <meta name="description" content="I'm a full-stack web developer with a passion for building beautiful things from scratch. I've been building websites and sass apps since 2017 and also have a Bachelor's degree in Computer Science. Bishal Udash Keggs budash">
     <title>Bishal Udash</title>
     
     <!-- Fonts -->
@@ -98,15 +99,11 @@
             border: 1px dashed #636b6f;
             padding: 2%;
         }
-        
-        .experience_box p{
-            padding: 0px;
-            margin: 0px;
-        }
 
+        /* links media query */
         @media only screen and (max-width: 460px) {
             .links > a {
-            padding: 0px 30px;
+            padding: 0px 45px;
             margin: 5px 0px;
             font-size: 15px;
             }
@@ -114,6 +111,18 @@
             .about_data{
                 padding: 12px
             }
+        }
+
+        @media only screen and (max-width: 375px) {
+            .links > a {
+            padding: 0px 35px;
+            } 
+        }
+
+        @media only screen and (max-width: 325px) {
+            .links > a {
+            padding: 0px 30px;
+            } 
         }
     </style>
 </head>
