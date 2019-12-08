@@ -25,11 +25,17 @@ Route::get('/', 'FE\HomeController@home')->name('home');
 Route::get('about', 'FE\HomeController@aboutUser')->name('home.about');
 Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
 
-// FE Blog
-Route::get('/blog', 'FE\BlogController@index')->name('blog.home');
-Route::get('/blog/{month}/{year}', 'FE\BlogController@getArchive')->name('blog.archive');
-Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
-Route::post('/post/{post}/comment', 'FE\BlogController@show');
+// FE 
+    // Blog
+    Route::get('/blog', 'FE\BlogController@index')->name('blog.home');
+    Route::get('/blog/{month}/{year}', 'FE\BlogController@getArchive')->name('blog.archive');
+
+    // posts
+    Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
+    Route::post('/post/{post}/comment', 'FE\BlogController@show');
+
+    // categories
+    Route::get('/category/{category}', 'FE\CategoryController@index')->name('cat.show');
 
 
 // BE (Place this into middleware)
