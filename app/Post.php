@@ -45,7 +45,7 @@ class Post extends Model
     public function scopePosts($query){
         return $query->where('is_featured', 0)
         ->where('archive',0)
-        ->limit(10)
+        ->limit(8)
         ->get();
     } 
 }

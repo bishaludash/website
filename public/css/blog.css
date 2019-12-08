@@ -52,6 +52,18 @@
     padding-bottom: .75rem;
     font-size: .875rem;
   }
+
+  .nav-icons{
+    font-size:1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: 0.2s;
+    color: #438788;
+  }
+  .nav-icons:hover{
+    text-decoration: none;
+    color: #51cbce;
+  }
   
   .card-img-right {
     height: 100%;
@@ -131,3 +143,19 @@
     color: #fff;
     transition: 0.3s;
   }
+
+  a{
+    color: inherit;
+  }
+
+
+
+  @media only screen and (max-width: 460px) {
+    .blog-search{
+      display: none;
+    }
+
+    .mobile-dnone{
+      display: none;
+    }
+}

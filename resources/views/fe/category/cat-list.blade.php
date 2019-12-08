@@ -29,7 +29,7 @@
                     </a>
                     <p class="blog-post-meta">
                         @php
-                            $date = strtotime($post['updated_at']);
+                            $date = strtotime($post['created_at']);
                         @endphp
                         
                         {{date('M d, Y', $date)}} by 

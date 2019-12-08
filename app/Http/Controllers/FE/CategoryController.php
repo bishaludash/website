@@ -18,10 +18,10 @@ class CategoryController extends Controller
     }
 
     protected function getCategoryPosts($category){
-        $cat_query = "select p.id, p.post_title, p.post_body, p.updated_at::timestamp,
+        $cat_query = "select p.id, p.post_title, p.post_body, p.created_at::timestamp,
         concat(u.fname,' ', u.lname) as user
         from posts p inner join users u on p.user_id = u.id
-        where category_id= :id";
+        where category_id= :id order by p.created_at desc";
 
         $res = DB::select($cat_query, ['id'=>$category->id]);
         return json_decode(json_encode($res), true);

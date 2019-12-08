@@ -105,8 +105,14 @@
         }
 
         @media only screen and (max-width: 460px) {
-            .title {
-                font-size: 60px;
+            .links > a {
+            padding: 0px 30px;
+            margin: 5px 0px;
+            font-size: 15px;
+            }
+
+            .about_data{
+                padding: 12px
             }
         }
     </style>
@@ -133,7 +139,7 @@
         @endphp
 
         <div class="content">
-            <ul style="display:block">
+            <ul style="display:block; margin-bottom:66px">
                 <li class="leaf-1" style="background:{{$outside[$color]}}">
                     <ul style="margin:0px; padding:0px;">
                         <li class="leaf-2" style="background:{{$inside[$color]}}"></li>
@@ -155,7 +161,7 @@
                     $num = mt_rand(0, $len);
                 @endphp 
                 {{-- Namaste --}}
-            <p style="margin-bottom: 30px" title={{$lang[$num]}}>{{$greet[$num]}}</p>
+            <p style="margin-bottom: 30px; font-size:60px;" title={{$lang[$num]}}>{{$greet[$num]}}</p>
             </div>
             
             <div class="links">

@@ -31,7 +31,7 @@
                     <a href="{{route('post.show', $post->id)}}" style="color:inherit">
                         <h2 class="blog-post-title">{{ucwords($post->post_title)}}</h2>
                     </a>
-                    <p class="blog-post-meta">{{$post->updated_at->toFormattedDateString()}} by 
+                    <p class="blog-post-meta">{{$post->created_at->toFormattedDateString()}} by 
                         <a href="#">{{$post->user->fname}}</a>
                     </p>
                     <img src="{{asset($post->image_path)}}" class="img-fluid py-3" alt="post image">
