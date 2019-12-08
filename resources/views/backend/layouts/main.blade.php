@@ -9,7 +9,7 @@
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 <!--     Fonts and icons     -->
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-<link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 <!-- CSS Files -->
 <link href="{{asset('admin/css/bootstrap.min.css')}}" rel="stylesheet" />
 <link href="{{asset('admin/css/paper-dashboard.css?v=2.0.0')}}" rel="stylesheet" />
