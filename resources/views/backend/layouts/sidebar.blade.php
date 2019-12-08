@@ -3,13 +3,13 @@
 	Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
 	-->
 	<div class="logo">
-		<a href="http://www.creative-tim.com" class="simple-text logo-mini">
+		<a href="{{route('home')}}" target="_blank" class="simple-text logo-mini">
 			<div class="logo-image-small">
-			{{-- <img src="../assets/img/logo-small.png"> --}}
+				<i class="ion-ios-world-outline" style="font-size:2rem"></i>
 			</div>
 		</a>
-		<a href="{{route('home')}}" class="simple-text logo-normal">
-			Creative Tim
+		<a href="{{route('home')}}" target="_blank" class="simple-text logo-normal">
+				{{env('APP_NAME')}}
 			<!-- <div class="logo-image-big">
 			<img src="../assets/img/logo-big.png">
 			</div> -->

@@ -1,7 +1,7 @@
 @extends('backend.layouts.main')
 
 @section('title')
-    <title>Category</title>
+    {{env('APP_NAME')}} | Category
 @endsection
 
 @section('page-head')

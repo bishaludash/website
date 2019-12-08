@@ -1,7 +1,7 @@
 @extends('backend.layouts.main')
 
 @section('title')
-    Add Post
+{{env('APP_NAME')}} | Add Post
 @endsection
 
 

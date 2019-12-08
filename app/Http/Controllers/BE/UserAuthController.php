@@ -29,7 +29,7 @@ class UserAuthController extends Controller
 
         // Check if the credentials are valid, the login
         if(Auth::attempt($creadentials)){
-            return redirect()->route('dashboard.home');
+            return redirect()->route('home');
         }else {
             session()->flash('message', 'Could not Login');
             return redirect()->route('be.login');
@@ -40,7 +40,7 @@ class UserAuthController extends Controller
     public function logout(){
         if (Auth::check()) {
             auth()->logout();
-            return redirect()->route('blog.home');
+            return redirect()->route('home');
         }
         return back();
     }

@@ -2,7 +2,7 @@
 
 {{-- Title --}}
 @section('title')
-    Blog 
+{{env('APP_NAME')}} | Blog
 @endsection
 
 @section('blog_head')

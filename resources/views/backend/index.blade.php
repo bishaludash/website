@@ -1,7 +1,7 @@
 @extends('backend.layouts.main')
 
 @section('title')
-	Dashboard
+	{{env('APP_NAME')}} | Dashboard
 @endsection
 
 {{-- PAGE HEADING --}}

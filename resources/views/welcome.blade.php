@@ -128,7 +128,8 @@
         
         <div class="top-right links">
             @auth
-            <a href="{{ route('blog.home') }}">Home</a>
+            <a href="{{ route('dashboard.home') }}">Dashboard</a>
+            <a href="{{ route('be.logout') }}">Logout</a>
             @else
             <a href="{{ route('be.login') }}">Login</a>
             @endauth

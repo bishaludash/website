@@ -9,7 +9,7 @@
     
     <!-- Bootstrap core CSS -->
     <link href="{{asset('admin/css/bootstrap.min.css')}}" rel="stylesheet" />
-    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
