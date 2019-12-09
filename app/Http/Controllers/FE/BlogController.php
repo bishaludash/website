@@ -11,11 +11,15 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
-{
+{   
     public function index(){
+        // Laravel queryscope
         $featured = Post::featured();    
         $pinned_posts = Post::PinnedPosts();
-        $posts = Post::Posts();
+        
+        // custom OOP
+        $postRep = new Post();
+        $posts = $postRep->getlatestPosts();
 
         $archives = $this->getArchivedPost();
         $aboutUser = AboutUser::first(['about', 'git_url']);

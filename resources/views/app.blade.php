@@ -32,17 +32,24 @@
                 {{-- Blog Post --}}
                 @foreach ($posts as $post)
                 <div class="blog-post">
-                    <a href="{{route('post.show', $post->id)}}" style="color:inherit">
-                        <h2 class="blog-post-title">{{ucwords($post->post_title)}}</h2>
+                    <a href="{{route('post.show', $post['id'])}}" style="color:inherit">
+                        <h2 class="blog-post-title">{{ucwords($post['post_title'])}}</h2>
                     </a>
-                    <p class="blog-post-meta">{{$post->updated_at->toFormattedDateString()}} by 
-                        <a href="{{route('home')}}">{{ucwords($post->user->fname)}}</a>
+                    <p class="blog-post-meta">    
+                        @php
+                            $date = strtotime($post['created_at']);
+                        @endphp
+                        
+                        {{date('M d, Y', $date)}} by 
+                        <a href="{{route('home')}}">{{ucwords($post['username'])}}</a>
                     </p>
-                    <img src="{{asset($post->image_path)}}" class="img-fluid py-3" alt="post image">
-                    {!! strip_tags(substr($post->post_body,0,300)).'...' !!}
+                    <div>
+                        <img src="{{asset($post['image_path'])}}" class="img-fluid py-3" alt="post image">
+                    </div>
+                    {!! strip_tags($post['post_body']).'...' !!}
                     
                     <div>
-                        <a href="{{route('post.show', $post->id)}}" class="btn badge-pill btn-sm btn-outline-danger mt-3">Read more</a>
+                        <a href="{{route('post.show', $post['id'])}}" class="btn badge-pill btn-sm btn-outline-danger mt-3">Read more</a>
                     </div>
                     
                 </div><!-- /.blog-post -->

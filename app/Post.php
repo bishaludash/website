@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\DBUtils;    // import DButils traits
 
 class Post extends Model
 {
+    use DBUtils;
     protected $fillable = [
         'post_title',
         'category_id',
@@ -25,7 +27,6 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-
     // Query scope
     public function scopeFeatured($query){
         return $query->where('is_featured', 1)
@@ -42,10 +43,15 @@ class Post extends Model
         ->get(['id', 'post_title','updated_at','category_id']);
     }
 
-    public function scopePosts($query){
-        return $query->where('is_featured', 0)
-        ->where('archive',0)
-        ->limit(8)
-        ->get();
+    public function getlatestPosts(){
+        $query = "select p.id, p.post_title, left(p.post_body, 200) as post_body,p.created_at,p.image_path, 
+        concat(u.fname,' ', u.lname) as username, c.cat_name from posts p 
+        inner join users u on u.id=p.user_id 
+        inner join categories c on c.id= p.category_id
+        where is_featured ='f' and archive='f' and is_pinned='f' 
+        order by p.created_at desc limit 8";
+
+        $latestposts = $this->selectQuery($query);
+        return $latestposts;
     } 
 }

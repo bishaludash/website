@@ -3,7 +3,7 @@
         <div class="col-md-2 pt-1">
             {{-- <a class="text-muted" href="#">Subscribe</a> --}}
         </div>
-        <div class="col-md-4 text-center">
+        <div class="col-md-4 text-right">
             <a class="blog-header-logo text-dark " href="{{route('blog.home')}}">Keggsblog</a>
         </div>
 
