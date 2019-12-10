@@ -5,63 +5,58 @@
 @endsection
 
 @section('page-head')
-    Posts List
+Posts List
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-lg-12">
-            <a href="{{route('posts.create')}}" class="btn btn-primary btn-sm">New Post</a>
-            <a href="{{route('category.index')}}" class="btn btn-primary btn-sm">Category</a>
-        </div>
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{{route('posts.create')}}" class="btn btn-primary btn-sm">New Post</a>
+        <a href="{{route('category.index')}}" class="btn btn-primary btn-sm">Category</a>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h1>Use Datatable</h1>
-                    @foreach ($posts as $post)
-                        <div class="card">
-                            <div class="card-body">
-                                <h3>{{ucwords($post->post_title)}}</h3>
-                                <p>{{$post->category->cat_name}}  {{$post->created_at->format('Y-m-d')}}</p>
-                                @if ($post->is_featured)
-                                    <div class="btn btn-info btn-sm">Featured</div>
-                                @endif
-                                @if ($post->is_pinned)
-                                    <div class="btn btn-info btn-sm">Pinned</div>
-                                @endif
+</div>
 
-                                {{-- Archive / unarchive--}}
-                                @php
-                                    $status = "archive";
-                                    if($post->archive){
-                                        $status ="unarchive";
-                                    }
-                                @endphp
-                                <a class="btn btn-sm btn-danger ajax-modal" style="float: none;" data-title="{{ucwords($status)}}" 
-                                    data-url="{{ route('posts.archive', [$post->id, $status]) }}">
-                                    <div class="text-white">{{ucwords($status)}}</div> 
-                                </a>
-                                
-                                <span>
-                                    <a href="{{route('posts.edit', $post->id)}}">
-                                        Edit
-                                    </a>
-                                </span>    
-                                <span>
-                                    <a class="btn btn-sm btn-danger ajax-modal" style="float: none;" data-title="Delete" 
-                                    data-url="{{ route('posts.delete', $post->id) }}">
-                                            <div class="text-white">Delete</div> 
-                                    </a>
-                                </span> 
-                                {{-- <img src="{{asset($post->image_path)}}" alt="No Image"> --}}
-                                {!! substr($post->post_body,0,200) !!}
-                            </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h1>Use Datatable</h1>
+                
+                @foreach ($posts as $post)
+                <div class="card">
+                    <div class="card-body">
+                        {{-- Title --}}
+                        <a href="{{route('post.show', $post['id'])}}" style="color:inherit">
+                            <h2 class="blog-post-title mb-1">{{ucwords($post['post_title'])}}</h2>
+                        </a>
+                        {{$post->created_at->format('Y-m-d')}}
+                        
+                        {{-- Options --}}
+                        <div>
+                            {!!$post->is_featured ? "<span class='btn btn-success btn-sm'>Featured</span>" : "" !!}
+                            {!! $post->is_pinned ? "<span class='btn btn-success btn-sm'>Pinned</span>" : "" !!}
+                            @php
+                                $status = $post->archive ? "unarchive" : "archive"
+                            @endphp
+                            <a class="btn btn-sm btn-danger ajax-modal text-white" data-title="{{ucwords($status)}}" 
+                            data-url="{{ route('posts.archive', [$post->id, $status]) }}">
+                                {{ucwords($status)}}
+                            </a>
+
+                            <a href="{{route('posts.edit', $post->id)}}" class="btn btn-sm btn-danger">Edit</a>
                         </div>
-                    @endforeach
-                </div>
-            </div>
+
+
+                        {{-- body --}}
+                    </div>
+                </div> 
+                
+                @endforeach
+                {{ $posts->links() }}
+                
+                
+            </div><!-- /.blog-main -->
         </div>
     </div>
+</div>
 @endsection

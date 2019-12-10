@@ -38,7 +38,7 @@ Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
     Route::get('/category/{category}', 'FE\CategoryController@index')->name('cat.show');
 
 
-// BE (Place this into middleware)
+// BE (middleware)
 Route::group(['middleware' => ['checkAuth']], function () {
     Route::get('dashboard', 'BE\DashboardController@index')->name('dashboard.home');
     Route::get('dashboard/about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
