@@ -94,6 +94,8 @@
             color: #fff;
             /* display: none; */
             visibility: hidden;
+            width: 50%;
+            margin: 0px auto;
         }
         .card{
             border: 1px dashed #636b6f;
@@ -148,7 +150,7 @@
         @endphp
 
         <div class="content">
-            <ul style="display:block; margin-bottom:66px">
+            <ul style="display:block;width:50%; margin:0 auto;">
                 <li class="leaf-1" style="background:{{$outside[$color]}}">
                     <ul style="margin:0px; padding:0px;">
                         <li class="leaf-2" style="background:{{$inside[$color]}}"></li>
@@ -183,8 +185,8 @@
             <br><br>
             <div class="about_data">
                 <div class="card">
-                    <span style="display:block">### Hello world !</span>
-                    {{$aboutUser->about ?? ''}}
+                    <u><span style="display:block; padding-bottom:2px">### Hello world !</span></u>
+                    {!! $aboutUser->about ?? '' !!}
                 </div>
             </div>
         </div>

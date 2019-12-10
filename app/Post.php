@@ -48,7 +48,7 @@ class Post extends Model
         concat(u.fname,' ', u.lname) as username, c.cat_name from posts p 
         inner join users u on u.id=p.user_id 
         inner join categories c on c.id= p.category_id
-        where is_featured ='f' and archive='f' and is_pinned='f' 
+        where archive='f'  
         order by p.created_at desc limit 8";
 
         $latestposts = $this->selectQuery($query);

@@ -16,7 +16,7 @@ class AboutUserController extends Controller
         return view('backend.about-user', compact('user'));
     }
 
-    public function storeAboutUser(Request $request, User $user){
+    public function updateAboutUser(Request $request, User $user){
         $request->validate([
             'fname'=>'required',
             'lname'=>'required',
@@ -43,11 +43,10 @@ class AboutUserController extends Controller
         }
         
         $user->aboutUser()->update([
-            'about'=>$input['about'],
-            'projects'=>$input['projects'],
-            'git_url'=>$input['git_url'],
-            'contact'=>$input['contact'],
-            'experience'=>$input['experience']
+            'about'=>$input['about'] ?? ' ',
+            'git_url'=>$input['git_url'] ?? ' ',
+            'contact'=>$input['contact'] ?? ' ',
+            'experience'=>$input['experience'] ?? ' '
         ]);
 
         session()->flash('message_success','User updated.');

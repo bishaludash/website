@@ -15,7 +15,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    {{Form::model($user, ['method'=>'POST', 'action'=>['BE\AboutUserController@storeAboutUser', auth()->id()]])}}
+                    {{Form::model($user, ['method'=>'POST', 'action'=>['BE\AboutUserController@updateAboutUser', auth()->id()]])}}
                     {{-- Name --}}
                     <div class="form-group">
                         <div class="row">
@@ -67,16 +67,6 @@
                             <div class="col-lg-12">
                                 {!! Form::label('experience', 'Experience :', ['class'=>'font-weight-bold']) !!}
                                 {!! Form::textarea('experience', $user->aboutUser->experience ?? "", ['class'=>'form-control tiny_mce']) !!}
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- projects --}}
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                {!! Form::label('projects', 'Projects :', ['class'=>'font-weight-bold']) !!}
-                                {!! Form::textarea('projects', $user->aboutUser->projects ?? "", ['class'=>'form-control tiny_mce']) !!}
                             </div>
                         </div>
                     </div>

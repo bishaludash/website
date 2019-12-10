@@ -43,7 +43,7 @@ Posts List
                                     <td><a href="{{route('post.show', $post['id'])}}" style="color:inherit" class="datatable-links">
                                         {{ucwords($post['post_title'])}}
                                     </a></td>
-                                    <td>{{$post->created_at->format('Y-m-d')}}</td>
+                                    <td>{{$post->created_at->format('M-d, Y')}}</td>
                                     
                                     {{-- status --}}
                                     <td>

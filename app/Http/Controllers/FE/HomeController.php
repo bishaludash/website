@@ -9,7 +9,7 @@ use App\AboutUser;
 class HomeController extends Controller
 {
     public function home(){
-        $aboutUser = AboutUser::first(['about', 'experience', 'projects']); 
+        $aboutUser = AboutUser::first(['about', 'experience']); 
         return view('welcome', compact('aboutUser'));
     }
 

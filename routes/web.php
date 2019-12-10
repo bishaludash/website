@@ -42,14 +42,13 @@ Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
 Route::group(['middleware' => ['checkAuth']], function () {
     Route::get('dashboard', 'BE\DashboardController@index')->name('dashboard.home');
     Route::get('dashboard/about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
-    Route::post('dashboard/about-user/{user}', 'BE\AboutUserController@storeAboutUser');
+    Route::post('dashboard/about-user/{user}', 'BE\AboutUserController@updateAboutUser');
 
 
     Route::resource('dashboard/category', 'BE\CategoryController', ['except'=>['create','show']]);
     Route::get('dashboard/category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
 
     Route::resource('dashboard/posts', 'BE\PostController');
-    Route::get('dashboard/posts/data', 'BE\PostController@dt')->name('posts.dt');
     Route::get('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archive')->name('posts.archive');
     Route::post('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archivePost');
     Route::get('dashboard/posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
