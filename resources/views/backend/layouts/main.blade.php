@@ -80,7 +80,7 @@
 	<script src="{{asset('admin/js/plugins/bootstrap-notify.js')}}"></script>
 	<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="{{asset('admin/js/paper-dashboard.min.js?v=2.0.0')}}" type="text/javascript"></script>
-	@yield('footer')
+	@yield('footer-js')
 	</body>
 
 </html>

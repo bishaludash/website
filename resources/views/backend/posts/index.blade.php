@@ -4,6 +4,10 @@
 {{env('APP_NAME')}} | Post
 @endsection
 
+@section('css')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+@endsection
+
 @section('page-head')
 Posts List
 @endsection
@@ -19,45 +23,64 @@ Posts List
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-body">
-                <h1>Use Datatable</h1>
+            <div class="card-body table-responsive">
+                {{-- Data table --}}
                 
-                @foreach ($posts as $post)
-                <div class="card">
-                    <div class="card-body">
-                        {{-- Title --}}
-                        <a href="{{route('post.show', $post['id'])}}" style="color:inherit">
-                            <h2 class="blog-post-title mb-1">{{ucwords($post['post_title'])}}</h2>
-                        </a>
-                        {{$post->created_at->format('Y-m-d')}}
-                        
-                        {{-- Options --}}
-                        <div>
-                            {!!$post->is_featured ? "<span class='btn btn-success btn-sm'>Featured</span>" : "" !!}
-                            {!! $post->is_pinned ? "<span class='btn btn-success btn-sm'>Pinned</span>" : "" !!}
-                            @php
-                            $status = $post->archive ? "unarchive" : "archive"
-                            @endphp
-                            <a class="btn btn-sm btn-danger ajax-modal text-white" data-title="{{ucwords($status)}}" 
-                            data-url="{{ route('posts.archive', [$post->id, $status]) }}">
-                            {{ucwords($status)}}
-                            </a>
-                        
-                            <a href="{{route('posts.edit', $post->id)}}" class="btn btn-sm btn-danger">Edit</a>
-                            <a class="btn btn-sm btn-danger ajax-modal" style="float: none;" data-title="Delete" 
-                            data-url="{{ route('posts.delete', $post->id) }}">
-                            <div class="text-white">Delete</div> 
-                            </a>
-                        </div>      
-                    </div>
-                    </div> 
-        
-                    @endforeach
-                    {{ $posts->links() }}
-        
-        
+                <div style="overflow-x:auto;">
+                    <table class="table table-bordered table-hover" id="datatable">
+                        <thead>
+                            <tr>
+                                <th class="border">Title</th>
+                                <th class="border">Created Date</th>
+                                <th class="border">Status</th>
+                                <th class="border">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($posts as $post)
+                                <tr>
+                                    {{-- title --}}
+                                    <td><a href="{{route('post.show', $post['id'])}}" style="color:inherit" class="datatable-links">
+                                        {{ucwords($post['post_title'])}}
+                                    </a></td>
+                                    <td>{{$post->created_at->format('Y-m-d')}}</td>
+                                    
+                                    {{-- status --}}
+                                    <td>
+                                        {!!$post->is_featured ? "<span class='btn btn-success btn-sm'>Featured</span>" : "" !!}
+                                        {!! $post->is_pinned ? "<span class='btn btn-success btn-sm'>Pinned</span>" : "" !!}
+                                    </td>
+                                    
+                                    {{-- Actions --}}
+                                    <td>
+                                        @php
+                                        $status = $post->archive ? "unarchive" : "archive"
+                                        @endphp
+                                        <a class="btn btn-sm btn-warning ajax-modal text-white" data-title="{{ucwords($status)}}" 
+                                        data-url="{{ route('posts.archive', [$post->id, $status]) }}">
+                                        {{ucwords($status)}}</a>
+                            
+                                        <a href="{{route('posts.edit', $post->id)}}" class="btn btn-sm btn-primary">Edit</a>
+                                    
+                                        <a class="btn btn-sm btn-danger text-white ajax-modal" style="float: none;" data-title="Delete" 
+                                        data-url="{{ route('posts.delete', $post->id) }}">Delete</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div><!-- /.blog-main -->
         </div>
     </div>
 </div>
+@endsection
+
+@section('footer-js')
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#datatable').DataTable();
+    });
+</script>
 @endsection
