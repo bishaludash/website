@@ -36,25 +36,26 @@ Posts List
                             {!!$post->is_featured ? "<span class='btn btn-success btn-sm'>Featured</span>" : "" !!}
                             {!! $post->is_pinned ? "<span class='btn btn-success btn-sm'>Pinned</span>" : "" !!}
                             @php
-                                $status = $post->archive ? "unarchive" : "archive"
+                            $status = $post->archive ? "unarchive" : "archive"
                             @endphp
                             <a class="btn btn-sm btn-danger ajax-modal text-white" data-title="{{ucwords($status)}}" 
                             data-url="{{ route('posts.archive', [$post->id, $status]) }}">
-                                {{ucwords($status)}}
+                            {{ucwords($status)}}
                             </a>
-
+                        
                             <a href="{{route('posts.edit', $post->id)}}" class="btn btn-sm btn-danger">Edit</a>
-                        </div>
-
-
-                        {{-- body --}}
+                            <a class="btn btn-sm btn-danger ajax-modal" style="float: none;" data-title="Delete" 
+                            data-url="{{ route('posts.delete', $post->id) }}">
+                            <div class="text-white">Delete</div> 
+                            </a>
+                        </div>      
                     </div>
-                </div> 
-                
-                @endforeach
-                {{ $posts->links() }}
-                
-                
+                    </div> 
+        
+                    @endforeach
+                    {{ $posts->links() }}
+        
+        
             </div><!-- /.blog-main -->
         </div>
     </div>

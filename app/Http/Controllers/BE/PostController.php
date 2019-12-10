@@ -175,7 +175,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         // delete files if exist
-        if ($post->image_path) {
+        if (file_exists($post->image_path) && $post->image_path) {
             unlink(public_path('/').$post->image_path);
         }
 
