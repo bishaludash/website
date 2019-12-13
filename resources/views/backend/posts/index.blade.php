@@ -34,6 +34,7 @@ Posts List
                                 <th class="border">Created Date</th>
                                 <th class="border">Status</th>
                                 <th class="border">Actions</th>
+                                <th class="border p-0 m-0" style="visibility:hidden"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,6 +66,9 @@ Posts List
                                         <a class="btn btn-sm btn-danger text-white ajax-modal" style="float: none;" data-title="Delete" 
                                         data-url="{{ route('posts.delete', $post->id) }}">Delete</a>
                                     </td>
+
+                                    {{-- hidden timestamp --}}
+                                    <td class="d-none">{{ strtotime($post['created_at'])}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -80,7 +84,9 @@ Posts List
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 <script>
     $(document).ready( function () {
-        $('#datatable').DataTable();
+        $('#datatable').DataTable({
+            "order": [[4,"desc"]]
+        });
     });
 </script>
 @endsection

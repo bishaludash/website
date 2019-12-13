@@ -17,7 +17,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->get();
+        $posts = Post::latest()->get(['id', 'post_title','is_featured','archive','is_pinned',
+                                    'created_at']);
         return view('backend.posts.index', compact('posts'));
     }
  
