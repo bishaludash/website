@@ -33,6 +33,7 @@ Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
     // posts
     Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
     Route::post('/post/{post}/comment', 'FE\BlogController@show');
+    Route::post('search/post', 'FE\BlogController@searchPostView')->name('post.search');
 
     // categories
     Route::get('/category/{category}', 'FE\CategoryController@index')->name('cat.show');

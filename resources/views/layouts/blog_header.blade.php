@@ -9,15 +9,17 @@
 
         
         <div class="col-md-6">
-        <div class="blog-search  {{Auth::check() ? 'float-left' : 'float-right'}}">
-                <div class="input-group mb-2 mr-sm-2">
-                    <input type="text" class="form-control">
-                    <div class="input-group-prepend">
-                        <a href=# class="input-group-text">
-                                <i class="ion-ios-search-strong"></i>
-                        </a>
-                    </div>
-                </div>                
+            <div class="blog-search  {{Auth::check() ? 'float-left' : 'float-right'}}">
+                
+            {!! Form::open(['method'=>'POST', 'action'=>'FE\BlogController@searchPostView', 
+            'class'=>'form-inline']) !!}
+            
+            {!! Form::text('search_val', null, ['class'=>'form-control nav-search-box',
+            'placeholder'=>'Search..']) !!}
+            {{ Form::button('<i class="ion-ios-search-strong"></i>', ['type' => 'submit', 
+            'class' => 'btn btn-info nav-search-icon'] )  }}    
+            {!! Form::close() !!}
+                                
             </div>
 
             @if (Auth::check())
