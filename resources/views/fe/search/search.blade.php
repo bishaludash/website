@@ -34,7 +34,7 @@
                         
                         {{date('M d, Y', $date)}}                        
                     </p>
-                    {!! $post['post_body'].'...' !!}
+                    {!! strip_tags($post['post_body']).'...' !!}
                     
                     <div>
                         <a href="{{route('post.show', $post['id'])}}" class="btn badge-pill btn-sm btn-outline-danger mt-3">Read more</a>
