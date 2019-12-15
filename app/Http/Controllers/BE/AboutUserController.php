@@ -34,11 +34,10 @@ class AboutUserController extends Controller
         // if about does not exist create
         if (!$user->aboutUser) {
             $user->aboutUser()->create([
-                'about'=>$input['about'],
-                'projects'=>$input['projects'],
-                'git_url'=>$input['git_url'],
-                'contact'=>$input['contact'],
-                'experience'=>$input['experience']
+                'about'=>$input['about'] ?? ' ',
+                'git_url'=>$input['git_url'] ?? ' ',
+                'contact'=>$input['contact'] ?? ' ',
+                'experience'=>$input['experience'] ?? ' '
             ]);
         }
         
