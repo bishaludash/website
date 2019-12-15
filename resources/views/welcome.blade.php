@@ -66,6 +66,12 @@
         .m-b-md {
             margin-bottom: 30px;
         }
+
+        .leaf-main{
+            display:block;
+            width:50%; 
+            margin:0 auto;
+        }
         
         .leaf-1 {
             border-radius: 5px 20px 5px;
@@ -102,6 +108,28 @@
             padding: 2%;
         }
 
+        .about-head{
+            margin-top: 1px;
+            margin-bottom: 5px;
+            border-bottom: 1px dashed #636b6f;
+        }
+
+        .readmore-btn{
+            color: #fff;
+            border: 1px solid white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0 4px;
+            box-shadow: 2px 2px #888888;
+            /* transition: 0.3s; */
+            float: right;
+        }
+
+        .readmore-btn:hover{
+            box-shadow: 2px 2px #000;
+        }
+
+
         /* links media query */
         @media only screen and (max-width: 460px) {
             .links > a {
@@ -111,7 +139,12 @@
             }
 
             .about_data{
-                padding: 12px
+                padding: 12px;
+                width: 80%;
+            }
+
+            .leaf-main{
+                width: 80%;
             }
         }
 
@@ -150,7 +183,7 @@
         @endphp
 
         <div class="content">
-            <ul style="display:block;width:50%; margin:0 auto;">
+            <ul class="leaf-main">
                 <li class="leaf-1" style="background:{{$outside[$color]}}">
                     <ul style="margin:0px; padding:0px;">
                         <li class="leaf-2" style="background:{{$inside[$color]}}"></li>
@@ -182,11 +215,12 @@
                 <a href="https://github.com/bishaludas" target="_blank">GitHub</a>
             </div>
 
-            <br><br>
+            <br>
             <div class="about_data">
                 <div class="card">
-                    <u><span style="display:block; padding-bottom:2px">### Hello world !</span></u>
-                    {!! $aboutUser->about ?? '' !!}
+                    <p class="about-head">### Hello world !</p>
+                    {!! $aboutUser->about ?? '' !!} 
+                    <a class="readmore-btn" href="{{route('home.about')}}">Readmore</a>
                 </div>
             </div>
         </div>
