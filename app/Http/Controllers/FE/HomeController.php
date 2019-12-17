@@ -15,7 +15,7 @@ class HomeController extends Controller
     }
 
     public function projects(){
-        return "Comming soon";
+        return view('fe.home.projects');
     }
 
     public function aboutUser(){
@@ -25,6 +25,6 @@ class HomeController extends Controller
         
         $about_res =  json_decode(json_encode($about_res), true) ;
         $result = $about_res[0];
-        return view('fe.home.homelayout', compact('result'));
+        return view('fe.home.about', compact('result'));
     }
 }

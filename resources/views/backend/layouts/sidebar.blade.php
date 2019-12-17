@@ -31,6 +31,12 @@
 			</a>
 			</li>
 			<li>
+			<a href="{{route('posts.index')}}">
+				<i class="ion-briefcase lead"></i>
+				<p>Project</p>
+			</a>
+			</li>
+			<li>
 			<a href="./map.html">
 				<i class="lead ion-ios-chatboxes-outline"></i>
 				<p>Comments</p>

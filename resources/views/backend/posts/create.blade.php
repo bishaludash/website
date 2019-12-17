@@ -41,6 +41,5 @@
 @endsection
 
 @section('footer-js')
-    <script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script>
-    <script>tinymce.init({selector:'.tiny_mce'});</script>
+    @include('partials.tiny-mce')
 @endsection

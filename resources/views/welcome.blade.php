@@ -58,7 +58,7 @@
             text-decoration: none;
             text-transform: uppercase;
         }
-
+        
         .links > a:hover{
             text-decoration: underline;
         }
@@ -66,7 +66,7 @@
         .m-b-md {
             margin-bottom: 30px;
         }
-
+        
         .leaf-main{
             display:block;
             width:50%; 
@@ -94,7 +94,7 @@
             height: 29px;
             border-radius: 2px 15px 2px;
         }
-
+        
         .about_data{
             text-align:left !important;
             color: #fff;
@@ -107,13 +107,13 @@
             border: 1px dashed #636b6f;
             padding: 2%;
         }
-
+        
         .about-head{
             margin-top: 1px;
             margin-bottom: 5px;
             border-bottom: 1px dashed #636b6f;
         }
-
+        
         .readmore-btn{
             color: #fff;
             border: 1px solid white;
@@ -124,39 +124,47 @@
             /* transition: 0.3s; */
             float: right;
         }
-
+        
         .readmore-btn:hover{
             box-shadow: 2px 2px #000;
         }
-
-
+        
+        .about-close{
+            background: #b54504;
+            float: right;
+            cursor: pointer;
+            line-height: 6px;
+            padding: 6px;
+            border-radius: 50%;
+        }        
+        
         /* links media query */
         @media only screen and (max-width: 460px) {
             .links > a {
-            padding: 0px 45px;
-            margin: 5px 0px;
-            font-size: 15px;
+                padding: 0px 45px;
+                margin: 5px 0px;
+                font-size: 15px;
             }
-
+            
             .about_data{
                 padding: 12px;
                 width: 80%;
             }
-
+            
             .leaf-main{
                 width: 80%;
             }
         }
-
+        
         @media only screen and (max-width: 375px) {
             .links > a {
-            padding: 0px 35px;
+                padding: 0px 35px;
             } 
         }
-
+        
         @media only screen and (max-width: 325px) {
             .links > a {
-            padding: 0px 30px;
+                padding: 0px 30px;
             } 
         }
     </style>
@@ -174,14 +182,14 @@
         </div>
         
         @php
-            // leaf 2
-            $inside = ['#FFC312', '#0652DD', '#6F1E51', '#ED4C67', 'green', '#9980FA'];
-            // leaf 1
-            $outside = ['#AE6A07', '#12CBC4', '#d275bd', '#821348', '#BADA55', '#5758BB'];
-            $count = count($inside) -1;
-            $color =  mt_rand(0, $count);
+        // leaf 2
+        $inside = ['#FFC312', '#0652DD', '#6F1E51', '#ED4C67', 'green', '#9980FA'];
+        // leaf 1
+        $outside = ['#AE6A07', '#12CBC4', '#d275bd', '#821348', '#BADA55', '#5758BB'];
+        $count = count($inside) -1;
+        $color =  mt_rand(0, $count);
         @endphp
-
+        
         <div class="content">
             <ul class="leaf-main">
                 <li class="leaf-1" style="background:{{$outside[$color]}}">
@@ -198,14 +206,14 @@
             </ul>
             <div class="title m-b-md">
                 @php
-                    $greet = ['Bonjour', 'Hola', 'नमस्ते', 'Namaste'];
-                    $lang = ['French', 'Spanish', 'Nepali', 'Nepali'];
-                    // French, Spanish, Chinese, Nepali
-                    $len = count($greet) - 1;
-                    $num = mt_rand(0, $len);
+                $greet = ['Bonjour', 'Hola', 'नमस्ते', 'Namaste'];
+                $lang = ['French', 'Spanish', 'Nepali', 'Nepali'];
+                // French, Spanish, Chinese, Nepali
+                $len = count($greet) - 1;
+                $num = mt_rand(0, $len);
                 @endphp 
                 {{-- Namaste --}}
-            <p style="margin-bottom: 30px; font-size:60px;" title={{$lang[$num]}}>{{$greet[$num]}}</p>
+                <p style="margin-bottom: 30px; font-size:60px;" title={{$lang[$num]}}>{{$greet[$num]}}</p>
             </div>
             
             <div class="links">
@@ -214,29 +222,40 @@
                 <a href="{{route('home.projects')}}">Project</a>
                 <a href="https://github.com/bishaludas" target="_blank">GitHub</a>
             </div>
-
+            
             <br>
             <div class="about_data">
                 <div class="card">
-                    <p class="about-head">### Hello world !</p>
+                    <p class="about-head">### Hello world ! <span class="about-close">x</span></p>
                     {!! $aboutUser->about ?? '' !!} 
                     <a class="readmore-btn" href="{{route('home.about')}}">Readmore</a>
                 </div>
             </div>
         </div>
     </div>
-
-<script>
-    var display = false;
-    document.querySelector('.about-data').addEventListener('click', function(){
-        if(display == false){
-            document.querySelector('.about_data').style.visibility = 'visible';
-            display = true
-        }else{
-            document.querySelector('.about_data').style.visibility = 'hidden';
-            display = false
-        }
-    });
-</script>
+    
+    <script>
+        var display = false;
+        document.querySelector('.about-data').addEventListener('click', function(){
+            if(display == false){
+                document.querySelector('.about_data').style.visibility = 'visible';
+                display = true
+            }else{
+                document.querySelector('.about_data').style.visibility = 'hidden';
+                display = false
+            }
+        });
+        
+        
+        document.querySelector('.about-close').addEventListener('click', function(){
+            if(display == false){
+                document.querySelector('.about_data').style.visibility = 'visible';
+                display = true
+            }else{
+                document.querySelector('.about_data').style.visibility = 'hidden';
+                display = false
+            }
+        });
+    </script>
 </body>
 </html>
