@@ -53,6 +53,8 @@ Route::group(['middleware' => ['checkAuth']], function () {
     Route::get('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archive')->name('posts.archive');
     Route::post('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archivePost');
     Route::get('dashboard/posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
+
+    Route::resource('dashboard/projects', 'BE\ProjectsController');
 });
 
 

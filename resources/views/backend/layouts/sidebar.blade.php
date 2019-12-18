@@ -31,7 +31,7 @@
 			</a>
 			</li>
 			<li>
-			<a href="{{route('posts.index')}}">
+			<a href="{{route('projects.index')}}">
 				<i class="ion-briefcase lead"></i>
 				<p>Project</p>
 			</a>

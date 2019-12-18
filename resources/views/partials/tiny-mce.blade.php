@@ -3,7 +3,7 @@
     tinymce.init({
         selector:'.tiny_mce',
         height:500,
-        plugins: "lists, wordcount,fullpage, fullscreen, insertdatetime, table, link, fontsizeselect, codesample, code",
+        plugins: "lists, wordcount,fullscreen, insertdatetime, table, link, codesample, code",
         toolbar: 'undo redo | styleselect | bold underline italic | fontsizeselect |alignleft aligncenter alignright alignjustify|bullist numlist| fullscreen link codesample| code',
         browser_spellcheck: true,
         codesample_languages: [
@@ -21,3 +21,9 @@
         fontsize_formats: '9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 24pt 36pt 48pt'
     });
 </script>
+
+<style>
+    .tox-statusbar__branding{
+        display: none;
+    }
+</style>
