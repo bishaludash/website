@@ -136,7 +136,12 @@
             line-height: 6px;
             padding: 6px;
             border-radius: 50%;
+            font-weight: 600;
         }        
+
+        .about-close:hover{
+            color: #000;
+        }
         
         /* links media query */
         @media only screen and (max-width: 460px) {

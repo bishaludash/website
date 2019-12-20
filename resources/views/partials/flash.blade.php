@@ -4,7 +4,7 @@
             <i class="ion-close-circled small"></i>
         </button>
         <span>
-            <b> Info - </b> {{session()->get('message')}}
+            <b> Info - </b> {!! session()->get('message') !!}
         </span>
     </div>
 @endif
@@ -16,7 +16,7 @@
             <i class="ion-close-circled small"></i>
         </button>
         <span>
-            <b> Success - </b> {{session()->get('message_success')}}
+            <b> Success - </b> {!! session()->get('message_success') !!}
         </span>
     </div>
 @endif
@@ -28,7 +28,7 @@
             <i class="ion-close-circled small"></i>
         </button>
         <span>
-            <b> Error - </b> {{session()->get('message_danger')}}
+            <b> Error - </b> {!! session()->get('message_danger') !!}
         </span>
     </div>
 @endif

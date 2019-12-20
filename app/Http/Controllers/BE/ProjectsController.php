@@ -4,12 +4,11 @@ namespace App\Http\Controllers\BE;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Logic\Utils\ImageHandler;
 use App\Project;
-use App\Traits\ImageHandler;
 
 class ProjectsController extends Controller
 {
-    use ImageHandler;
     public $image_bucket = 'projects';
     /**
      * Display a listing of the resource.
@@ -36,23 +35,33 @@ class ProjectsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'project_title' => 'required|min:5',
+            'project_title' => 'required',
             'project_body' => 'required',
         ],[
             'project_body.required'=>'Project details feild is required'
         ]);
             
         $input = $request->all();
-        // validate and upload image, if false flash message. Used Trait
+        // validate and upload image, if error flash message.
         if ($request->hasFile('project_image')){
-            $input['project_image']=$this->uploadImage($input, 'project_image',$this->image_bucket );
-            if ($input['project_image'] == false) {
-                return back()->withInput();
+            $image_handler = new ImageHandler();
+            $errors=$image_handler->validateImage($input['project_image']);
+
+            if (!empty($errors) || !is_null($errors)) {
+                session()->flash('message_danger', 
+                'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
             }
         }
+
+        $project = Project::create([
+            'project_title'=>$input['project_title'],
+            'project_url'=>$input['project_url'],
+            'project_body'=>$input['project_body']
+        ]);
         
-        if (!Project::create($input)) {
-            session()->flash('message_danger', 'Project could not be created.');
+        // upload bulk image
+        if ($request->hasFile('project_image')) {
+            $image_handler->uploadFile($input['project_image'], $project->id, $this->image_bucket);
         }
         session()->flash('message_success', 'Project created.');
         return back();

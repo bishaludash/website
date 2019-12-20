@@ -48,7 +48,7 @@
                 <div class="row">
                     <div class="col-md-10">
                         {!! Form::label('project_image', 'Project Image :', ['class'=>'font-weight-bold']) !!}
-                        {!! Form::file('project_image', null, ['class'=>'form-control ', 'autocomplete'=>'off']) !!}
+                        {!! Form::file('project_image[]', ['multiple'=>'multiple']) !!}
                         @if ($errors->has('project_image'))
                         <span class="text-danger">{{$errors->first('project_url')}}</span> 
                         @endif
