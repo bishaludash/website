@@ -34,10 +34,20 @@
                     <tbody>
                         @foreach ($projects as $item)
                         <tr>
-                            <td>{{$item['project_title']}}</td>
+                            <td><a href="{{ route('projects.show', $item['id']) }}" class="text-dark d-block">
+                                {{$item['project_title']}}</a>
+                            </td>
                             <td>{{$item['created_at']->format('M d, Y')}}</td>
-                            <td>{{$item['is_archived'] ? 'True': 'Nope'}}</td>
-                            <td>Edit Delete</td>
+                            <td>
+                                {!!$item['is_archived'] ? 
+                                "<span class='btn btn-warning btn-sm'>Unarchive</span>" : "<span class='btn btn-warning btn-sm'>Archive</span>" !!}
+                            </td>
+                            <td>
+                                <a href="{{route('projects.edit', $item['id'])}}" class="btn btn-sm btn-primary">Edit</a>
+                                
+                                <a class="btn btn-sm btn-danger text-white ajax-modal" style="float: none;" data-title="Delete" 
+                                data-url="{{ route('projects.delete',  $item['id']) }}">Delete</a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

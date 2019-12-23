@@ -16,6 +16,7 @@ class AlterTableImageManagers extends Migration
         Schema::table('image_managers', function (Blueprint $table) {
             $table->integer('foreign_id')->nullable()->index();
             $table->string('source')->nullable();
+            $table->string('file_name')->nullable();
         });
     }
 
@@ -27,9 +28,9 @@ class AlterTableImageManagers extends Migration
     public function down()
     {
         Schema::table('image_managers', function (Blueprint $table) {
-            $table->dropIndex('id');
-            $table->dropColumn('id');
+            $table->dropColumn('foreign_id');
             $table->dropColumn('source');
+            $table->dropColumn('file_name');
         });
     }
 }

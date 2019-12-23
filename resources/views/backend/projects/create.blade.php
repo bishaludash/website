@@ -6,7 +6,7 @@
 
 {{-- PAGE HEADING --}}
 @section('page-head')
-<a class="navbar-brand" href="#pablo">Add Project</a>
+<a class="navbar-brand" href="{{route('projects.index')}}">Project | Add </a> 
 @endsection
 
 @section('content')

@@ -3,8 +3,10 @@
 namespace App\Logic\Utils;
 
 use App\ImageManager;
+use Illuminate\Support\Facades\Storage;
 
 class ImageHandler{
+    protected $disk = 'uploads';
     protected $img_extension = ['jpg', 'jpeg', 'png','gif'];
     protected $file_extension = [];
 
@@ -42,24 +44,27 @@ class ImageHandler{
      *
      * @param Array images contains images array
      * @param Int foreignkey integer 
-     * @param Disk filesystem disk for uploading
+     * @param String bucket/path for uploading
+     * @param String disk
      **/
-    public function uploadFile($files, $id, $path='uploads'){
-        // dd($id);
+    public function uploadFile($files, $foreign_id, $bucket='', $diskname=null){
+        // get disk
+        $disk = is_null($diskname) ? $this->disk : $diskname;
+
         foreach ($files as $key => $file) {
-            // upload to path
             $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
-            $file_path = $file->storeAs('uploads/'.$path, $file_name, 'uploads');
+            $file_path = Storage::disk($this->disk)->put($bucket, $file);
 
             // Upload to image manager
             ImageManager::create([
                 'image_path' => $file_path,
-                'foreign_id'=> $id,
-                'source' =>$path
+                'foreign_id'=> $foreign_id,
+                'source' =>$bucket,
+                'file_name'=>$bucket.'/'.$file_name
             ]);
         }
     }
 
 
-    
+
 }

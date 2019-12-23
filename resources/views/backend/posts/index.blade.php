@@ -39,37 +39,37 @@ Posts List
                         </thead>
                         <tbody>
                             @foreach ($posts as $post)
-                                <tr>
-                                    {{-- title --}}
-                                    <td><a href="{{route('post.show', $post['id'])}}" style="color:inherit" class="datatable-links">
-                                        {{ucwords($post['post_title'])}}
-                                    </a></td>
-                                    <td>{{$post->created_at->format('M-d, Y')}}</td>
+                            <tr>
+                                {{-- title --}}
+                                <td><a href="{{route('post.show', $post['id'])}}" style="color:inherit" class="datatable-links">
+                                    {{ucwords($post['post_title'])}}
+                                </a></td>
+                                <td>{{$post->created_at->format('M-d, Y')}}</td>
+                                
+                                {{-- status --}}
+                                <td>
+                                    {!!$post->is_featured ? "<span class='btn btn-success btn-sm'>Featured</span>" : "" !!}
+                                    {!! $post->is_pinned ? "<span class='btn btn-success btn-sm'>Pinned</span>" : "" !!}
+                                </td>
+                                
+                                {{-- Actions --}}
+                                <td>
+                                    @php
+                                    $status = $post->archive ? "unarchive" : "archive"
+                                    @endphp
+                                    <a class="btn btn-sm btn-warning ajax-modal text-white" data-title="{{ucwords($status)}}" 
+                                    data-url="{{ route('posts.archive', [$post->id, $status]) }}">
+                                    {{ucwords($status)}}</a>
                                     
-                                    {{-- status --}}
-                                    <td>
-                                        {!!$post->is_featured ? "<span class='btn btn-success btn-sm'>Featured</span>" : "" !!}
-                                        {!! $post->is_pinned ? "<span class='btn btn-success btn-sm'>Pinned</span>" : "" !!}
-                                    </td>
+                                    <a href="{{route('posts.edit', $post->id)}}" class="btn btn-sm btn-primary">Edit</a>
                                     
-                                    {{-- Actions --}}
-                                    <td>
-                                        @php
-                                        $status = $post->archive ? "unarchive" : "archive"
-                                        @endphp
-                                        <a class="btn btn-sm btn-warning ajax-modal text-white" data-title="{{ucwords($status)}}" 
-                                        data-url="{{ route('posts.archive', [$post->id, $status]) }}">
-                                        {{ucwords($status)}}</a>
-                            
-                                        <a href="{{route('posts.edit', $post->id)}}" class="btn btn-sm btn-primary">Edit</a>
-                                    
-                                        <a class="btn btn-sm btn-danger text-white ajax-modal" style="float: none;" data-title="Delete" 
-                                        data-url="{{ route('posts.delete', $post->id) }}">Delete</a>
-                                    </td>
-
-                                    {{-- hidden timestamp --}}
-                                    <td class="d-none">{{ strtotime($post['created_at'])}}</td>
-                                </tr>
+                                    <a class="btn btn-sm btn-danger text-white ajax-modal" style="float: none;" data-title="Delete" 
+                                    data-url="{{ route('posts.delete', $post->id) }}">Delete</a>
+                                </td>
+                                
+                                {{-- hidden timestamp --}}
+                                <td class="d-none">{{ strtotime($post['created_at'])}}</td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>

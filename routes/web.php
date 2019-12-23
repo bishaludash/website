@@ -55,6 +55,7 @@ Route::group(['middleware' => ['checkAuth']], function () {
     Route::get('dashboard/posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
 
     Route::resource('dashboard/projects', 'BE\ProjectsController');
+    Route::get('dashboard/projects/{project}/delete', 'BE\ProjectsController@delete')->name('projects.delete');
 });
 
 

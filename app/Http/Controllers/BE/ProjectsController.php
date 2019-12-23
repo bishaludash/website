@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Logic\Utils\ImageHandler;
 use App\Project;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectsController extends Controller
 {
     public $image_bucket = 'projects';
+    public $disk = 'uploads';
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +45,7 @@ class ProjectsController extends Controller
         ]);
             
         $input = $request->all();
-        // validate and upload image, if error flash message.
+        // validate bulk image, if error flash message.
         if ($request->hasFile('project_image')){
             $image_handler = new ImageHandler();
             $errors=$image_handler->validateImage($input['project_image']);
@@ -50,6 +53,7 @@ class ProjectsController extends Controller
             if (!empty($errors) || !is_null($errors)) {
                 session()->flash('message_danger', 
                 'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
+                return back()->withInput();
             }
         }
 
@@ -66,13 +70,15 @@ class ProjectsController extends Controller
         session()->flash('message_success', 'Project created.');
         return back();
     }
+
+    
     /**
      * Display the specified resource.
      *
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return view('backend.projects.show', compact('project'));
     }
 
     /**
@@ -94,12 +100,40 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * return delete project view
+     *
+     * @param Object pass project into view
+     **/
+    public function delete(Project $project)
+    {
+        return view('backend.projects.delete', compact('project'));
+    }
+
+    /**
+     * Remove the project from database.
      *
      * @param  int  $id
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        // get files of project
+        $result = DB::select('select image_path from image_managers where foreign_id = ? and source =?', [$project->id, 'projects']);
+        $files = json_decode(json_encode($result), true);
+        // return $files;
+
+        # TODO Move to File handler
+        $file_del_list = [];
+        foreach ($files as $file) {
+            if ( Storage::disk($this->disk)->exists($file['image_path']) ) {
+                array_push($file_del_list, $file['image_path']);
+            } 
+        }
+        
+        Storage::disk($this->disk)->delete($file_del_list);
+        
+        $project->delete();
+        session()->flash('message_success', 'Project deleted');
+
+        return back();
     }
 }

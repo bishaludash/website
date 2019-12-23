@@ -50,8 +50,18 @@ return [
 
         'uploads' => [
             'driver' => 'local',
-            'root' => public_path(''),
+            'root' => storage_path('app/public'),
             'visibility' => 'public',
+            'permissions' => [
+                'file' => [
+                    'public' => 0664,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0775,
+                    'private' => 0700,
+                ],
+            ]
         ],
 
         'public' => [
