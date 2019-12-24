@@ -17,6 +17,7 @@ class AlterTableImageManagers extends Migration
             $table->integer('foreign_id')->nullable()->index();
             $table->string('source')->nullable();
             $table->string('file_name')->nullable();
+            $table->string('extension')->nullable();
         });
     }
 
@@ -31,6 +32,7 @@ class AlterTableImageManagers extends Migration
             $table->dropColumn('foreign_id');
             $table->dropColumn('source');
             $table->dropColumn('file_name');
+            $table->dropColumn('extension');
         });
     }
 }

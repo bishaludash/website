@@ -17,7 +17,8 @@
             <div class="card-body">
              <h3>{{$project['project_title']}}</h3>            
              <p>{{$project['created_at']}}</p>            
-             <p>{!! $project['project_body'] !!}</p>            
+             <p>{!! $project['project_body'] !!}</p>  
+            <img src="{{url('storage/'.$project['image_path'])}}" alt="not found">
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@ namespace App\Logic\Utils;
 use App\ImageManager;
 use Illuminate\Support\Facades\Storage;
 
-class ImageHandler{
+class FileHandler{
     protected $disk = 'uploads';
     protected $img_extension = ['jpg', 'jpeg', 'png','gif'];
     protected $file_extension = [];
@@ -42,9 +42,9 @@ class ImageHandler{
     /**
      * Handles bulk file Uploads :Images
      *
-     * @param Array images contains images array
+     * @param Array files contains images array
      * @param Int foreignkey integer 
-     * @param String bucket/path for uploading
+     * @param String bucket : path/folder for uploading
      * @param String disk
      **/
     public function uploadFile($files, $foreign_id, $bucket='', $diskname=null){
@@ -52,19 +52,44 @@ class ImageHandler{
         $disk = is_null($diskname) ? $this->disk : $diskname;
 
         foreach ($files as $key => $file) {
-            $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
-            $file_path = Storage::disk($this->disk)->put($bucket, $file);
+            $file_name = $file->getClientOriginalName();
+            $file_path = Storage::disk($disk)->put($bucket, $file);
+            $file_type = $file->getClientOriginalExtension();
 
             // Upload to image manager
             ImageManager::create([
                 'image_path' => $file_path,
                 'foreign_id'=> $foreign_id,
                 'source' =>$bucket,
-                'file_name'=>$bucket.'/'.$file_name
+                'file_name'=>$file_name,
+                'extension'=>$file_type
             ]);
         }
     }
 
+    /**
+     * remove files from storage
+     *
+     * Undocumented function long description
+     * @param Array files contains images array
+     * @param String bucket : path/folder for uploading
+     * @param String disk
+     **/
+    public function deleteFiles($files, $bucket='', $diskname = null)
+    {
+        // get disk
+        $disk = is_null($diskname) ? $this->disk : $diskname;
 
+        $file_del_list = [];
+        foreach ($files as $file) {
+            if ( Storage::disk($disk)->exists($file['image_path']) ) {
+                array_push($file_del_list, $file['image_path']);
+            } 
+        }
+        
+        if (!empty($file_del_list) && count($file_del_list) > 0) {
+            Storage::disk($disk)->delete($file_del_list);
+        } 
+    }
 
 }

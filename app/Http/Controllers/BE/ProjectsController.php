@@ -4,13 +4,14 @@ namespace App\Http\Controllers\BE;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Logic\Utils\ImageHandler;
+use App\Logic\Utils\FileHandler;
 use App\Project;
+use App\Traits\DBUtils;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ProjectsController extends Controller
 {
+    use DBUtils;
     public $image_bucket = 'projects';
     public $disk = 'uploads';
     /**
@@ -47,7 +48,7 @@ class ProjectsController extends Controller
         $input = $request->all();
         // validate bulk image, if error flash message.
         if ($request->hasFile('project_image')){
-            $image_handler = new ImageHandler();
+            $image_handler = new FileHandler();
             $errors=$image_handler->validateImage($input['project_image']);
 
             if (!empty($errors) || !is_null($errors)) {
@@ -76,8 +77,14 @@ class ProjectsController extends Controller
      * Display the specified resource.
      *
      */
-    public function show(Project $project)
+    public function show($id)
     {
+        $project_query = 'select p.project_title, p.project_body, p.project_url, p.created_at,
+        im.image_path, im.source, im.file_name, im."extension" from projects p 
+        inner join image_managers im on p.id=im.foreign_id where p.id= :id and im.source= :source';
+        
+        $project = $this->selectQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
+        $project = $project[0];
         return view('backend.projects.show', compact('project'));
     }
 
@@ -121,16 +128,9 @@ class ProjectsController extends Controller
         $files = json_decode(json_encode($result), true);
         // return $files;
 
-        # TODO Move to File handler
-        $file_del_list = [];
-        foreach ($files as $file) {
-            if ( Storage::disk($this->disk)->exists($file['image_path']) ) {
-                array_push($file_del_list, $file['image_path']);
-            } 
-        }
-        
-        Storage::disk($this->disk)->delete($file_del_list);
-        
+        $image_handler = new FileHandler();
+        $image_handler->deleteFiles($files, $this->image_bucket, $this->disk);
+               
         $project->delete();
         session()->flash('message_success', 'Project deleted');
 

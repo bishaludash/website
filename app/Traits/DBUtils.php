@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\DB;
 
 trait DBUtils 
 {
-    /* 
-    @select query
-    param1: query in sting.
-    param2: array
-    */
+    /** 
+     * Select query returning list
+     * @var String $query 
+     * @var Array params in associative array
+     * */
     public function selectQuery($query, $param=null){
         // if select query does not have param
         if ($param == null) {
