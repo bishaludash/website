@@ -31,7 +31,7 @@
                 @endif  
             </div>
             <div class="text-justified" style="margin: 2% 10%">
-                {!! $post->post_body !!}
+                {{ $post->post_body }}
             </div>
             
             </div>

@@ -79,12 +79,22 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project_query = 'select p.project_title, p.project_body, p.project_url, p.created_at,
-        im.image_path, im.source, im.file_name, im."extension" from projects p 
-        inner join image_managers im on p.id=im.foreign_id where p.id= :id and im.source= :source';
+        $project_query = "select p.id,p.project_title, p.project_body, p.project_url, p.created_at,
+        json_agg(json_build_object(
+            'id',im.id, 
+            'file_name',im.file_name,
+            'image_path',im.image_path,
+            'source',im.source, 
+            'extension',im.extension)) as files
+        from projects p 
+        inner join image_managers im on p.id=im.foreign_id 
+        where p.id=:id and im.source =:source
+        group by p.id";
         
-        $project = $this->selectQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
-        $project = $project[0];
+        $project = $this->selectFirstQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
+        // decode json string
+        $project['files'] = json_decode($project['files'], true);
+
         return view('backend.projects.show', compact('project'));
     }
 

@@ -21,5 +21,16 @@ trait DBUtils
         }
         return json_decode(json_encode($res), true);
     }
+
+    public function selectFirstQuery($query, $param=null){
+        if ($param == null) {
+            $res = DB::select($query);
+        }else{
+            $res = DB::select($query, $param);
+            
+        }
+        $result = json_decode(json_encode($res), true);
+        return $result[0];
+    }
 }
 
