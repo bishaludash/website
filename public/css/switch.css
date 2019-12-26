@@ -70,3 +70,20 @@ input:checked + .slider:before {
 .card-h{
   min-height: 70vh;
 }
+
+
+/* project css */
+.project-img-wrapper{
+  width: 200px;
+  height: 110px;
+  display: inline-block;
+  margin: 10px;
+  border: solid 1px #888;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.project-img-wrapper:hover{
+  box-shadow: 5px 5px #ccc;
+}

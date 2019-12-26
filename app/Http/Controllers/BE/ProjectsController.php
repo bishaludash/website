@@ -38,12 +38,7 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'project_title' => 'required',
-            'project_body' => 'required',
-        ],[
-            'project_body.required'=>'Project details feild is required'
-        ]);
+        $this->validateProject($request);
             
         $input = $request->all();
         // validate bulk image, if error flash message.
@@ -79,6 +74,7 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
+        // TODO show it in Fe
         $project_query = "select p.id,p.project_title, p.project_body, p.project_url, p.created_at,
         json_agg(json_build_object(
             'id',im.id, 
@@ -91,7 +87,7 @@ class ProjectsController extends Controller
         where p.id=:id and im.source =:source
         group by p.id";
         
-        $project = $this->selectFirstQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
+        $project = $this->SelectFirstQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
         // decode json string
         $project['files'] = json_decode($project['files'], true);
 
@@ -102,18 +98,23 @@ class ProjectsController extends Controller
      * Show the form for editing the specified resource.
      *
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        return view('backend.projects.edit');
+        $files = $this->selectQuery('select * from image_managers where foreign_id=:id', ['id'=>$project['id']]);
+        return view('backend.projects.edit', compact('project', 'files'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $this->validateProject($request);
+        
+        $project->update($request->all());
+        session()->flash('message_success', 'Project updated.');
+        return back();
     }
 
     /**
@@ -146,4 +147,13 @@ class ProjectsController extends Controller
 
         return back();
     }
+
+    public function validateProject($input){
+        $input->validate([
+            'project_title' => 'required',
+            'project_body' => 'required',
+        ],[
+            'project_body.required'=>'Project details feild is required'
+        ]);
+    } 
 }

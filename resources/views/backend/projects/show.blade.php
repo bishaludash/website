@@ -19,7 +19,9 @@
              <p>{{$project['created_at']}}</p>            
              <p>{!! $project['project_body'] !!}</p>  
              @foreach ($project['files'] as $item)
-                 <img src="{{url('storage/'.$item['image_path'])}}" alt="not found">
+                <div class="project-img-wrapper">
+                    <img src="{{url('storage/'.$item['image_path'])}}" alt="not found" class="img-fluid">
+                </div>
              @endforeach
             </div>
         </div>
