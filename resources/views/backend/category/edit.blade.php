@@ -5,7 +5,7 @@
                 {!! Form::label('cat_name', 'Category ', ['class'=>'']) !!}
             </div>
             <div class="col-lg-9">
-                {!! Form::text('cat_name', null, ['class'=>'form-control']) !!}
+                {!! Form::text('cat_name', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
             </div>
         </div>
     </div>

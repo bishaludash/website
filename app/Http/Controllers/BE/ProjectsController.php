@@ -83,13 +83,19 @@ class ProjectsController extends Controller
             'source',im.source, 
             'extension',im.extension)) as files
         from projects p 
-        inner join image_managers im on p.id=im.foreign_id 
+        left join image_managers im on p.id=im.foreign_id 
         where p.id=:id and im.source =:source
         group by p.id";
         
-        $project = $this->SelectFirstQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
-        // decode json string
-        $project['files'] = json_decode($project['files'], true);
+        $project = $this->SelectQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
+        if (!is_null($project) && !empty($project)) {
+            $project = $project[0];
+            $project['files'] = json_decode($project['files'], true);
+        }else{
+            $project = Project::find($id);
+            $project['files'] = null;
+
+        }
 
         return view('backend.projects.show', compact('project'));
     }
@@ -111,8 +117,29 @@ class ProjectsController extends Controller
     public function update(Request $request, Project $project)
     {
         $this->validateProject($request);
-        
-        $project->update($request->all());
+
+        $input = $request->all();
+        // validate bulk image, if error flash message.
+        if ($request->hasFile('project_image')){
+            $image_handler = new FileHandler();
+            $errors=$image_handler->validateImage($input['project_image']);
+
+            if (!empty($errors) || !is_null($errors)) {
+                session()->flash('message_danger', 
+                'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
+                return back()->withInput();
+            }
+        }
+        // dd($input);
+        $project->update([
+            'project_title'=>$input['project_title'],
+            'project_url'=>$input['project_url'],
+            'project_body'=>$input['project_body']
+        ]);
+
+        if ($request->hasFile('project_image')) {
+            $image_handler->uploadFile($input['project_image'], $project->id, $this->image_bucket);
+        }
         session()->flash('message_success', 'Project updated.');
         return back();
     }
@@ -135,13 +162,17 @@ class ProjectsController extends Controller
     public function destroy(Project $project)
     {
         // get files of project
-        $result = DB::select('select image_path from image_managers where foreign_id = ? and source =?', [$project->id, 'projects']);
+        $result = DB::select('select id,image_path from image_managers where foreign_id = ? and source =?', [$project->id, 'projects']);
         $files = json_decode(json_encode($result), true);
         // return $files;
 
-        $image_handler = new FileHandler();
-        $image_handler->deleteFiles($files, $this->image_bucket, $this->disk);
-               
+        // delete from storage
+        $filee_handler = new FileHandler();
+        $filee_handler->deleteFiles($files, $this->image_bucket, $this->disk);
+        
+        // delete from imagemanager
+        
+
         $project->delete();
         session()->flash('message_success', 'Project deleted');
 

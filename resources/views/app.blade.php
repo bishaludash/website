@@ -43,9 +43,9 @@
                     {{date('M d, Y', $date)}} by 
                     <a href="{{route('home')}}">{{ucwords($post['username'])}}</a>
                 </p>
-                <div>
+                {{-- <div>
                     <img src="{{asset($post['image_path'])}}" class="img-fluid py-3" alt="post image">
-                </div>
+                </div> --}}
                 {!! strip_tags($post['post_body']).'...' !!}
                 
                 <div>

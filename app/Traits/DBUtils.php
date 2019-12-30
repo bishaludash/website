@@ -17,7 +17,6 @@ trait DBUtils
             $res = DB::select($query);
         }else{
             $res = DB::select($query, $param);
-            
         }
         return json_decode(json_encode($res), true);
     }
@@ -30,7 +29,10 @@ trait DBUtils
             
         }
         $result = json_decode(json_encode($res), true);
-        return $result[0];
+        if(!empty($result)){
+            return $result[0];
+        }
+        return abort(404);
     }
 }
 

@@ -23,19 +23,20 @@
             <table>
                 @foreach ($files as $file)
                 <tr>
-                    <td class="pr-5">{{$file['file_name']}}</td>
+                    <td class="pr-5">                        
+                        <div class="project-img-wrapper">
+                            <img src="{{url('storage/'.$file['image_path'])}}" alt="not found" class="img-fluid">
+                        </div>
+                    </td>
                     <td>
                         {{-- TODO: File delete, show --}}
                         <a class="btn btn-sm btn-danger text-white ajax-modal" style="float: none;" data-title="Delete" 
-                                data-url="{{ route('projects.delete',  $file['id']) }}">Delete</a>
+                        data-url="{{ route('file.delete',  $file['id']) }}">Delete</a>
                     </td>
                 </tr>
                 @endforeach
             </table>
             
-                                
-            
-
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-2">

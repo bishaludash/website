@@ -55,7 +55,7 @@
 			</a>
 			</li>
 			<li>
-			<a href="./tables.html">
+			<a href="{{route('filemanager.index')}}">
 				<i class="ion-aperture lead"></i>
 				<p>Pictures</p>
 			</a>

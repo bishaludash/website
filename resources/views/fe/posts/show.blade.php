@@ -1,7 +1,7 @@
 @extends('layouts.main_index')
 
 @section('title')
-    {{$post->post_title}}
+    {{ucwords($post['post_title'])}}
 @endsection
 
 @section('blog-css')
@@ -26,21 +26,21 @@
         <div class="row my-4 view-post">
             <div class="col-md-12 ">
             
-            <div style="width:80%; margin:1% 10%">
-                <h2 class="mb-3">{{$post->post_title}}</h2>
-                <span class="cat_post">{{$post->category->cat_name}}</span>
-                <span class="ml-4">{{$post->created_at->toFormattedDateString()}}</span>
+            <div style="margin:1% 5%">
+                <h2 class="mb-3 text-capitalize">{{$post['post_title']}}</h2>
+                <span class="cat_post">{{$post['cat_name']}}</span>
+                <span class="ml-4">{{ date('M d ,Y',strtotime($post['created_at'])) }}</span>
                 <hr class="py-2">
             </div>
             
 
             <div class="text-center">
-                @if ($post->image_path)
-                <img src="{{asset($post->image_path)}}" alt="{{$post->post_title}}" class="img-fluid border" width="80%">
+                @if ($post['image_path'])
+                <img src="{{url('storage/'.$post['image_path'])}}" alt="{{$post['post_title']}}" class="img-fluid border" width="80%">
                 @endif  
             </div>
             <div class="text-justify" style="margin: 2% 3%">
-                {!! $post->post_body !!}
+                {!! $post['post_body'] !!}
             </div>
             
             </div>

@@ -15,14 +15,16 @@
     <div class="col-lg-12">
         <div class="card card-h">
             <div class="card-body">
-             <h3>{{$project['project_title']}}</h3>            
-             <p>{{$project['created_at']}}</p>            
-             <p>{!! $project['project_body'] !!}</p>  
-             @foreach ($project['files'] as $item)
+                <h3>{{$project['project_title']}}</h3>            
+                <p>{{$project['created_at']}}</p>            
+                <p>{!! $project['project_body'] !!}</p>  
+                @if (!is_null($project['files']))
+                @foreach ($project['files'] as $item)
                 <div class="project-img-wrapper">
                     <img src="{{url('storage/'.$item['image_path'])}}" alt="not found" class="img-fluid">
                 </div>
-             @endforeach
+                @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -30,5 +32,5 @@
 @endsection
 
 @section('footer-js')
-    @include('partials.tiny-mce')
+@include('partials.tiny-mce')
 @endsection

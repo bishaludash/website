@@ -43,8 +43,9 @@
     {{-- Contains the body --}}
     
     <footer class="blog-footer">
-        <p>Built with <i class="ion-heart" style="color:#f95959"></i> by <a href="#">@budash</a>.
+        <p>Built with <i class="ion-heart" style="color:#f95959"></i> by <a href="{{route('home')}}">@budash</a>.
         </p>
     </footer>
+    @yield('footer-js')
 </body>
 </html>

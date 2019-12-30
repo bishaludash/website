@@ -36,28 +36,31 @@ Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
     Route::post('search/post', 'FE\BlogController@searchPostView')->name('post.search');
 
     // categories
-    Route::get('/category/{category}', 'FE\CategoryController@index')->name('cat.show');
-
+    Route::get('/category/{category}', 'FE\CategoryController@index', ['except'=>['create','show']])->name('cat.show');
 
 // BE (middleware)
-Route::group(['middleware' => ['checkAuth']], function () {
-    Route::get('dashboard', 'BE\DashboardController@index')->name('dashboard.home');
-    Route::get('dashboard/about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
-    Route::post('dashboard/about-user/{user}', 'BE\AboutUserController@updateAboutUser');
+Route::group(['middleware' => ['checkAuth'], 'prefix'=>'dashboard'], function () {
+    Route::get('/', 'BE\DashboardController@index')->name('dashboard.home');
+    Route::get('about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
+    Route::post('about-user/{user}', 'BE\AboutUserController@updateAboutUser');
 
 
-    Route::resource('dashboard/category', 'BE\CategoryController', ['except'=>['create','show']]);
-    Route::get('dashboard/category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
+    Route::resource('category', 'BE\CategoryController', ['except'=>['create','show']]);
+    Route::get('category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
 
-    Route::resource('dashboard/posts', 'BE\PostController');
-    Route::get('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archive')->name('posts.archive');
-    Route::post('dashboard/posts/{post}/{archive}/archive', 'BE\PostController@archivePost');
-    Route::get('dashboard/posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
+    Route::resource('posts', 'BE\PostController');
+    Route::get('posts/{post}/{archive}/archive', 'BE\PostController@archive')->name('posts.archive');
+    Route::post('posts/{post}/{archive}/archive', 'BE\PostController@archivePost');
+    Route::get('posts/{post}/delete', 'BE\PostController@delete')->name('posts.delete');
 
-    Route::resource('dashboard/projects', 'BE\ProjectsController');
-    Route::get('dashboard/projects/{project}/delete', 'BE\ProjectsController@delete')->name('projects.delete');
+    Route::resource('projects', 'BE\ProjectsController');
+    Route::get('projects/{project}/delete', 'BE\ProjectsController@delete')->name('projects.delete');
+
+    Route::resource('filemanager', 'BE\FileController', ['except'=>['create','store', 'edit', 'update','destroy']]);
+    Route::get('filemanager/{file}/delete', 'BE\FileController@delete')->name('file.delete');
+    Route::post('filemanager/destroy', 'BE\FileController@destroy')->name('file.destroy');
 });
 
-
-// Route::resource('dashboard/comments', 'BE\CommentController');
-
+// \DB::listen(function($sql) {
+//     \Log::info($sql->sql);
+// });

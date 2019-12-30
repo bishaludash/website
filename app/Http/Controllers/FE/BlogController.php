@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
 use App\AboutUser;
+use App\Traits\DBUtils;
 use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {   
+    use DBUtils;
     /* 
         FE blog home
     */
@@ -33,7 +35,15 @@ class BlogController extends Controller
     /* 
         show individual post
     */
-    public function show(Post $post){
+    public function show($post){
+            $post_query = "select p.id, p.post_title, p.post_body, p.created_at,
+                       iu.image_path, c.cat_name from posts p 
+                       left join image_managers iu on p.id=iu.foreign_id
+                       inner join categories c on p.category_id = c.id
+                       where p.id = :id";
+        
+        $post = $this->selectFirstQuery($post_query, ['id'=>$post]);
+
         return view('fe.posts.show', compact('post'));
     }
 

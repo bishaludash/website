@@ -18,6 +18,7 @@ class AlterTableImageManagers extends Migration
             $table->string('source')->nullable();
             $table->string('file_name')->nullable();
             $table->string('extension')->nullable();
+            $table->string('file_size')->nullable();
         });
     }
 
@@ -33,6 +34,7 @@ class AlterTableImageManagers extends Migration
             $table->dropColumn('source');
             $table->dropColumn('file_name');
             $table->dropColumn('extension');
+            $table->dropColumn('file_size');
         });
     }
 }

@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
 use App\ImageManager;
+use App\Logic\Utils\FileHandler;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+    public $image_bucket = 'posts';
+    public $disk = 'uploads';
     /**
      * Display a listing of the resource.
      *
@@ -49,35 +53,32 @@ class PostController extends Controller
             'is_pinned' => 'required',
         ]);
         $input =  $request->all();
-        $input['image_path']=null;
-        // handle image
-        $format = ['jpg', 'jpeg', 'png'];
-        if ($file = $request->file('post_image')) {
-            $ext = $file->getClientOriginalExtension();
+        // validate bulk image, if error flash message.
+        if ($request->hasFile('post_image')){
+            $image_handler = new FileHandler();
+            $errors=$image_handler->validateImage([$input['post_image']]);
 
-            // validate extension
-            if (!in_array(strtolower($ext), $format)) {
-                session()->flash('message_danger', 'Please upload a valid image. i.e: jpg, jpeg, png');
-                return back();
+            if (!empty($errors) || !is_null($errors)) {
+                session()->flash('message_danger', 
+                'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
+                return back()->withInput();
             }
-            $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
-            $input['image_path'] = $request->file('post_image')->storeAs('uploads/posts', $file_name, 'uploads');
-
-            // Upload to image manager
-            ImageManager::create([
-                'image_path' => $input['image_path']
-            ]);
         }
-        
+                
         $post = Post::create([
             'post_title' => $input['post_title'],
             'category_id' => $input['category_id'],
-            'image_path' => $input['image_path'],
             'post_body' => $input['post_body'],
             'user_id' => auth()->id(),
             'is_featured' => $input['is_featured'],
             'is_pinned' => $input['is_pinned'],
         ]);
+
+        
+        // upload bulk image
+        if ($request->hasFile('post_image')) {
+            $image_handler->uploadFile([$input['post_image']], $post->id, $this->image_bucket);
+        }
 
         if (!$post) {
             session()->flash('message_danger', 'Post could not be inserted.');
@@ -85,17 +86,6 @@ class PostController extends Controller
         }
         session()->flash('message_success', 'Post created successfully.');
         return back();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
-    {
-        return "show";
     }
 
     /**
@@ -174,15 +164,17 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
-    {
-        // delete files if exist
-        if (file_exists($post->image_path) && $post->image_path) {
-            unlink(public_path('/').$post->image_path);
-        }
+    {        
+        // get files of project
+        $result = DB::select('select id,image_path from image_managers where foreign_id = ? and source =?', [$post->id, 'posts']);
+        $files = json_decode(json_encode($result), true);
 
+        // delete from storage
+        $filee_handler = new FileHandler();
+        $filee_handler->deleteFiles($files, $this->image_bucket, $this->disk);
+        
         $post->delete();
-        session()->flash('message_success', 'Post deleted');
-
+        session()->flash('message_success', 'Project deleted');
         return back();
     }
 

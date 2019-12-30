@@ -23,7 +23,6 @@ class FileHandler{
         foreach ($images as $image) {
             $ext = $image->getClientOriginalExtension();
             $name = $image->getClientOriginalName();
-
             // validate extension
             if (!in_array(strtolower($ext), $this->img_extension)) {
                 array_push($errors, $name);
@@ -50,11 +49,12 @@ class FileHandler{
     public function uploadFile($files, $foreign_id, $bucket='', $diskname=null){
         // get disk
         $disk = is_null($diskname) ? $this->disk : $diskname;
-
+        
         foreach ($files as $key => $file) {
             $file_name = $file->getClientOriginalName();
             $file_path = Storage::disk($disk)->put($bucket, $file);
             $file_type = $file->getClientOriginalExtension();
+            $file_size = $file->getSize();
 
             // Upload to image manager
             ImageManager::create([
@@ -62,16 +62,16 @@ class FileHandler{
                 'foreign_id'=> $foreign_id,
                 'source' =>$bucket,
                 'file_name'=>$file_name,
-                'extension'=>$file_type
+                'extension'=>$file_type,
+                'file_size'=>$file_size
             ]);
         }
     }
 
     /**
-     * remove files from storage
+     * Delete from storage disk and Image manager
      *
-     * Undocumented function long description
-     * @param Array files contains images array
+     * @param Array files contains images path, id array
      * @param String bucket : path/folder for uploading
      * @param String disk
      **/
@@ -81,14 +81,17 @@ class FileHandler{
         $disk = is_null($diskname) ? $this->disk : $diskname;
 
         $file_del_list = [];
+        $file_del_id = [];
         foreach ($files as $file) {
             if ( Storage::disk($disk)->exists($file['image_path']) ) {
                 array_push($file_del_list, $file['image_path']);
+                array_push($file_del_id, $file['id'] ?? '');
             } 
         }
-        
+        // Delete from storage disk and Image manager
         if (!empty($file_del_list) && count($file_del_list) > 0) {
             Storage::disk($disk)->delete($file_del_list);
+            ImageManager::destroy($file_del_id);           
         } 
     }
 
