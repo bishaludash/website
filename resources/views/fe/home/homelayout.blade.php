@@ -26,13 +26,14 @@
         .full-height {
             height: 90vh;
         }
-        
-        .img-block{
-            width: 100%;
-            overflow: hidden;
-        }
-        
-        .about-image{
+
+        .about-img-block{
+            width: 200px;
+            height: 200px;
+            background: url('storage/budash.jpg') #888888;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
             border-radius: 50%;
         }
         

@@ -15,9 +15,7 @@
     </div>
     
     <div class="col-lg-3 text-center">
-        <div class="img-block">
-            <img src="https://i.pravatar.cc/200" alt="" class="img-fluid about-image">
-        </div>
+        <div class="about-img-block"></div>
     </div>
 </div>
 
