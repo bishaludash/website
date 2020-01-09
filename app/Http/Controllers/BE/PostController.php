@@ -8,10 +8,12 @@ use App\Http\Controllers\Controller;
 use App\Category;
 use App\ImageManager;
 use App\Logic\Utils\FileHandler;
+use App\Traits\DBUtils;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+    use DBUtils;
     public $image_bucket = 'posts';
     public $disk = 'uploads';
     /**
@@ -75,7 +77,7 @@ class PostController extends Controller
         ]);
 
         
-        // upload bulk image
+        // upload image
         if ($request->hasFile('post_image')) {
             $image_handler->uploadFile([$input['post_image']], $post->id, $this->image_bucket);
         }
@@ -97,7 +99,12 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::pluck('cat_name', 'id');
-        return view('backend.posts.edit', compact('post', 'categories'));
+        $image_query = "select iu.image_path from image_managers iu
+                       inner join  posts p  on p.id=iu.foreign_id
+                       where p.id = :id order by iu.created_at desc limit 1";
+        
+        $image = $this->selectFirstQuery($image_query, ['id'=>$post->id]);
+        return view('backend.posts.edit', compact('post', 'categories', 'image'));
     }
 
     /**
@@ -117,31 +124,22 @@ class PostController extends Controller
             'is_pinned' => 'required',
         ]);
         $input =  $request->all();
-        $input['image_path'] = $post->image_path;
+        // dd($input);
+        // validate bulk image, if error flash message.
+        if ($request->hasFile('post_image')){
+            $image_handler = new FileHandler();
+            $errors=$image_handler->validateImage([$input['post_image']]);
 
-        // handle image
-        $format = ['jpg', 'jpeg', 'png'];
-        if ($file = $request->file('post_image')) {
-            $ext = $file->getClientOriginalExtension();
-
-            // validate extension
-            if (!in_array(strtolower($ext), $format)) {
-                session()->flash('message_danger', 'Please upload a valid image. i.e: jpg, jpeg, png');
-                return back();
+            if (!empty($errors) || !is_null($errors)) {
+                session()->flash('message_danger', 
+                'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
+                return back()->withInput();
             }
-            $file_name = str_random(10) . '-' . time() . '-' . $file->getClientOriginalName();
-            $input['image_path'] = $request->file('post_image')->storeAs('uploads/posts', $file_name, 'uploads');
-
-            // Upload to image manager
-            ImageManager::create([
-                'image_path' => $input['image_path']
-            ]);
-        }
+        }        
         
         $post->update([
             'post_title' => $input['post_title'],
             'category_id' => $input['category_id'],
-            'image_path' => $input['image_path'],
             'post_body' => $input['post_body'],
             'user_id' => auth()->id(),
             'is_featured' => $input['is_featured'],
@@ -151,6 +149,11 @@ class PostController extends Controller
         if (!$post) {
             session()->flash('message_danger', 'Post could not be updated.');
             return back();
+        }
+
+        // upload image
+        if ($request->hasFile('post_image')) {
+            $image_handler->uploadFile([$input['post_image']], $post->id, $this->image_bucket);
         }
         session()->flash('message_success', 'Post updated successfully.');
         return back();

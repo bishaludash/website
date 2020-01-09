@@ -18,7 +18,11 @@ trait DBUtils
         }else{
             $res = DB::select($query, $param);
         }
-        return json_decode(json_encode($res), true);
+        $result = json_decode(json_encode($res), true);
+        if(count($result) >0 && !empty($result)){
+            return $result;
+        }
+        return null;
     }
 
     public function selectFirstQuery($query, $param=null){
@@ -26,13 +30,13 @@ trait DBUtils
             $res = DB::select($query);
         }else{
             $res = DB::select($query, $param);
-            
         }
         $result = json_decode(json_encode($res), true);
-        if(!empty($result)){
+        if(count($result) >0 && !empty($result)){
             return $result[0];
         }
-        return abort(404);
+        // return abort(404);
+        return null;
     }
 }
 

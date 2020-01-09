@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
 use App\AboutUser;
+use App\Logic\FE\BlogFeLogic;
 use App\Traits\DBUtils;
 use Illuminate\Support\Facades\DB;
 
@@ -17,15 +18,12 @@ class BlogController extends Controller
         FE blog home
     */
     public function index(){
-        // Laravel queryscope
-        $featured = Post::featured();    
-        $pinned_posts = Post::PinnedPosts();
-        
-        // custom OOP
-        $postRep = new Post();
-        $posts = $postRep->getlatestPosts();
+        $blog = new BlogFeLogic();
+        $featured = $blog->getFeaturedPost();
+        $pinned_posts = $blog->getPinnedPost();
+        $posts = $blog->getLatestPost();
 
-        $archives = $this->getArchivedPost();
+        $archives = $blog->getArchivedPost();
         $aboutUser = AboutUser::first(['about', 'git_url']);
         $categories = Category::all();
         
@@ -40,7 +38,7 @@ class BlogController extends Controller
                        iu.image_path, c.cat_name from posts p 
                        left join image_managers iu on p.id=iu.foreign_id
                        inner join categories c on p.category_id = c.id
-                       where p.id = :id";
+                       where p.id = :id order by iu.created_at desc";
         
         $post = $this->selectFirstQuery($post_query, ['id'=>$post]);
 
@@ -80,14 +78,4 @@ class BlogController extends Controller
         return view('fe.search.search', compact('search_res', 'input'));
     }
 
-    // custon query
-    public function getArchivedPost(){
-        $archive_query = "select date_part('year', created_at) as year,
-        date_part('month', created_at)as month, 
-        count(*) published from posts 
-        group by year, month order by min(created_at) desc";
-        
-        $archive_res = DB::select($archive_query);
-        return json_decode(json_encode($archive_res), true);
-    }
 }

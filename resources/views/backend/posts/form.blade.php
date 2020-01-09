@@ -34,13 +34,14 @@
         <div class="col-md-2">
             {!! Form::label('post_image', 'Image :', ['class'=>'font-weight-bold']) !!}
         </div>
-        <div class="col-md-10">
+        <div class="col-md-5">
             {!! Form::file('post_image', ['class'=>'btn btn-secondary']) !!}
-            
-            {{-- Image --}}
-            @if ($post['image_path'])
-            <img src="{{asset($post->image_path)}}" alt="{{$post->post_title}}" class="img-fluid border d-block" width="100px", height="auto">
-            @endif
+        </div>
+        <div class="col-lg-5">
+             {{-- Image --}}
+             @if (isset($image))
+             <img src="{{url('storage/'.$image['image_path'])}}" alt="{{$post->post_title}}" class="img-fluid border d-block" width="150px", height="auto">
+             @endif
         </div>
     </div>
 </div>
