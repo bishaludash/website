@@ -4,7 +4,6 @@ namespace App\Http\Controllers\BE;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\ImageManager;
 use App\Logic\Utils\FileHandler;
 use App\Traits\DBUtils;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +18,8 @@ class FileController extends Controller
      */
     public function index()
     {   
-        $files_query = "select * from image_managers order by created_at desc";
+        $files_query = "select id, image_path, created_at, foreign_id, source, file_name,
+        extension, (file_size::float/1024) as file_size from image_managers order by created_at desc";
         $files = $this->selectQuery($files_query);
         return view('backend.filemanager.index', compact('files'));
     }

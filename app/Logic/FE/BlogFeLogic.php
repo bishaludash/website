@@ -10,12 +10,21 @@ class BlogFeLogic{
 
     public function getFeaturedPost()
     {
-        $featured_query = "select p.id,p.post_title, 
-        p.category_id, p.post_body, im.image_path
+        $featured_query = "select p.id,p.post_title,p.category_id, p.post_body, 
+        json_agg(
+            json_build_object('image_path', coalesce(im.image_path, null))
+            ) as image
         from posts p left join image_managers im on p.id=im.foreign_id
-        where p.is_featured='t' and p.archive='f' order by p.created_at desc limit 1 ";
+        where p.is_featured='t' and p.archive='f' 
+        group by p.id order by p.created_at desc";
 
+        // Featured image smartass bullshit logic that i made.
         $res = $this->selectFirstQuery($featured_query);
+        if (!is_null($res['image']) || !empty($res)) {
+            $res['image'] = json_decode($res['image'], true);
+            $len = count($res['image']) - 1;
+            $res['image'] = $res['image'][$len]['image_path'];
+        }
         return $res;
     }
 

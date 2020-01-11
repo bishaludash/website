@@ -34,13 +34,16 @@ class BlogController extends Controller
         show individual post
     */
     public function show($post){
-            $post_query = "select p.id, p.post_title, p.post_body, p.created_at,
+        $post_query = "select p.id, p.post_title, p.post_body, p.created_at,
                        iu.image_path, c.cat_name from posts p 
                        left join image_managers iu on p.id=iu.foreign_id
                        inner join categories c on p.category_id = c.id
                        where p.id = :id order by iu.created_at desc";
         
         $post = $this->selectFirstQuery($post_query, ['id'=>$post]);
+        if (is_null($post) ) {
+            return redirect()->route('blog.home');
+        }
 
         return view('fe.posts.show', compact('post'));
     }
@@ -73,9 +76,9 @@ class BlogController extends Controller
     */
     public function searchPostView(Request $request){
         $input = $request['search_val'];
-        $search_res = $this->searchPost($input);
+        $posts = $this->searchPost($input);
 
-        return view('fe.search.search', compact('search_res', 'input'));
+        return view('fe.search.search', compact('posts', 'input'));
     }
 
 }

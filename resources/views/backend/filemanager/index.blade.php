@@ -24,10 +24,10 @@ Files List
                     <table class="table table-bordered table-hover" id="datatable"> {{-- id="datatable" --}}
                         <thead>
                             <tr>
-                                <th class="border">File</th>
+                                <th class="border" width="20%">File</th>
                                 <th class="border">source</th>
                                 <th class="border">Extension</th>
-                                <th class="border">size</th>
+                                <th class="border">size (MB)</th>
                                 <th class="border">Actions</th>
                             </tr>
                         </thead>
@@ -35,11 +35,11 @@ Files List
                             @foreach ($files as $file)
                             <tr>
                                 <td>
-                                    {{$file['file_name']}}
+                                    <img src="{{url('storage/'.$file['image_path'])}}" class="img-fluid" alt="{{$file['file_name']}}">
                                 </td>
                                 <td>{{$file['source']}}</td>
                                 <td>{{$file['extension']}}</td>
-                                <td>{{$file['file_size']}}</td>
+                                <td>{{round($file['file_size'], 2)}}</td>
                                 <td>        
                                     <a class="btn btn-sm btn-danger ajax-modal" style="float: none;" data-title="Delete" 
                                     data-url="{{ route('file.delete', $file['id']) }}">

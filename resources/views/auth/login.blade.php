@@ -45,7 +45,7 @@
 		
 		{!! Form::submit('Sign In', ['class'=>'btn btn-primary form-control']) !!}
 		<p class="mt-5 mb-3 text-muted">
-			&copy; @if(date('Y') > 2019){{date('Y')." - "}}  @endif  {{date('Y')}}
+			&copy; 2019 - {{date('Y')}}
 		</p>
 	{{Form::close()}}
 	

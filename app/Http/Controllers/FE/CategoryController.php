@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\FE;
 
 use App\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -12,14 +11,14 @@ class CategoryController extends Controller
 
     // view all the post belonging to the category
     public function index(Category $category){
-        $cat_posts = $this->getCategoryPosts($category);
+        $posts = $this->getCategoryPosts($category);
         // return $cat_posts;
-        return view('fe.category.cat-list', compact('category', 'cat_posts'));
+        return view('fe.category.cat-list', compact('category', 'posts'));
     }
 
     protected function getCategoryPosts($category){
-        $cat_query = "select p.id, p.post_title, p.post_body, p.created_at::timestamp,
-        concat(u.fname,' ', u.lname) as user
+        $cat_query = "select p.id, p.post_title, left(p.post_body, 200) as post_body,
+        p.created_at, concat(u.fname,' ', u.lname) as username
         from posts p inner join users u on p.user_id = u.id
         where category_id= :id order by p.created_at desc";
 

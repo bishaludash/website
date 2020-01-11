@@ -1,5 +1,5 @@
 @if (session()->has('message'))
-    <div class="alert alert-info alert-dismissible fade show">
+    <div class="alert alert-info alert-dismissible fade show text-left">
         <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
             <i class="ion-close-circled small"></i>
         </button>

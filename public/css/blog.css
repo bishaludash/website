@@ -5,13 +5,25 @@
     border-bottom: 1px solid #e5e5e5;
   }
   
+  .blog-icon{
+    color: #343a40;
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: monospace;
+    padding: 5px 20px;
+    background-color: gold;
+    border-radius: 6px;
+  }
+
+  
   .blog-header-logo {
     font-family: "Playfair Display", Georgia, "Times New Roman", serif;
     font-size: 2.25rem;
   }
   
-  .blog-header-logo:hover {
+  .blog-header-logo:hover , .blog-icon:hover{
     text-decoration: none;
+    color: inherit;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -152,6 +164,16 @@
     background-color: red;
     color: #fff;
     transition: 0.3s;
+  }
+
+  .blog-social-icon{
+    font-size: x-large;
+    color: #212529;
+    transition: 0.3s;
+  }
+
+  .blog-social-icon:hover{
+    color: lightseagreen;
   }
 
   @media only screen and (max-width: 460px) {

@@ -20,10 +20,19 @@
     
     <div class="p-4">
         <h4 class="font-italic">Elsewhere</h4>
-        <ol class="list-unstyled">
-            <li><a href="{{$aboutUser->git_url ?? '#'}}" target="_blank">GitHub</a></li>
+        <ol class="list-unstyled d-inline">
+            <li style="display:inline-block">
+                <a href="{{$aboutUser->git_url ?? '#'}}" target="_blank" class="blog-social-icon">
+                    <i class="ion-social-github"></i>
+                </a>
+            </li>
+
+            <li style="display:inline-block">
+                <a href="https://www.linkedin.com/in/bishal-udash-04a07215a/" target="_blank" class="blog-social-icon">
+                    <i class="ion-social-linkedin"></i>
+                </a>
+            </li>
             
-            {{-- <li><a href="#">Facebook</a></li>  --}}
         </ol>
     </div>
 </aside><!-- /.blog-sidebar -->

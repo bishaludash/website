@@ -35,7 +35,7 @@
             
 
             <div class="text-center">
-                @if ($post['image_path'])
+                @if (isset($post['image_path']))
                 <img src="{{url('storage/'.$post['image_path'])}}" alt="{{$post['post_title']}}" class="img-fluid border" width="80%">
                 @endif  
             </div>

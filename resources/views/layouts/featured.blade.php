@@ -56,7 +56,7 @@
 `
 {{-- TODO  backup feat img--}}
 @php
-$feat_img = isset($featured['image_path']) ? $featured['image_path'] : '';
+$feat_img = isset($featured['image']) ? $featured['image'] : '';
 @endphp
 <style>
     .featured-image{
@@ -65,6 +65,6 @@ $feat_img = isset($featured['image_path']) ? $featured['image_path'] : '';
         object-fit: cover;
         background-repeat: no-repeat;
         background-size: contain;
-        min-height: 200px;
+        min-height: {{ $feat_img ? '200px': '50px'}};
     }
 </style>
