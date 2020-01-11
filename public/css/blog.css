@@ -185,3 +185,7 @@
       display: none;
     }
 }
+
+.min-view-height{
+  min-height: 85vh;
+}

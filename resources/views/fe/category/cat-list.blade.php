@@ -13,14 +13,19 @@
 
 @section('posts')
 <main role="main" class="container">
-    <div class="row">
+    <div class="row min-view-height">
         <div class="col-md-8 blog-main">
             <h3 class="pb-4 mb-4 font-italic border-bottom">
                 {{$category['cat_name'] ?? 'Latest'}}
             </h3>
             
             {{-- Blog Post --}}
-            @include('fe.partials.list_posts')
+            @if (count($posts) > 0)
+                @include('fe.partials.list_posts')
+            @else
+                Search Result : 0
+            @endif
+
             
         </div>
     </div><!-- /.row --> 

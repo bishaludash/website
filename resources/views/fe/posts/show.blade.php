@@ -6,11 +6,7 @@
 
 @section('blog-css')
 <link rel="stylesheet" href="{{asset('css/prism.css')}}">
-    <style>
-    .view-post{
-        min-height: 85vh;
-    }
-    </style>
+
 @endsection
 
 @section('blog_head')
@@ -23,7 +19,7 @@
 
 @section('posts')
     <div class="container shadow-lg p-3 bg-white rounded ">
-        <div class="row my-4 view-post">
+        <div class="row my-4 min-view-height">
             <div class="col-md-12 ">
             
             <div style="margin:1% 5%">
