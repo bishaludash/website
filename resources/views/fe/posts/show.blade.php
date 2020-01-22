@@ -30,9 +30,9 @@
             </div>
             
 
-            <div class="text-center">
+            <div class="blog-image-card">
                 @if (isset($post['image_path']))
-                <img src="{{url('storage/'.$post['image_path'])}}" alt="{{$post['post_title']}}" class="img-fluid border" width="80%">
+                <img src="{{url('storage/'.$post['image_path'])}}" alt="{{$post['post_title']}}" class="img-fluid ">
                 @endif  
             </div>
             <div class="text-justify" style="margin: 2% 3%">
