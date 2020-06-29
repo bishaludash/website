@@ -10,15 +10,18 @@
 @endsection
 
 @section('blog_head')
-    <div class="container">
+<div class="border-bottom">
+        <div class="container">
         {{-- HEADER --}}
         @include('layouts.blog_header')
     </div>
+</div>
+
 @endsection
 
 
 @section('posts')
-    <div class="container shadow-lg p-3 bg-white rounded ">
+    <div class="container p-3 bg-white rounded ">
         <div class="row my-4 min-view-height">
             <div class="col-md-12 ">
             

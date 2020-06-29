@@ -27,7 +27,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href={{ asset('css/blog.css') }} rel="stylesheet">
     @yield('blog-css')

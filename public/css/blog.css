@@ -2,7 +2,6 @@
 
 .blog-header {
     line-height: 1;
-    border-bottom: 1px solid #e5e5e5;
 }
 
 .blog-icon {
@@ -24,6 +23,10 @@
 .blog-icon:hover {
     text-decoration: none;
     color: inherit;
+}
+
+body, p, li{
+    font-family: Lato !important;
 }
 
 h1,

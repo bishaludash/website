@@ -64,3 +64,10 @@ Route::group(['middleware' => ['checkAuth'], 'prefix'=>'dashboard'], function ()
 // \DB::listen(function($sql) {
 //     \Log::info($sql->sql);
 // });
+
+
+// Resume Maker
+Route::get('resume-builder', 'Resume\ResumeController@index')->name('resume.home');
+Route::get('resume-builder/build', 'Resume\ResumeController@build')->name('resume.build');
+Route::post('resume-builder/build', 'Resume\ResumeController@saveBuild')->name('resume.save');
+Route::get('resume-generate', 'Resume\ResumeController@generate');

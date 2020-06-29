@@ -8,7 +8,9 @@
 @section('blog_head')
 <div class="container">
     {{-- HEADER --}}
+    <div class="border-bottom">
     @include('layouts.blog_header')
+    </div>
     
     {{-- NAVBAR --}}
     @include('layouts.navbar')
