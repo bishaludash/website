@@ -18,3 +18,14 @@
 .display-5{
 	font-size: 1.2rem;
 }
+
+.resume-section{
+	transition: 0.2s;
+	cursor: pointer;
+}
+.resume-section:hover{
+	background-color: #f7eff2;
+}
+.bg-resume-section{
+	background-color: #f7eff2;
+}
