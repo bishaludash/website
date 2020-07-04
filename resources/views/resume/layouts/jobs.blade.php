@@ -8,7 +8,7 @@
     </div>
     <div id="collapse-work" class="collapse show">	
         <div class="card-body">
-            <div class="form-group">
+            <div class="form-group jobs-block">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
@@ -49,7 +49,7 @@
                         
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="customCheck1" checked=true>
-                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                            <label class="custom-control-label" for="customCheck1">I am currently working in this role</label>
                         </div>
                         
                     </div>
@@ -59,16 +59,19 @@
                     <div class="col-md-8">
                         <div class="form-group disabled">
                             {!! Form::label('job[job_details][]', 'Job Details')!!}
-                            {!! Form::textarea('job[job_details][]', null,['class'=>'form-control']) !!}
+                            {!! Form::textarea('job[job_details][]', null,['class'=>'form-control tiny_mce']) !!}
                         </div>
                         
                     </div>
                 </div>
             </div>
+
+            {{-- Additional Education block will be appended here. --}}
+            <div class="append-jobs"></div>
             
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <div class="btn btn-outline-primary w-100 ">Add another position</div>
+                    <div class="btn btn-outline-primary w-100 add-jobs">Add another position</div>
                 </div>
             </div>
             

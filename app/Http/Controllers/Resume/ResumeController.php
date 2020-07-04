@@ -37,4 +37,7 @@ class ResumeController extends Controller
 		return $pdf->download('resume.pdf');
 	}	
 	
+	public function test(Request $request)	{
+		return view('resume.test');
+	}	
 }

@@ -45,26 +45,29 @@
                     <div class="col-lg-3">
                         <div class="form-group disabled">
                             {!! Form::label('education[start_year][]', 'Start Year') !!}
-                            {!! Form::date('education[start_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+                            {!! Form::month('education[start_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         
                     </div>
                     
                     <div class="col-lg-3">
                         <div class="form-group disabled">
-                            {!! Form::label('education[end_year][]', 'End Year') !!}
-                            {!! Form::date('education[end_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'disabled'=>true]) !!}
-                        </div>
-                        
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1" checked=true>
-                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
-                        </div>
-                        
+                            {!! Form::label('education[end_year][]', 'End Year (or expected)') !!}
+                            {!! Form::month('education[end_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+                        </div>                        
                     </div>
+                    
+                    <div class="col-md-8">
+                        <div class="form-group disabled">
+                            {!! Form::label('education[achievements][]', 'Achievements')!!}
+                            {!! Form::textarea('education[achievements][]', null,['class'=>'form-control tiny_mce']) !!}
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-
+            
+            {{-- Additional Education block will be appended here. --}}
             <div class="append-education"></div>
             
             <div class="row">
@@ -72,7 +75,6 @@
                     <div class="btn btn-outline-primary w-100 add-education">Add Education</div>
                 </div>
             </div>
-            
             
         </div>
     </div>
