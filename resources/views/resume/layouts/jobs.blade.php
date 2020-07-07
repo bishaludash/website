@@ -12,14 +12,14 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            {!! Form::label('job_title', 'Job Title') !!}
+                            {!! Form::label('job[title][]', 'Job Title *') !!}
                             {!! Form::text("job[title][]", null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
                     </div>
                     
                     <div class="col-lg-4">
                         <div class="form-group">
-                            {!! Form::label('employer', 'Employer') !!}
+                            {!! Form::label('job[employer][]', 'Employer *') !!}
                             {!! Form::text("job[employer][]", null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
                     </div>

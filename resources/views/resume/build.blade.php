@@ -39,8 +39,7 @@
 
 			<div class="col-lg-2 d-none d-sm-block">
 				<div class="sticky-div">
-					<div class="btn btn-outline-danger d-block mb-3">Collapse All </div>
-					<div class="btn btn-outline-success d-block mb-3">Expand All </div>
+					<div class="btn btn-outline-danger d-block mb-3 toggle-collapse disabled">Collapse All</div>
 				</div>
 			</div>
 		</div>

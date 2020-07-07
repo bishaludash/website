@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResumesTable extends Migration
+class CreateResumeCollectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateResumesTable extends Migration
      */
     public function up()
     {
-        Schema::create('resumes', function (Blueprint $table) {
+        Schema::create('resume_collects', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $tale->integer('')
+            $table->string('uuid', 30);
+            $table->string('email')->index();
+            $table->boolean('status');
+            $table->string('message');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateResumesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('resumes');
+        Schema::dropIfExists('resume_collects');
     }
 }
