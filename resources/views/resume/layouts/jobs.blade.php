@@ -1,5 +1,5 @@
 <div class="card my-5 shadow">
-    <div class="card-body resume-section bg-resume-section"  data-toggle="collapse" data-target="#collapse-work">
+    <div class="card-body resume-section"  data-toggle="collapse" data-target="#collapse-work">
         <div class="text-danger display-5">
             Work Experience
             <span class="float-right"><i class="ion-minus-circled"></i></span>
@@ -8,20 +8,22 @@
     </div>
     <div id="collapse-work" class="collapse show">	
         <div class="card-body">
-            <div class="form-group jobs-block">
-                <div class="row">
+            <div class="jobs-block">
+                <div class="row form-group ">
                     <div class="col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('job[title][]', 'Job Title *') !!}
                             {!! Form::text("job[title][]", null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white d-none validation_error job_title_0"></span>
                     </div>
                     
                     <div class="col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('job[employer][]', 'Employer *') !!}
                             {!! Form::text("job[employer][]", null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white d-none validation_error job_employer_0"></span>
                     </div>
                     
                     <div class="col-lg-4">
@@ -33,7 +35,7 @@
                     
                 </div>
                 
-                <div class="row">
+                <div class="row form-group ">
                     <div class="col-lg-4">
                         <div class="form-group">
                             {!! Form::label('job[start_date][]', 'Start Date') !!}

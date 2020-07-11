@@ -43,7 +43,6 @@ class ResumeController extends Controller
 		if (!is_null($validation_error) || !empty($validation_error)) {
 			return $validation_error;
 		}
-
 		// Insert Resume details to DB
 		return $obj->buildResume($input);
 	}

@@ -113,25 +113,26 @@ class ResumeBuilder
         'first_name' => 'required',
         'last_name' => 'required',
         'phone' => 'required',
-        'email' => 'required',
+        'email' => 'required|email',
         'job.title.*' => 'required|distinct',
         'job.employer.*' => 'required',
         'education.school_name.*' => 'required',
         'education.school_location.*' => 'required',
         'skills' => 'required',
-        'summary' => 'required',
+        'user_summary' => 'required',
     ];
 
     private $validate_message = [
-        'first_name.required' => 'First name must not be empty.',
-        'last_name.required' => 'Last name must not be empty.',
-        'phone.required' => 'Phone number must not be empty.',
-        'email.required' => 'Email must not be empty.',
+        'first_name.required' => 'First name can not be empty.',
+        'last_name.required' => 'Last name can not be empty.',
+        'phone.required' => 'Phone number can not be empty.',
+        'email.required' => 'Email can not be empty.',
         'skills.required' => "Are you sure you don't have any skills ?",
-        'summary.required' => 'First impression is the last impression.',
-        'job.title.*.required' => 'Job title field must not be empty.',
-        'job.employer.*.required' => 'Job employer field must not be empty.',
-        'education.school_name.*.required' => 'School name must not be empty.',
+        'user_summary.required' => 'First impression is the last impression.',
+        'job.title.*.required' => 'Job title field can not be empty.',
+        'job.employer.*.required' => 'Job employer field can not be empty.',
+        'education.school_name.*.required' => 'School name can not be empty.',
+        'education.school_location.*.required' => 'School location can not be empty.',
 
     ];
 }

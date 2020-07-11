@@ -21,7 +21,8 @@
 			<div class="col-lg-10 col-sm-12">
 				{!! Form::open(['method'=>'POST', 
 				'action'=>'Resume\ResumeController@saveBuild', 'files'=>true, 
-				'class'=>'resume-builder-form']) !!}
+				'class'=>'resume-builder-form',
+				'novalidate'=>"novalidate"]) !!}
 
 				{{-- Form template --}}
 				@include('resume.layouts.info')

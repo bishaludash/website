@@ -1,5 +1,5 @@
 <div class="card shadow">
-    <div class="card-body resume-section bg-resume-section" data-toggle="collapse" data-target="#collapseOne" >
+    <div class="card-body resume-section" data-toggle="collapse" data-target="#collapseOne" >
         <div class="text-danger display-5">
             Personal Info
             <span class="float-right"><i class="ion-minus-circled"></i></span>
@@ -21,10 +21,11 @@
                     </div>
                     
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('last_name', 'Last Name *') !!}
                             {!! Form::text('last_name', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white d-none validation_error last_name">Some error</span>
                     </div>
                 </div>					
             </div>
@@ -57,17 +58,19 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('phone', 'Phone *') !!}
                             {!! Form::text('phone', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white d-none validation_error phone"></span>
                     </div>
                     
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('email', 'Email *') !!}
                             {!! Form::email('email', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white d-none validation_error email"></span>
                     </div>
                 </div>
             </div>

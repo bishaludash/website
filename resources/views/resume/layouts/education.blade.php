@@ -1,5 +1,5 @@
 <div class="card my-5 shadow">
-    <div class="card-body resume-section bg-resume-section" data-toggle="collapse" data-target="#collapse-education" >
+    <div class="card-body resume-section" data-toggle="collapse" data-target="#collapse-education" >
         <div class="text-danger display-5" >
             Education
             <span class="float-right"><i class="ion-minus-circled"></i></span>
@@ -11,17 +11,18 @@
             <div class="form-group education-block">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('education[school_name][]', 'School Name') !!}
                             {!! Form::text('education[school_name][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
-                        
+                        <span class="bg-danger btn-sm text-white validation_error d-none education_school_name_0">asdasd</span>
                     </div>	
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('education[school_location][]', 'School Location') !!}
                             {!! Form::text('education[school_location][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white validation_error d-none education_school_location_0">asdasd</span>
                     </div>								
                 </div>
                 
