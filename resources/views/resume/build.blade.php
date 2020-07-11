@@ -19,7 +19,10 @@
 		<p class="font-weight-bold" style="font-size: 1.5rem">Build your resume</p>
 		<div class="row">
 			<div class="col-lg-10 col-sm-12">
-				{!! Form::open(['method'=>'POST', 'action'=>'Resume\ResumeController@saveBuild', 'files'=>true]) !!}
+				{!! Form::open(['method'=>'POST', 
+				'action'=>'Resume\ResumeController@saveBuild', 'files'=>true, 
+				'class'=>'resume-builder-form']) !!}
+
 				{{-- Form template --}}
 				@include('resume.layouts.info')
 				@include('resume.layouts.jobs')

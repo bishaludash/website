@@ -49,7 +49,7 @@
                         
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="customCheck1" checked=true>
-                            <label class="custom-control-label" for="customCheck1">I am currently working in this role</label>
+                            <label class="custom-control-label" name="job[end_date][]" value="NULL" for="customCheck1">I am currently working in this role</label>
                         </div>
                         
                     </div>
@@ -57,7 +57,7 @@
                 
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="form-group disabled">
+                        <div class="form-group">
                             {!! Form::label('job[job_details][]', 'Job Details')!!}
                             {!! Form::textarea('job[job_details][]', null,['class'=>'form-control tiny_mce']) !!}
                         </div>

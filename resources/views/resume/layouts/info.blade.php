@@ -13,10 +13,11 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             {!! Form::label('first_name', 'First Name *') !!}
                             {!! Form::text('first_name', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white d-none validation_error first_name">Some error</span>
                     </div>
                     
                     <div class="col-lg-6">

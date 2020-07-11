@@ -37,8 +37,8 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            {!! Form::label('education[field_of_stydy][]', 'Field of Study') !!}
-                            {!! Form::text('education[field_of_stydy][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::label('education[field_of_study][]', 'Field of Study') !!}
+                            {!! Form::text('education[field_of_study][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
                     </div>
                     

@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Resume;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Logic\Resume\ResumeBuilder;
-use App\Traits\ValidateUtils;
 
 class ResumeController extends Controller
 {
-	use ValidateUtils;
 	/** 
 	 * Return main index page view.
 	 * @return View
@@ -38,19 +35,16 @@ class ResumeController extends Controller
 	 **/
 	public function saveBuild(Request $request)
 	{
+		$input =  $request->json()->all();
+		$obj = new ResumeBuilder();
+
 		// validate input data and if any error found raise exception
-		$input =  $request->all();
-		$validation_error = $this->validate_input($input, $this->validate_rules);
+		$validation_error = $obj->validateInput($input);
 		if (!is_null($validation_error) || !empty($validation_error)) {
 			return $validation_error;
 		}
 
-		// return $validation;
-
-		$obj = new ResumeBuilder();
-
-
-
+		// Insert Resume details to DB
 		return $obj->buildResume($input);
 	}
 
@@ -72,19 +66,4 @@ class ResumeController extends Controller
 		$pdf = \PDF::loadView('resume.details');
 		return $pdf->download('resume.pdf');
 	}
-
-	private $validate_rules = [
-		'first_name' => 'required',
-		'last_name' => 'required',
-		'phone' => 'required',
-		'email' => 'required',
-		'job.title.*' => 'required|distinct',
-		'job.employer.*' => 'required',
-		'education.school_name.*' => 'required',
-		'education.school_location.*' => 'required',
-		'skills' => 'required',
-		'summary' => 'required',
-	];
-
-	private $validate_message = [];
 }

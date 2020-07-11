@@ -91,5 +91,89 @@ $(document).ready(function () {
             addTinyMCE();
         }
     });
+
+    // Handle ajax requests
+    $('.resume-builder-form').submit(function (e) {
+        e.preventDefault();
+        var url = $(this).attr('action');
+        var current_form = $(this);
+        var request_data = {};
+
+        // transform the form data into required json object
+        transformData(request_data);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': request_data._token
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(request_data),
+            contentType: "json",
+            success: function (response) {
+                console.log(response);
+                $('.validation_error').addClass('d-none');
+                if (response.status === 'pass') {
+
+                }
+                if (response.status === 'fail') {
+                    console.log(Object.keys(response.errors));
+                    for (var key in response.errors) {
+                        var error_message = response.errors[key];
+
+                        $(`.${key}`).removeClass('d-none').html("this is the message");
+                        // error_form_field.addClass('errors');
+                        // error_form_field.parent().find('.error-message').removeClass('invisible').addClass('text-danger').html(error_message);
+                    }
+                }
+            }
+
+        });
+
+    });
+
+    function transformData(request_data) {
+        request_data.first_name = $("input[name='first_name']").val();
+        request_data.last_name = $("input[name='last_name']").val();
+        request_data._token = $("input[name='_token']").val();
+        request_data.city = $("input[name='city']").val();
+        request_data.state_province = $("input[name='state_province']").val();
+        request_data.phone = $("input[name='phone']").val();
+        request_data.zip = $("input[name='zip']").val();
+        request_data.email = $("input[name='email']").val();
+        request_data.skills = tinyMCE.get("skills").getContent();
+        request_data.user_summary = tinyMCE.get("user_summary").getContent();
+
+        request_data.job = {
+            "title": getFormInput('job[title][]'),
+            "employer": getFormInput('job[employer][]'),
+            "city": getFormInput('job[city][]'),
+            "start_date": getFormInput('job[start_date][]'),
+            "end_date": getFormInput('job[end_date][]'),
+            "job_details": getFormInput('job[job_details][]')
+
+        }
+
+        request_data.education = {
+            "school_name": getFormInput('education[school_name][]'),
+            "school_location": getFormInput('education[school_location][]'),
+            "degree": getFormInput('education[degree][]'),
+            "field_of_study": getFormInput('education[field_of_study][]'),
+            "start_year": getFormInput('education[start_year][]'),
+            "end_year": getFormInput('education[end_year][]'),
+            "achievements": getFormInput('education[achievements][]'),
+
+        }
+    }
+
+    function getFormInput(field) {
+        let res = $(`input[name='${field}']`).map(function () {
+            return this.value;
+        }).get();
+        return res;
+    }
+
 });
 

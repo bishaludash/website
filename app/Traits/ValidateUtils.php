@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -13,15 +14,15 @@ trait ValidateUtils
      * Function to validate any input.
      * Returns array when validation fails else returns null. 
      */
-    public function validate_input($input, $rules = Null){
-
-        $validator = Validator::make($input, $rules);
+    public function validate_input($input, $rules = [], $message = [])
+    {
+        $validator = Validator::make($input, $rules, $message);
         if ($validator->fails()) {
             return [
-                'status'=>'fail',
-                'message'=>$validator->getMessageBag()->toArray()
+                'status' => 'fail',
+                'errors' => $validator->getMessageBag()->toArray()
             ];
         }
         return null;
-    }    
+    }
 }
