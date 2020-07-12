@@ -44,7 +44,7 @@ class ResumeController extends Controller
 			return $validation_error;
 		}
 		// Insert Resume details to DB
-		return $obj->buildResume($input);
+		$status =  $obj->buildResume($input);
 	}
 
 	/**

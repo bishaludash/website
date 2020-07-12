@@ -13,7 +13,7 @@
                     <div class="col-lg-4">
                         <div class="form-group mb-2">
                             {!! Form::label('job[title][]', 'Job Title *') !!}
-                            {!! Form::text("job[title][]", null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text("job[title][]", null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error job_title_0"></span>
                     </div>
@@ -21,7 +21,7 @@
                     <div class="col-lg-4">
                         <div class="form-group mb-2">
                             {!! Form::label('job[employer][]', 'Employer *') !!}
-                            {!! Form::text("job[employer][]", null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text("job[employer][]", null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error job_employer_0"></span>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             {!! Form::label('job[city][]', 'City') !!}
-                            {!! Form::text('job[city][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('job[city][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                     </div>
                     
@@ -39,19 +39,19 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             {!! Form::label('job[start_date][]', 'Start Date') !!}
-                            {!! Form::date('job[start_date][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::date('job[start_date][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                     </div>
                     
                     <div class="col-lg-4">
-                        <div class="form-group disabled">
+                        <div class="form-group">
                             {!! Form::label('job[end_date][]', 'End Date') !!}
                             {!! Form::date('job[end_date][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'disabled'=>false]) !!}
                         </div>
                         
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1" checked=true>
-                            <label class="custom-control-label" name="job[end_date][]" value="NULL" for="customCheck1">I am currently working in this role</label>
+                            <input type="checkbox" class="custom-control-input" id="endDateCheck0">
+                            <label class="custom-control-label" for="endDateCheck0">I am currently working in this role</label>
                         </div>
                         
                     </div>

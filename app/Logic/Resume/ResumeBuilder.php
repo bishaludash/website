@@ -3,6 +3,7 @@
 
 namespace App\Logic\Resume;
 
+use App\Resume;
 use App\Traits\DBUtils;
 use App\Traits\ValidateUtils;
 
@@ -22,7 +23,6 @@ class ResumeBuilder
     public function buildResume(array $data)
     {
         try {
-            return $data;
             // Insert into resume_collects
             $resume_id = $this->insertToCollects($data);
 
@@ -43,9 +43,8 @@ class ResumeBuilder
     /**
      * Validate the input data.
      *
-     * @param Array $var Description
-     * @return object json when validation fails.
-     * @return boolean false when validation pass  
+     * @param Array $data form data
+     * @return object json when validation fails else returms null.
      **/
     public function validateInput(array $data)
     {
@@ -53,7 +52,6 @@ class ResumeBuilder
         if (!is_null($validation_error) || !empty($validation_error)) {
             return $validation_error;
         }
-        return false;
     }
 
     /**
@@ -66,7 +64,10 @@ class ResumeBuilder
      **/
     public function insertToCollects(array $data)
     {
-        # code...
+        Resume::create([
+            'uuid'=>'',
+            
+        ])
     }
 
 
@@ -116,8 +117,12 @@ class ResumeBuilder
         'email' => 'required|email',
         'job.title.*' => 'required|distinct',
         'job.employer.*' => 'required',
-        'education.school_name.*' => 'required',
-        'education.school_location.*' => 'required',
+        'school.name.*' => 'required',
+        'school.location.*' => 'required',
+        'school.degree.*' => 'required',
+        'school.field_of_study.*' => 'required',
+        'school.start_year.*' => 'required|date',
+        'school.end_year.*' => 'required|date',
         'skills' => 'required',
         'user_summary' => 'required',
     ];
@@ -130,9 +135,13 @@ class ResumeBuilder
         'skills.required' => "Are you sure you don't have any skills ?",
         'user_summary.required' => 'First impression is the last impression.',
         'job.title.*.required' => 'Job title field can not be empty.',
+        'job.title.*.distinct' => 'Job title field can not be duplicate.',
         'job.employer.*.required' => 'Job employer field can not be empty.',
-        'education.school_name.*.required' => 'School name can not be empty.',
-        'education.school_location.*.required' => 'School location can not be empty.',
-
+        'school.name.*.required' => 'School name can not be empty.',
+        'school.location.*.required' => 'School location can not be empty.',
+        'school.degree.*.required' => 'Degree can not be empty.',
+        'school.field_of_study.*.required' => 'Field of study can not be empty.',
+        'school.start_year.*.required' => 'Start year is required',
+        'school.end_year.*.required' => 'End year is required',
     ];
 }

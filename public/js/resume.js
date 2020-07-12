@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
-    // resume selected section, toggle minimize icon toggle
+    // Toggle collapse/Expand selected section, toggle minimize icon toggle
     $('.resume-section').click(function () {
         $(this).toggleClass('bg-resume-section');
         $("i", this).toggleClass("ion-minus-circled ion-plus-circled text-success");
     })
 
-    // Toggle collapse all section 
+    // collapse/Expand button timeout 
     setTimeout(function () {
         $('.toggle-collapse').removeClass('disabled')
     }, 2000)
@@ -48,16 +48,18 @@ $(document).ready(function () {
     let jobs_count = 0;
 
     $('.add-education').click(function () {
-        edu_count += 1;
-        if (edu_count > 4) {
+        if (edu_count >= 4) {
             return false;
         }
+        edu_count += 1;
+        console.log(edu_count);
 
         // Check TinyMCE is initialized or not
-        if (tinyMCE.get('education[achievements][]')) {
+        if (tinyMCE.get('school[achievements][]')) {
             // add bordet top
-            $('.append-education').append("<div class='seperator-style my-4'></div>");
-            $('.append-education').append(`<div class='btn btn-danger btn-sm mb-4 '># ${edu_count + 1}</div>`);
+            $('.append-education').append(`<div class='seperator-style my-4 sep-edu-${edu_count}'></div>`);
+            $('.append-education').append(`<span class='btn btn-danger btn-sm mb-4 dblock-edu' data-eduBlock='edu-${edu_count}' 
+            data-eduSep='sep-edu-${edu_count}'>Delete this block</span>`);
 
             // Remove TinyMCE instance, clone the education element and add tinymce class
             tinymce.remove('.tiny_mce');
@@ -65,12 +67,17 @@ $(document).ready(function () {
             ele.find('textarea').attr("class", "tiny_mce");
 
             // update to new error message class, remove the old
-            ele.find('.education_school_name_0').addClass(`d-none education_school_name_${jobs_count}`).removeClass('education_school_name_0');
-            ele.find('.education_school_location_0').addClass(`d-none education_school_location_${jobs_count}`).removeClass('education_school_location_0');
+            ele.find('.school_name_0').removeClass('school_name_0').addClass(`d-none school_name_${edu_count}`);
+            ele.find('.school_location_0').removeClass('school_location_0').addClass(`d-none school_location_${edu_count}`);
+            ele.find('.school_degree_0').removeClass('school_degree_0').addClass(`d-none school_degree_${edu_count}`);
+            ele.find('.school_field_of_study_0').removeClass('school_field_of_study_0').addClass(`d-none school_field_of_study_${edu_count}`);
+            ele.find('.school_start_year_0').removeClass('school_start_year_0').addClass(`d-none school_start_year_${edu_count}`);
+            ele.find('.school_end_year_0').removeClass('school_end_year_0').addClass(`d-none school_end_year_${edu_count}`);
 
             // empty input fields
             ele.find("input[type=text],input[type=month], textarea").val("");
-            ele.clone().appendTo('.append-education')
+            $('.append-education').append(`<div class='edu-${edu_count}'>`);
+            ele.clone().appendTo(`.append-education .edu-${edu_count}`);
 
             addTinyMCE();
         }
@@ -78,16 +85,17 @@ $(document).ready(function () {
 
 
     $('.add-jobs').click(function () {
-        jobs_count += 1;
-        if (jobs_count > 4) {
+        if (jobs_count >= 4) {
             return false;
         }
+        jobs_count += 1;
 
         // Check TinyMCE is initialized or not
         if (tinyMCE.get('job[job_details][]')) {
             // add bordet top
-            $('.append-jobs').append("<div class='seperator-style my-4'></div>");
-            $('.append-jobs').append(`<div class='btn btn-danger btn-sm mb-4 '># ${jobs_count + 1}</div>`);
+            $('.append-jobs').append(`<div class='seperator-style my-4 sep-job-${jobs_count}'></div>`);
+            $('.append-jobs').append(`<span class='btn btn-danger btn-sm mb-4 dblock-job' data-jobBlock='job-${jobs_count}' 
+            data-jobSep='sep-job-${jobs_count}'>Delete this block</span>`);
 
             // Remove TinyMCE instance, clone the education element and add tinymce class
             tinymce.remove('.tiny_mce');
@@ -98,13 +106,56 @@ $(document).ready(function () {
             ele.find('.job_title_0').addClass(`d-none job_title_${jobs_count}`).removeClass('job_title_0');
             ele.find('.job_employer_0').addClass(`d-none job_employer_${jobs_count}`).removeClass('job_employer_0');
 
+            // update disable job_end date
+            ele.find('#endDateCheck0').attr('id', `endDateCheck${jobs_count}`);
+            ele.find('.custom-control-label').attr('for', `endDateCheck${jobs_count}`);
+
             // empty input fields
             ele.find("input[type=text],input[type=date], textarea").val("");
-            ele.clone().appendTo('.append-jobs')
+            $('.append-jobs').append(`<div class='job-${jobs_count}'>`);
+            ele.clone().appendTo(`.append-jobs .job-${jobs_count}`)
 
             addTinyMCE();
         }
     });
+
+    // toggle job end date | Enable or disable
+    // You need to use event delegation for supporting dynamic elements.
+    $(document).on('click', '.custom-control-label', function () {
+        $(this).parent().parent().find('.form-control').attr('disabled', function (index, attr = false) {
+            return attr == false ? true : false;
+        });
+    });
+
+    // Delete the added Education block
+    $(document).on('click', '.dblock-edu', function () {
+        // get Edu block to be deleted 
+        let bid = $(this).attr('data-eduBlock');
+        $(`.${bid}`).remove();
+
+        // get Edu seperator block to be deleted
+        let sid = $(this).attr('data-eduSep');
+        $(`.${sid}`).remove();
+
+        $(this).remove();
+        edu_count -= 1;
+    });
+
+    // Delete the added Job block
+    $(document).on('click', '.dblock-job', function () {
+        // get job block to be deleted 
+        let bid = $(this).attr('data-jobBlock');
+        $(`.${bid}`).remove();
+
+        // get job seperator block to be deleted
+        let sid = $(this).attr('data-jobSep');
+        $(`.${sid}`).remove();
+
+        $(this).remove();
+        jobs_count -= 1;
+    })
+
+
 
     // Handle ajax requests
     $('.resume-builder-form').submit(function (e) {
@@ -115,6 +166,7 @@ $(document).ready(function () {
 
         // transform the form data into required json object
         transformData(request_data);
+        console.log(request_data)
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': request_data._token
@@ -137,7 +189,6 @@ $(document).ready(function () {
                         var error_message = response.errors[key];
                         if (key.includes('.')) {
                             key = key.replace(/\./g, '_');
-                            console.log(key);
                         }
                         $(`.${key}`).removeClass('d-none').text(error_message);
                     }
@@ -172,14 +223,14 @@ $(document).ready(function () {
 
         }
 
-        request_data.education = {
-            "school_name": getFormInput('education[school_name][]'),
-            "school_location": getFormInput('education[school_location][]'),
-            "degree": getFormInput('education[degree][]'),
-            "field_of_study": getFormInput('education[field_of_study][]'),
-            "start_year": getFormInput('education[start_year][]'),
-            "end_year": getFormInput('education[end_year][]'),
-            "achievements": getFormInput('education[achievements][]'),
+        request_data.school = {
+            "name": getFormInput('school[name][]'),
+            "location": getFormInput('school[location][]'),
+            "degree": getFormInput('school[degree][]'),
+            "field_of_study": getFormInput('school[field_of_study][]'),
+            "start_year": getFormInput('school[start_year][]'),
+            "end_year": getFormInput('school[end_year][]'),
+            "achievements": getFormInput('school[achievements][]'),
 
         }
     }

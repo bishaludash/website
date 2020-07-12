@@ -12,56 +12,61 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
-                            {!! Form::label('education[school_name][]', 'School Name') !!}
-                            {!! Form::text('education[school_name][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::label('school[name][]', 'School Name *') !!}
+                            {!! Form::text('school[name][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
-                        <span class="bg-danger btn-sm text-white validation_error d-none education_school_name_0">asdasd</span>
+                        <span class="bg-danger btn-sm text-white validation_error d-none school_name_0"></span>
                     </div>	
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
-                            {!! Form::label('education[school_location][]', 'School Location') !!}
-                            {!! Form::text('education[school_location][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::label('school[location][]', 'School Location *') !!}
+                            {!! Form::text('school[location][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
                         </div>
-                        <span class="bg-danger btn-sm text-white validation_error d-none education_school_location_0">asdasd</span>
+                        <span class="bg-danger btn-sm text-white validation_error d-none school_location_0"></span>
                     </div>								
                 </div>
                 
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="form-group">
-                            {!! Form::label('education[degree][]', 'Degree') !!}
-                            {!! Form::text('education[degree][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                        <div class="form-group mb-2">
+                            {!! Form::label('school[degree][]', 'Degree *') !!}
+                            {!! Form::text('school[degree][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 
+                            'placeholder'=>'Eg : Bachelors, Masters']) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white validation_error d-none school_degree_0"></span>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            {!! Form::label('education[field_of_study][]', 'Field of Study') !!}
-                            {!! Form::text('education[field_of_study][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::label('school[field_of_study][]', 'Field of Study *') !!}
+                            {!! Form::text('school[field_of_study][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 
+                            'placeholder'=>'Eg : Bsc.CSIT, Civil Engineering']) !!}
                         </div>
+                        <span class="bg-danger btn-sm text-white validation_error d-none school_field_of_study_0"></span>
                     </div>
                     
                     <div class="col-lg-3">
-                        <div class="form-group disabled">
-                            {!! Form::label('education[start_year][]', 'Start Year') !!}
-                            {!! Form::month('education[start_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+                        <div class="form-group mb-2">
+                            {!! Form::label('school[start_year][]', 'Start Year *') !!}
+                            {!! Form::month('school[start_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
-                        
+                        <span class="bg-danger btn-sm text-white validation_error d-none school_start_year_0"></span>
                     </div>
                     
                     <div class="col-lg-3">
-                        <div class="form-group disabled">
-                            {!! Form::label('education[end_year][]', 'End Year (or expected)') !!}
-                            {!! Form::month('education[end_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
-                        </div>                        
+                        <div class="form-group mb-2">
+                            {!! Form::label('school[end_year][]', 'End Year (or expected) *') !!}
+                            {!! Form::month('school[end_year][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
+                        </div>       
+                        <span class="bg-danger btn-sm text-white validation_error d-none school_end_year_0"></span>                 
                     </div>
                     
                     <div class="col-md-8">
-                        <div class="form-group disabled">
-                            {!! Form::label('education[achievements][]', 'Achievements')!!}
-                            {!! Form::textarea('education[achievements][]', null,['class'=>'form-control tiny_mce']) !!}
+                        <div class="form-group ">
+                            {!! Form::label('school[achievements][]', 'Achievements')!!}
+                            {!! Form::textarea('school[achievements][]', null,['class'=>'form-control tiny_mce']) !!}
                         </div>
                     </div>
                     
