@@ -6,6 +6,9 @@ namespace App\Logic\Resume;
 use App\Resume;
 use App\Traits\DBUtils;
 use App\Traits\ValidateUtils;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ResumeBuilder
 {
@@ -13,29 +16,47 @@ class ResumeBuilder
     use DBUtils;
     use ValidateUtils;
 
+    private $filename = null;
+
+    public function __construct()
+    {
+        $this->filename = basename(__FILE__);
+    }
+
     /**
      * Entry function
      * Function to populate the resume data into database
      *
      * @param Array $data Input from resume builder UI.
-     * @return type
+     * @return boolean True if success,else false
      **/
     public function buildResume(array $data)
     {
         try {
-            // Insert into resume_collects
             $resume_id = $this->insertToCollects($data);
+            if (is_null($resume_id)) {
+                throw new Exception("Error while populating collects info to DB.");
+            }
 
-            // Insert into resume_users
-            $this->insertUserInfo($data, $resume_id);
+            DB::transaction(function () use ($data, $resume_id) {
+                // Insert into resume_collects
 
-            // Insert into resume_jobs
-            $this->insertUserJobs($data, $resume_id);
+                // Insert into resume_users
+                $this->insertUserInfo($data, $resume_id);
 
-            // Insert into resume_education
-            $this->insertUserEducation($data, $resume_id);
-        } catch (\Exception $e) {
-            return $e->getMessage();
+                // Insert into resume_jobs
+                $this->insertUserJobs($data, $resume_id);
+
+                // // Insert into resume_education
+                // $this->insertUserEducation($data, $resume_id);
+            });
+        } catch (Exception $e) {
+            Log::error('Failed building resume.', [
+                'File' => $this->filename,
+                'Line' => $e->getLine(),
+                'Message' => $e->getMessage()
+            ]);
+            return False;
         }
     }
 
@@ -58,16 +79,22 @@ class ResumeBuilder
      * Populate the collect info into database
      * stores UUID and user email
      *
-     * @param Type $var Description
-     * @return int $resume_id primary key used in all other table
-     * @throws conditon
+     * @param Array $data Array of form inputs
+     * @return int $resume_id,  primary key used in all other table
      **/
     public function insertToCollects(array $data)
     {
-        Resume::create([
-            'uuid'=>'',
-            
-        ])
+        try {
+            $collect_id = Resume::create([
+                'uuid' => uniqid() . '_' . date('Y-M-d'),
+                'email' => $data['email'],
+                'message' => 'Begin processing.'
+            ]);
+            return $collect_id->id;
+        } catch (\Throwable $e) {
+            Log::error("Could not insert to collects.");
+            throw $e;
+        }
     }
 
 
@@ -81,7 +108,24 @@ class ResumeBuilder
      **/
     public function insertUserInfo(array $data, int $resume_id)
     {
-        # code...
+        try {
+            $idd = DB::table('resume_users')->insert([
+                "resume_id" => $resume_id,
+                "r_user_fname" => $data['first_name'],
+                "r_user_lname" => $data['last_name'],
+                "city" => $data['city'],
+                "state_province" => $data['state_province'],
+                "zip" => $data['zip'],
+                "phone" => $data['phone'],
+                "email" => $data['email'],
+                "skills" => $data['skills'],
+                "summary" => $data['user_summary'],
+                "is_deleted" => 'f'
+            ]);
+        } catch (\Throwable $th) {
+            Log::debug("Error while populating users info to database.");
+            throw $th;
+        }
     }
 
     /**
