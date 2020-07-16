@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateResumeCollectsTable extends Migration
 {
@@ -17,9 +18,10 @@ class CreateResumeCollectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('uuid', 30);
             $table->string('email')->index();
-            $table->boolean('status');
+            $table->string('status')->nullable();
             $table->string('message');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

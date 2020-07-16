@@ -16,8 +16,6 @@ class AlterTableResumeCollects extends Migration
         Schema::table('resume_collects', function (Blueprint $table) {
             $table->string('uuid', 40)->change();
             $table->index('uuid');
-            $table->boolean('status')->nullable()->change();
-            $table->string('message')->nullable()->change();
         });
     }
 
@@ -29,8 +27,7 @@ class AlterTableResumeCollects extends Migration
     public function down()
     {
         Schema::table('resume_collects', function (Blueprint $table) {
-            $table->boolean('status')->nullable(false)->change();
-            $table->string('message')->nullable(false)->change();
+            $table->dropIndex('uuid');
         });
     }
 }

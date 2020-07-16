@@ -15,7 +15,7 @@ class CreateResumeJobsTable extends Migration
     {
         Schema::create('resume_jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('resume_id');
+            $table->unsignedBigInteger('resume_id')->index();
             $table->string('job_title');
             $table->string('job_employer');
             $table->string('job_city')->nullable();
@@ -23,7 +23,8 @@ class CreateResumeJobsTable extends Migration
             $table->date('job_end_date')->nullable();
             $table->text('job_details')->nullable();
             $table->boolean('is_deleted')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
             $table->foreign('resume_id')->references('id')->on('resume_collects');
         });
     }

@@ -15,7 +15,7 @@ class CreateResumeUsersTable extends Migration
     {
         Schema::create('resume_users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('resume_id');
+            $table->unsignedBigInteger('resume_id')->index();
             $table->string('r_user_fname');
             $table->string('r_user_lname');
             $table->string('r_user_avatar')->nullable();
@@ -27,7 +27,8 @@ class CreateResumeUsersTable extends Migration
             $table->text('skills');
             $table->text('summary');
             $table->boolean('is_deleted');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
 
             $table->foreign('resume_id')->references('id')->on('resume_collects');
         });

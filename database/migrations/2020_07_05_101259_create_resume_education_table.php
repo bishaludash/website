@@ -15,7 +15,7 @@ class CreateResumeEducationTable extends Migration
     {
         Schema::create('resume_education', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('resume_id');
+            $table->unsignedBigInteger('resume_id')->index();
             $table->string('school_name');
             $table->string('school_location');
             $table->string('degree')->nullable();
@@ -25,7 +25,8 @@ class CreateResumeEducationTable extends Migration
             $table->text('achievements')->nullable();
             $table->boolean('is_deleted')->nullable();
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
             $table->foreign('resume_id')->references('id')->on('resume_collects');
         });
     }

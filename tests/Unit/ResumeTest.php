@@ -37,7 +37,7 @@ class ResumeTest extends TestCase
             "zip" =>  $this->faker->postcode(),
             "phone" =>  $this->faker->phoneNumber(),
             "email" =>  $this->faker->safeEmail(),
-            "skills" =>  $this->faker->randomLetter(),
+            "skills" =>  $this->faker->sentence(),
             "user_summary" =>  $this->faker->paragraph($nbSentences = 5, $variableNbSentences = true),
             "job" => [
                 "title" => [$this->faker->jobTitle(), $this->faker->jobTitle(), $this->faker->jobTitle()],
@@ -48,7 +48,7 @@ class ResumeTest extends TestCase
                     $this->faker->dateTime($max = 'now', $timezone = null),
                     null
                 ],
-                "end_date" =>  [null, null, null],
+                "end_date" =>  [null, $this->faker->dateTime($max = 'now', $timezone = null), null],
                 "job_details" =>  [
                     $this->faker->text($maxNbChars = 200),
                     $this->faker->text($maxNbChars = 200),
@@ -56,13 +56,34 @@ class ResumeTest extends TestCase
                 ],
             ],
             "education" =>  [
-                "school_name" =>  [$this->faker->company()],
-                "school_location" =>  [$this->faker->streetName()],
-                "degree" =>  [$this->faker->word()],
-                "field_of_stydy" =>  [$this->faker->jobTitle()],
-                "start_year" =>  [$this->faker->dateTime($max = 'now', $timezone = null)],
-                "end_year" =>  [$this->faker->dateTime($max = 'now', $timezone = null)],
-                "achievements" =>  [$this->faker->paragraphs($nb = 3, $asText = false)],
+                "school_name" =>  [
+                    $this->faker->company(),
+                    $this->faker->company()
+                ],
+                "school_location" =>  [
+                    $this->faker->streetName(),
+                    $this->faker->streetName()
+                ],
+                "degree" =>  [
+                    $this->faker->word(),
+                    $this->faker->word()
+                ],
+                "field_of_study" =>  [
+                    $this->faker->jobTitle(),
+                    $this->faker->jobTitle()
+                ],
+                "start_year" =>  [
+                    $this->faker->dateTime($max = 'now', $timezone = null),
+                    $this->faker->dateTime($max = 'now', $timezone = null)
+                ],
+                "end_year" =>  [
+                    $this->faker->dateTime($max = 'now', $timezone = null),
+                    null
+                ],
+                "achievements" =>  [
+                    $this->faker->paragraph($nbSentences = 5, $variableNbSentences = true),
+                    $this->faker->paragraph($nbSentences = 5, $variableNbSentences = true)
+                ]
             ]
         ];
     }

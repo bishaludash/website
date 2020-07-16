@@ -6,6 +6,7 @@ namespace App\Logic\Resume;
 use App\Resume;
 use App\Traits\DBUtils;
 use App\Traits\ValidateUtils;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -33,7 +34,9 @@ class ResumeBuilder
     public function buildResume(array $data)
     {
         try {
-            $resume_id = $this->insertToCollects($data);
+            Log::debug("Begin populating resume data into database.");
+            $collect_resume = $this->insertToCollects($data);
+            $resume_id = $collect_resume->id;
             if (is_null($resume_id)) {
                 throw new Exception("Error while populating collects info to DB.");
             }
@@ -48,9 +51,14 @@ class ResumeBuilder
                 $this->insertUserJobs($data, $resume_id);
 
                 // // Insert into resume_education
-                // $this->insertUserEducation($data, $resume_id);
+                $this->insertUserEducation($data, $resume_id);
             });
+
+            Log::debug("Resume data populated successfully.");
         } catch (Exception $e) {
+            Log::debug("Updating collects status as failed.");
+            $collect_resume->update(['status' => 'Fail', 'message' => 'Failed building resume.']);
+
             Log::error('Failed building resume.', [
                 'File' => $this->filename,
                 'Line' => $e->getLine(),
@@ -69,6 +77,7 @@ class ResumeBuilder
      **/
     public function validateInput(array $data)
     {
+        Log::debug('Validating data before populating database.');
         $validation_error = $this->validate_input($data, $this->validate_rules, $this->validate_message);
         if (!is_null($validation_error) || !empty($validation_error)) {
             return $validation_error;
@@ -85,31 +94,31 @@ class ResumeBuilder
     public function insertToCollects(array $data)
     {
         try {
-            $collect_id = Resume::create([
+            Log::debug('Insert into collects table.');
+            $collect_data = Resume::create([
                 'uuid' => uniqid() . '_' . date('Y-M-d'),
                 'email' => $data['email'],
                 'message' => 'Begin processing.'
             ]);
-            return $collect_id->id;
-        } catch (\Throwable $e) {
+
+            return $collect_data;
+        } catch (Exception $e) {
             Log::error("Could not insert to collects.");
             throw $e;
         }
     }
-
 
     /**
      * Populate the user info into database
      *
      * @param array $data Description
      * @param int $resume_id Description
-     * @return boolean [true, false] 
-     * @throws conditon
      **/
     public function insertUserInfo(array $data, int $resume_id)
     {
         try {
-            $idd = DB::table('resume_users')->insert([
+            Log::debug('Begin populating user information into database.');
+            $status = DB::table('resume_users')->insert([
                 "resume_id" => $resume_id,
                 "r_user_fname" => $data['first_name'],
                 "r_user_lname" => $data['last_name'],
@@ -122,23 +131,56 @@ class ResumeBuilder
                 "summary" => $data['user_summary'],
                 "is_deleted" => 'f'
             ]);
-        } catch (\Throwable $th) {
-            Log::debug("Error while populating users info to database.");
-            throw $th;
+
+            if ($status) {
+                Log::debug("User info populated successfully.");
+            }
+        } catch (Exception $e) {
+            Log::error("Error while populating users info to database.");
+            throw $e;
         }
     }
 
     /**
      *  Populate the user jobs into database
      *
-     * @param array $data Description
-     * @param int $resume_id Description
-     * @return boolean [true, false] 
-     * @throws conditon
+     * @param array $data array containing jobs details
+     * @param int $resume_id Collects resume id
+     * @throws exception
      **/
     public function insertUserJobs(array $data, int $resume_id)
     {
-        # code...
+        try {
+            Log::debug('Begin populating resume jobs into database.');
+            // try to flattern the data
+            $data = $data['job'];
+            $job_count = count($data['title']);
+
+            $batch = [];
+            for ($i = 0; $i < $job_count; $i++) {
+                $job = [];
+                foreach ($data as $key => $value) {
+                    if (($key == 'start_date' || $key == 'end_date') && !is_null($data[$key][$i])) {
+                        $data[$key][$i] = Carbon::parse($data[$key][$i], 'd-m-y')->format('Y-m-d');
+                    }
+                    //rename key : add job_ prefix
+                    $nkey = $key != 'job_details' ? 'job_' . $key : $key;
+                    $job[$nkey] = $data[$key][$i];
+                    $job['resume_id'] = $resume_id;
+                    $job['is_deleted'] = false;
+                }
+                array_push($batch, $job);
+            }
+
+            // bulk insert
+            $status = DB::table('resume_jobs')->insert($batch);
+            if ($status) {
+                Log::debug('Resume jobs populated sucesfully.');
+            }
+        } catch (Exception $e) {
+            Log::error("Error while populating jobs info to database.");
+            throw $e;
+        }
     }
 
     /**
@@ -149,9 +191,45 @@ class ResumeBuilder
      * @return boolean [true, false] 
      * @throws conditon
      **/
-    public function insertUserEducation(array $data)
+    public function insertUserEducation(array $data, int $resume_id)
     {
-        # code...
+        try {
+            Log::debug('Begin populating resume education into database.');
+            // try to flattern the data
+            $data = $data['education'];
+            $edu_count = count($data['school_name']);
+
+            $batch = [];
+            for ($i = 0; $i < $edu_count; $i++) {
+                $edu = [];
+                foreach ($data as $key => $value) {
+                    if (($key == 'start_year' || $key == 'end_year') && !is_null($data[$key][$i])) {
+                        $data[$key][$i] = Carbon::parse($data[$key][$i], 'd-m-y')->format('Y-m-d');
+                    }
+                    //rename key : change date column
+                    $nkey = $key;
+                    if ($key == 'start_year') {
+                        $nkey = 'edu_start_date';
+                    } elseif ($key == 'end_year') {
+                        $nkey = 'edu_end_date';
+                    }
+                    $edu[$nkey] = $data[$key][$i];
+                    $edu['resume_id'] = $resume_id;
+                    $edu['is_deleted'] = false;
+                }
+                array_push($batch, $edu);
+            }
+
+            // bulk insert
+            // dd($batch);
+            $status = DB::table('resume_education')->insert($batch);
+            if ($status) {
+                Log::debug('Resume education populated sucesfully.');
+            }
+        } catch (Exception $e) {
+            Log::error("Error while populating education info to database.");
+            throw $e;
+        }
     }
 
     private $validate_rules = [
