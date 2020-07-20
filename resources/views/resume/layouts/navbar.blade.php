@@ -1,4 +1,4 @@
-<div class="resume-nav mb-4">
+<div class="resume-nav">
 	<div class="container">
 		{{-- Navbar --}}
 		<div class="nav-scroller py-1 m-2">

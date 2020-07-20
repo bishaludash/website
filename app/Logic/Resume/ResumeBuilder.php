@@ -55,6 +55,8 @@ class ResumeBuilder
             });
 
             Log::debug("Resume data populated successfully.");
+            $collect_resume->update(['status' => 'Success', 'message' => 'Resume build successfully.']);
+            return true;
         } catch (Exception $e) {
             Log::debug("Updating collects status as failed.");
             $collect_resume->update(['status' => 'Fail', 'message' => 'Failed building resume.']);
@@ -80,6 +82,7 @@ class ResumeBuilder
         Log::debug('Validating data before populating database.');
         $validation_error = $this->validate_input($data, $this->validate_rules, $this->validate_message);
         if (!is_null($validation_error) || !empty($validation_error)) {
+            Log::error('Validating failed.');
             return $validation_error;
         }
     }
@@ -155,14 +158,10 @@ class ResumeBuilder
             // try to flattern the data
             $data = $data['job'];
             $job_count = count($data['title']);
-
             $batch = [];
             for ($i = 0; $i < $job_count; $i++) {
                 $job = [];
                 foreach ($data as $key => $value) {
-                    if (($key == 'start_date' || $key == 'end_date') && !is_null($data[$key][$i])) {
-                        $data[$key][$i] = Carbon::parse($data[$key][$i], 'd-m-y')->format('Y-m-d');
-                    }
                     //rename key : add job_ prefix
                     $nkey = $key != 'job_details' ? 'job_' . $key : $key;
                     $job[$nkey] = $data[$key][$i];
@@ -196,22 +195,21 @@ class ResumeBuilder
         try {
             Log::debug('Begin populating resume education into database.');
             // try to flattern the data
-            $data = $data['education'];
-            $edu_count = count($data['school_name']);
+            $data = $data['school'];
+            $edu_count = count($data['name']);
 
             $batch = [];
             for ($i = 0; $i < $edu_count; $i++) {
                 $edu = [];
                 foreach ($data as $key => $value) {
-                    if (($key == 'start_year' || $key == 'end_year') && !is_null($data[$key][$i])) {
-                        $data[$key][$i] = Carbon::parse($data[$key][$i], 'd-m-y')->format('Y-m-d');
-                    }
+
                     //rename key : change date column
                     $nkey = $key;
-                    if ($key == 'start_year') {
-                        $nkey = 'edu_start_date';
-                    } elseif ($key == 'end_year') {
-                        $nkey = 'edu_end_date';
+                    if (in_array($key, ['start_year', 'end_year'])) {
+                        $nkey = 'edu_' . $key;
+                        $data[$key][$i] = Carbon::parse($data[$key][$i])->format('Y-M');
+                    } elseif (in_array($key, ['name', 'location'])) {
+                        $nkey = 'school_' . $key;
                     }
                     $edu[$nkey] = $data[$key][$i];
                     $edu['resume_id'] = $resume_id;
@@ -219,9 +217,7 @@ class ResumeBuilder
                 }
                 array_push($batch, $edu);
             }
-
             // bulk insert
-            // dd($batch);
             $status = DB::table('resume_education')->insert($batch);
             if ($status) {
                 Log::debug('Resume education populated sucesfully.');

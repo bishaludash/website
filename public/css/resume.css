@@ -36,3 +36,7 @@
 	position: sticky;
 	top: 15px;
 }
+
+.close-alert{
+	cursor: pointer;
+}

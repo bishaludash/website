@@ -39,12 +39,19 @@ class ResumeController extends Controller
 		$obj = new ResumeBuilder();
 
 		// validate input data and if any error found raise exception
-		$validation_error = $obj->validateInput($input);
-		if (!is_null($validation_error) || !empty($validation_error)) {
-			return $validation_error;
-		}
+		// $validation_error = $obj->validateInput($input);
+		// if (!is_null($validation_error) || !empty($validation_error)) {
+		// 	return $validation_error;
+		// }
 		// Insert Resume details to DB
 		$status =  $obj->buildResume($input);
+		if ($status) {
+			return [
+				'status' => 'pass',
+				'errors' => 'Resume build successfully.',
+				'url' => route('resume.home')
+			];
+		}
 	}
 
 	/**

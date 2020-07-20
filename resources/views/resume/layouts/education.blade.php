@@ -13,14 +13,14 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
                             {!! Form::label('school[name][]', 'School Name *') !!}
-                            {!! Form::text('school[name][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('school[name][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white validation_error d-none school_name_0"></span>
                     </div>	
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
                             {!! Form::label('school[location][]', 'School Location *') !!}
-                            {!! Form::text('school[location][]', null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('school[location][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white validation_error d-none school_location_0"></span>
                     </div>								

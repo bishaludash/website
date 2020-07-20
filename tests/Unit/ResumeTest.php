@@ -14,17 +14,16 @@ class ResumeTest extends TestCase
     public function ResumeGenerator()
     {
         // when json is passed
-        // $input = json_decode('{"_token":"0pG2ULjfKoqpWKrzG9mfL6DqDhVqSKbGJwzkb0dZ","first_name":null,"last_name":null,"city":null,"state_province":null,"zip":null,"phone":null,"email":null,"job":{"title":[null],"employer":[null],"city":[null],"start_date":[null],"end_date":[null],"job_details":[null]},"education":{"school_name":[null],"school_location":[null],"degree":[null],"field_of_stydy":[null],"start_year":[null],"end_year":[null],"achievements":[null]},"skills":null,"user_summary":null}', true);
+        $input = json_decode('{"first_name":"Bishal ","last_name":"Udash","_token":"e8U4i23iVV4K3ky1NYeLANRi4YorwDRVGV4B66Uh","city":"Lalitpur","email":"test@test.com","skills":"<p>drawing, coding</p>","state_province":"3","user_summary":"<p>I am a tall guy.</p>","zip":"44600","job":{"city":["lalitpur"],"employer":["IT company"],"end_date":["2020-07-18"],"job_details":["bugs fixes"],"start_date":["2019-02-18"],"title":["Dev"]},"phone":"9845612420","school":{"achievements":["some score"],"degree":["Bachelor"],"end_year":["2017-11"],"field_of_study":["BSc.CSIT"],"location":["Gwarkhoo"],"name":["Academia"],"start_year":["2013-11"]}}', true);
 
         $obj = new ResumeBuilder();
-        $input = $this->generateInputWithFaker();
+        // $input = $this->generateInputWithFaker();
         $errors = $obj->validateInput($input);
         if (!is_null($errors)) {
             dd($errors);
         }
         $result = $obj->buildResume($input);
-        // dd($result);
-        $this->assertEquals('hello', $result);
+        $this->assertEquals(true, $result);
     }
 
     public function generateInputWithFaker()
@@ -44,8 +43,8 @@ class ResumeTest extends TestCase
                 "employer" =>  [$this->faker->company(), $this->faker->company(), $this->faker->company()],
                 "city" =>  [$this->faker->city(), null, $this->faker->city()],
                 "start_date" =>  [
-                    $this->faker->dateTime($max = 'now', $timezone = null),
-                    $this->faker->dateTime($max = 'now', $timezone = null),
+                    date('Y-m-d'),
+                    date('Y-m-d'),
                     null
                 ],
                 "end_date" =>  [null, $this->faker->dateTime($max = 'now', $timezone = null), null],
@@ -55,12 +54,12 @@ class ResumeTest extends TestCase
                     $this->faker->text($maxNbChars = 200)
                 ],
             ],
-            "education" =>  [
-                "school_name" =>  [
+            "school" =>  [
+                "name" =>  [
                     $this->faker->company(),
                     $this->faker->company()
                 ],
-                "school_location" =>  [
+                "location" =>  [
                     $this->faker->streetName(),
                     $this->faker->streetName()
                 ],
@@ -73,12 +72,12 @@ class ResumeTest extends TestCase
                     $this->faker->jobTitle()
                 ],
                 "start_year" =>  [
-                    $this->faker->dateTime($max = 'now', $timezone = null),
-                    $this->faker->dateTime($max = 'now', $timezone = null)
+                    date('Y-m'),
+                    date('Y-m')
                 ],
                 "end_year" =>  [
-                    $this->faker->dateTime($max = 'now', $timezone = null),
-                    null
+                    date('Y-m'),
+                    date('Y-m'),
                 ],
                 "achievements" =>  [
                     $this->faker->paragraph($nbSentences = 5, $variableNbSentences = true),

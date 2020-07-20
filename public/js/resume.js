@@ -52,7 +52,6 @@ $(document).ready(function () {
             return false;
         }
         edu_count += 1;
-        console.log(edu_count);
 
         // Check TinyMCE is initialized or not
         if (tinyMCE.get('school[achievements][]')) {
@@ -155,10 +154,15 @@ $(document).ready(function () {
         jobs_count -= 1;
     })
 
+    // close alert
+    $(document).on('click', '.close-alert', function () {
+        $('.alert-box').removeClass('visible').addClass('invisible');
+    });
 
 
     // Handle ajax requests
-    $('.resume-builder-form').submit(function (e) {
+    var result = {};
+    $(document).on('submit', '.resume-builder-form', function (e) {
         e.preventDefault();
         var url = $(this).attr('action');
         var current_form = $(this);
@@ -166,7 +170,7 @@ $(document).ready(function () {
 
         // transform the form data into required json object
         transformData(request_data);
-        console.log(request_data)
+        console.log(JSON.stringify(request_data));
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': request_data._token
@@ -179,12 +183,18 @@ $(document).ready(function () {
             data: JSON.stringify(request_data),
             contentType: "json",
             success: function (response) {
+                var request_data = {};
                 console.log(response);
                 $('.validation_error').addClass('d-none');
                 if (response.status === 'pass') {
+                    $('.alert-box').removeClass('visible').addClass('invisible');
+                    $('.flash-message').text("");
+                    window.location = response.url;
 
                 }
                 if (response.status === 'fail') {
+                    $('.alert-box').removeClass('invisible').addClass('visible');
+                    $('.flash-message').text("Validation failed in section : ");
                     for (var key in response.errors) {
                         var error_message = response.errors[key];
                         if (key.includes('.')) {
@@ -219,8 +229,7 @@ $(document).ready(function () {
             "city": getFormInput('job[city][]'),
             "start_date": getFormInput('job[start_date][]'),
             "end_date": getFormInput('job[end_date][]'),
-            "job_details": getFormInput('job[job_details][]')
-
+            "job_details": getFormTextarea('job[job_details][]')
         }
 
         request_data.school = {
@@ -230,13 +239,20 @@ $(document).ready(function () {
             "field_of_study": getFormInput('school[field_of_study][]'),
             "start_year": getFormInput('school[start_year][]'),
             "end_year": getFormInput('school[end_year][]'),
-            "achievements": getFormInput('school[achievements][]'),
-
+            "achievements": getFormTextarea('school[achievements][]'),
         }
     }
 
     function getFormInput(field) {
         let res = $(`input[name='${field}']`).map(function () {
+            return this.value;
+        }).get();
+        return res;
+    }
+
+    function getFormTextarea(field) {
+
+        let res = $(`textarea[name='${field}']`).map(function () {
             return this.value;
         }).get();
         return res;
