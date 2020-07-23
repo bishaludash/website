@@ -26,26 +26,26 @@ Route::get('about', 'FE\HomeController@aboutUser')->name('home.about');
 Route::get('projects', 'FE\HomeController@projects')->name('home.projects');
 
 // FE 
-    // Blog
-    Route::get('/blog', 'FE\BlogController@index')->name('blog.home');
-    Route::get('/blog/{month}/{year}', 'FE\BlogController@getArchive')->name('blog.archive');
+// Blog
+Route::get('/blog', 'FE\BlogController@index')->name('blog.home');
+Route::get('/blog/{month}/{year}', 'FE\BlogController@getArchive')->name('blog.archive');
 
-    // posts
-    Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
-    Route::post('/post/{post}/comment', 'FE\BlogController@show');
-    Route::post('search/post', 'FE\BlogController@searchPostView')->name('post.search');
+// posts
+Route::get('/post/{post}', 'FE\BlogController@show')->name('post.show');
+Route::post('/post/{post}/comment', 'FE\BlogController@show');
+Route::post('search/post', 'FE\BlogController@searchPostView')->name('post.search');
 
-    // categories
-    Route::get('/category/{category}', 'FE\CategoryController@index', ['except'=>['create','show']])->name('cat.show');
+// categories
+Route::get('/category/{category}', 'FE\CategoryController@index', ['except' => ['create', 'show']])->name('cat.show');
 
 // BE (middleware)
-Route::group(['middleware' => ['checkAuth'], 'prefix'=>'dashboard'], function () {
+Route::group(['middleware' => ['checkAuth'], 'prefix' => 'dashboard'], function () {
     Route::get('/', 'BE\DashboardController@index')->name('dashboard.home');
     Route::get('about-user/{user}', 'BE\AboutUserController@aboutUser')->name('about.user');
     Route::post('about-user/{user}', 'BE\AboutUserController@updateAboutUser');
 
 
-    Route::resource('category', 'BE\CategoryController', ['except'=>['create','show']]);
+    Route::resource('category', 'BE\CategoryController', ['except' => ['create', 'show']]);
     Route::get('category/{category}/delete', 'BE\CategoryController@delete')->name('category.delete');
 
     Route::resource('posts', 'BE\PostController');
@@ -56,18 +56,20 @@ Route::group(['middleware' => ['checkAuth'], 'prefix'=>'dashboard'], function ()
     Route::resource('projects', 'BE\ProjectsController');
     Route::get('projects/{project}/delete', 'BE\ProjectsController@delete')->name('projects.delete');
 
-    Route::resource('filemanager', 'BE\FileController', ['except'=>['create','store', 'edit', 'update','destroy']]);
+    Route::resource('filemanager', 'BE\FileController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
     Route::get('filemanager/{file}/delete', 'BE\FileController@delete')->name('file.delete');
     Route::post('filemanager/destroy', 'BE\FileController@destroy')->name('file.destroy');
 });
 
-// \DB::listen(function($sql) {
-//     \Log::info($sql->sql);
-// });
 
 
 // Resume Maker
-Route::get('resume-builder', 'Resume\ResumeController@index')->name('resume.home');
-Route::get('resume-builder/build', 'Resume\ResumeController@build')->name('resume.build');
-Route::post('resume-builder/build', 'Resume\ResumeController@saveBuild')->name('resume.save');
-Route::get('resume-generate', 'Resume\ResumeController@generate');
+Route::group(['namespace' => 'Resume'], function () {
+    Route::get('resume-builder', 'ResumeController@index')->name('resume.home');
+    Route::get('resume-builder/build', 'ResumeController@build')->name('resume.build');
+    Route::post('resume-builder/build', 'ResumeController@saveBuild')->name('resume.save');
+    Route::get('resume-builder/theme', 'ResumeController@showThemes')->name('resume.theme');
+    Route::get('resume-builder/theme/{theme}', 'ResumeController@pickTheme')->name('pick.theme');
+    Route::get('resume-builder/search', 'ResumeController@searchGeneratedResume')->name('resume.search');
+    Route::get('resume-generate', 'ResumeController@generate')->name('resume.generate');
+});

@@ -123,7 +123,7 @@ $(document).ready(function () {
     $(document).on('click', '.custom-control-label', function () {
         $(this).parent().parent().find('.form-control').attr('disabled', function (index, attr = false) {
             return attr == false ? true : false;
-        });
+        }).val(null);
     });
 
     // Delete the added Education block
@@ -157,6 +157,7 @@ $(document).ready(function () {
     // close alert
     $(document).on('click', '.close-alert', function () {
         $('.alert-box').removeClass('visible').addClass('invisible');
+        $('.flash-message').text('');
     });
 
 
@@ -187,14 +188,12 @@ $(document).ready(function () {
                 console.log(response);
                 $('.validation_error').addClass('d-none');
                 if (response.status === 'pass') {
-                    $('.alert-box').removeClass('visible').addClass('invisible');
-                    $('.flash-message').text("");
                     window.location = response.url;
 
                 }
                 if (response.status === 'fail') {
                     $('.alert-box').removeClass('invisible').addClass('visible');
-                    $('.flash-message').text("Validation failed in section : ");
+                    $('.flash-message').text("Validation failed.");
                     for (var key in response.errors) {
                         var error_message = response.errors[key];
                         if (key.includes('.')) {

@@ -2,7 +2,7 @@
 
 {{-- Title --}}
 @section('title')
-{{env('APP_NAME')}} | Resume Builder
+{{env('APP_NAME')}} | Pick themes
 @endsection
 
 @section('blog-css')
@@ -16,7 +16,7 @@
 
 @section('posts')
 <div class=" min-view-height">
-	@include('resume.details')
+    @include('resume.themes.themelist')
 </div>
 
 @endsection

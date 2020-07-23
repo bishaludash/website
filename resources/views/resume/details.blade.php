@@ -63,7 +63,7 @@
 	<div class="row my-5">
 		<div class="col-lg-12 text-center display-4 mb-5">Featured Template</div>
 		<div class="col-lg-4 ">
-			<h1 class="text-warning" style="padding-top:30%; ">Modern</h1>
+			<h1 class="text-warning" style="padding-top:30%; ">Standard</h1>
 			A clean style for those who prefer a striking design without a lot of distractions
 		</div>
 		<div class="col-lg-8 py-3" style="background: #f2f1f0">

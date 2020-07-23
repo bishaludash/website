@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Log;
 class ResumeBuilder
 {
 
-    use DBUtils;
-    use ValidateUtils;
-
+    use DBUtils, ValidateUtils;
     private $filename = null;
 
     public function __construct()
@@ -29,7 +27,7 @@ class ResumeBuilder
      * Function to populate the resume data into database
      *
      * @param Array $data Input from resume builder UI.
-     * @return boolean True if success,else false
+     * @return boolean resume id if success,else null
      **/
     public function buildResume(array $data)
     {
@@ -56,7 +54,7 @@ class ResumeBuilder
 
             Log::debug("Resume data populated successfully.");
             $collect_resume->update(['status' => 'Success', 'message' => 'Resume build successfully.']);
-            return true;
+            return $resume_id;
         } catch (Exception $e) {
             Log::debug("Updating collects status as failed.");
             $collect_resume->update(['status' => 'Fail', 'message' => 'Failed building resume.']);
@@ -66,7 +64,7 @@ class ResumeBuilder
                 'Line' => $e->getLine(),
                 'Message' => $e->getMessage()
             ]);
-            return False;
+            return null;
         }
     }
 
@@ -207,7 +205,7 @@ class ResumeBuilder
                     $nkey = $key;
                     if (in_array($key, ['start_year', 'end_year'])) {
                         $nkey = 'edu_' . $key;
-                        $data[$key][$i] = Carbon::parse($data[$key][$i])->format('Y-M');
+                        $data[$key][$i] = Carbon::parse($data[$key][$i])->format('M Y');
                     } elseif (in_array($key, ['name', 'location'])) {
                         $nkey = 'school_' . $key;
                     }
