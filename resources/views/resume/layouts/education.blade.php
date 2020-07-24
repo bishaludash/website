@@ -4,7 +4,7 @@
             Education
             <span class="float-right"><i class="ion-minus-circled"></i></span>
         </div>
-        <div class="text-danger">Great, let’s work on your education</div>
+        <div class="text-danger">Great, let’s work on your education. (Place your latest education at <strong>first</strong>)</div>
     </div>
     <div id="collapse-education" class="collapse show">	
         <div class="card-body">

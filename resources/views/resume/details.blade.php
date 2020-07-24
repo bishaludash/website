@@ -22,11 +22,12 @@
 					No freemium features
 				</li>
 			</ul>
-			<p>
 
 			</p>
-			<a href={{route('resume.build')}} class="btn btn-primary">Build your resume</a>
-			<a href="#" class="btn btn-outline-danger ml-2">Download your resume</a>
+			<div>
+				<a href={{route('resume.build')}} class="btn btn-primary mb-2 mr-2">Build your resume</a>
+				<a href="#" class="btn btn-outline-danger mb-2">Download your resume</a>
+			</div>
 
 		</div>
 		<div class="col-md-6">

@@ -38,13 +38,16 @@ class ResumeController extends Controller
 	/**
 	 * Function to process the user information, 
 	 * validate and populate database
+	 * 
+	 * This function is called via ajax.
 	 *
-	 * @return boolean [True, False]
+	 * @param Object form data in json. 
+	 * @return String UUID 
 	 * @author Bishal udash
 	 **/
 	public function saveBuild(Request $request)
 	{
-		Log::debug("Begin populating resume info into database.");
+		Log::debug("Begin entry function");
 		$input =  $request->json()->all();
 		$obj = new ResumeBuilder();
 
@@ -54,12 +57,12 @@ class ResumeController extends Controller
 			return $validation_error;
 		}
 		// Insert Resume details to DB
-		$resumeid =  $obj->buildResume($input);
-		if (!is_null($resumeid)) {
+		$resume_uuid =  $obj->buildResume($input);
+		if (!is_null($resume_uuid)) {
 			return [
 				'status' => 'pass',
 				'errors' => 'Resume build successfully.',
-				'url' => route('resume.theme', ['uuid' => $resumeid])
+				'url' => route('resume.theme', ['uuid' => $resume_uuid])
 			];
 		}
 	}

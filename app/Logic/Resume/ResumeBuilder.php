@@ -54,7 +54,7 @@ class ResumeBuilder
 
             Log::debug("Resume data populated successfully.");
             $collect_resume->update(['status' => 'Success', 'message' => 'Resume build successfully.']);
-            return $resume_id;
+            return $collect_resume['uuid'];
         } catch (Exception $e) {
             Log::debug("Updating collects status as failed.");
             $collect_resume->update(['status' => 'Fail', 'message' => 'Failed building resume.']);
@@ -83,6 +83,8 @@ class ResumeBuilder
             Log::error('Validating failed.');
             return $validation_error;
         }
+
+        Log::debug('Validation complete.');
     }
 
     /**
@@ -104,7 +106,11 @@ class ResumeBuilder
 
             return $collect_data;
         } catch (Exception $e) {
-            Log::error("Could not insert to collects.");
+            Log::error("Could not insert to collects.", [
+                'File' => $this->filename,
+                'Line' => $e->getLine(),
+                'Message' => $e->getMessage()
+            ]);
             throw $e;
         }
     }
@@ -118,7 +124,7 @@ class ResumeBuilder
     public function insertUserInfo(array $data, int $resume_id)
     {
         try {
-            Log::debug('Begin populating user information into database.');
+            Log::debug('Begin populating user information.');
             $status = DB::table('resume_users')->insert([
                 "resume_id" => $resume_id,
                 "r_user_fname" => $data['first_name'],
@@ -137,7 +143,11 @@ class ResumeBuilder
                 Log::debug("User info populated successfully.");
             }
         } catch (Exception $e) {
-            Log::error("Error while populating users info to database.");
+            Log::error("Error while populating users info.", [
+                'File' => $this->filename,
+                'Line' => $e->getLine(),
+                'Message' => $e->getMessage()
+            ]);
             throw $e;
         }
     }
@@ -152,7 +162,7 @@ class ResumeBuilder
     public function insertUserJobs(array $data, int $resume_id)
     {
         try {
-            Log::debug('Begin populating resume jobs into database.');
+            Log::debug('Begin populating resume jobs.');
             // try to flattern the data
             $data = $data['job'];
             $job_count = count($data['title']);
@@ -160,6 +170,10 @@ class ResumeBuilder
             for ($i = 0; $i < $job_count; $i++) {
                 $job = [];
                 foreach ($data as $key => $value) {
+                    // handle for I am currently working in this role
+                    if ($key == 'end_date') {
+                        $data[$key][$i] = $data[$key][$i] == "" ? null : $data[$key][$i];
+                    }
                     //rename key : add job_ prefix
                     $nkey = $key != 'job_details' ? 'job_' . $key : $key;
                     $job[$nkey] = $data[$key][$i];
@@ -168,14 +182,17 @@ class ResumeBuilder
                 }
                 array_push($batch, $job);
             }
-
             // bulk insert
             $status = DB::table('resume_jobs')->insert($batch);
             if ($status) {
                 Log::debug('Resume jobs populated sucesfully.');
             }
         } catch (Exception $e) {
-            Log::error("Error while populating jobs info to database.");
+            Log::error("Error while populating jobs info.", [
+                'File' => $this->filename,
+                'Line' => $e->getLine(),
+                'Message' => $e->getMessage()
+            ]);
             throw $e;
         }
     }
@@ -221,7 +238,11 @@ class ResumeBuilder
                 Log::debug('Resume education populated sucesfully.');
             }
         } catch (Exception $e) {
-            Log::error("Error while populating education info to database.");
+            Log::error("Error while populating education info to database.", [
+                'File' => $this->filename,
+                'Line' => $e->getLine(),
+                'Message' => $e->getMessage()
+            ]);
             throw $e;
         }
     }
