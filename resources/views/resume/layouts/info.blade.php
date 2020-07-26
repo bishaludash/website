@@ -15,7 +15,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
                             {!! Form::label('first_name', 'First Name *') !!}
-                            {!! Form::text('first_name', $resume['first_name'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('first_name', $resume['first_name'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error first_name">Some error</span>
                     </div>
@@ -23,7 +23,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
                             {!! Form::label('last_name', 'Last Name *') !!}
-                            {!! Form::text('last_name', $resume['last_name'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('last_name', $resume['last_name'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error last_name">Some error</span>
                     </div>
@@ -35,21 +35,21 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             {!! Form::label('city', 'City') !!}
-                            {!! Form::text('city',$resume['city'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('city',$resume['city'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                     </div>
                     
                     <div class="col-lg-4">
                         <div class="form-group">
                             {!! Form::label('state_province', 'State/Province') !!}
-                            {!! Form::text('state_province',$resume['state_province'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('state_province',$resume['state_province'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                     </div>
                     
                     <div class="col-lg-4">
                         <div class="form-group">
                             {!! Form::label('zip', 'Zip') !!}
-                            {!! Form::text('zip',$resume['zip'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('zip',$resume['zip'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
                             {!! Form::label('phone', 'Phone *') !!}
-                            {!! Form::text('phone',$resume['phone'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::text('phone',$resume['phone'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error phone"></span>
                     </div>
@@ -68,12 +68,14 @@
                     <div class="col-lg-6">
                         <div class="form-group mb-2">
                             {!! Form::label('email', 'Email *') !!}
-                            {!! Form::email('email',$resume['email'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off', 'maxlength'=>25]) !!}
+                            {!! Form::email('email',$resume['email'] ?? null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error email"></span>
                     </div>
                 </div>
             </div>
+
+            {!! Form::number('user_id', $resume['user_id'] ?? null, ['class'=>'form-control d-none', 'autocomplete'=>'off']) !!}            
             
         </div>
     </div>

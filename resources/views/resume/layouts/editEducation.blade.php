@@ -29,7 +29,7 @@
                 data-target="#exampleModal" data-backdrop="static" data-keyboard="false"
                 data-title="Delete School" data-displayname = '{{$item['school_name']}}'
                 data-url = {{route('resume.softDelete', 
-                ['resumeid'=>$resume['resume_id'], 'type'=>'edu-'.$item['id'], ])}}>
+                ['uuid'=>$uuid, 'type'=>'edu-'.$item['id'], ])}}>
                 Delete this block </span>
                 
                 <div class='edu-{{$item['id']}}'>

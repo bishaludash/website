@@ -169,6 +169,7 @@ $(document).ready(function () {
                 type: "GET",
                 url: url,
                 success: function (response) {
+                    console.log(response);
                     location.reload(true);
                 }
             })

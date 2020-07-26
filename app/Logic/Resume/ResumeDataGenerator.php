@@ -43,7 +43,7 @@ class  ResumeDataGenerator
 
 
             // fetch resume user, jobs, edu
-            $resume_user_query = "select id,resume_id, r_user_fname as first_name,r_user_lname as last_name, r_user_avatar as avatar,
+            $resume_user_query = "select id as user_id,resume_id, r_user_fname as first_name,r_user_lname as last_name, r_user_avatar as avatar,
                                     city, state_province, zip, phone, email, skills, summary as user_summary
                                     from resume_users where resume_id = :resumeid";
             $resume_data = $this->selectFirstQuery($resume_user_query, ['resumeid' => $resume_id]);

@@ -22,7 +22,7 @@ class ResumeEditController extends Controller
     {
         $themeObj = new ResumeDataGenerator();
         $resume = $themeObj->getUserResumeData($uuid);
-        return view('resume.editResume', compact(['resume']));
+        return view('resume.editResume', compact(['resume', 'uuid']));
     }
 
     /**
@@ -32,24 +32,27 @@ class ResumeEditController extends Controller
      * @param String $typeid Factor that points out which item to delete.
      * @return Boolean 0 or 1
      **/
-    public function softDeleteItem($resumeid, $typeid)
+    public function softDeleteItem($uuid, $typeid)
     {
         $updaterObj = new ResumeUpdater();
-        $res = $updaterObj->deleteItem($resumeid, $typeid);
+        $res = $updaterObj->deleteItem($uuid, $typeid);
+        // handle if null
         return $res;
     }
 
 
     /**
-     * Update the resume data
+     * POST Request : Update the resume data
      *
      * @param Int $resumeid Id of resume to be updated.
      * @return type
      **/
     public function updateResume(Request $request, $resumeid)
     {
-        $input =  $request->json()->all();
+        // $input =  $request->json()->all();
+        $input =  $request->all();
         $obj = new ResumeBuilder();
+
         // validate input data and if any error found raise exception
         $validation_error = $obj->validateInput($input);
         if (!is_null($validation_error) || !empty($validation_error)) {

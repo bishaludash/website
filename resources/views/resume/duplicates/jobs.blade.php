@@ -55,3 +55,5 @@
         
     </div>
 </div>
+
+{!! Form::number('job[id][]', $item['id'] ?? null, ['class'=>'form-control d-none', 'autocomplete'=>'off']) !!}    

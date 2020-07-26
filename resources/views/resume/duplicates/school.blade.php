@@ -42,7 +42,7 @@
     <div class="col-lg-3">
         <div class="form-group mb-2">
             {!! Form::label('school[start_year][]', 'Start Year *') !!}
-            {!! Form::month('school[start_year][]', $item['edu_start_year'] ?? null,
+            {!! Form::month('school[start_year][]', Carbon\Carbon::parse($item['edu_start_year']) ?? null,
             ['class'=>'form-control', 'autocomplete'=>'off']) !!}
         </div>
         <span class="bg-danger btn-sm text-white validation_error d-none school_start_year_0"></span>
@@ -51,7 +51,7 @@
     <div class="col-lg-3">
         <div class="form-group mb-2">
             {!! Form::label('school[end_year][]', 'End Year (or expected) *') !!}
-            {!! Form::month('school[end_year][]', $item['edu_end_year'] ?? null,
+            {!! Form::month('school[end_year][]', Carbon\Carbon::parse($item['edu_end_year']) ?? null,
             ['class'=>'form-control', 'autocomplete'=>'off']) !!}
         </div>
         <span class="bg-danger btn-sm text-white validation_error d-none school_end_year_0"></span>
@@ -65,3 +65,5 @@
     </div>
 
 </div>
+
+{!! Form::number('school[school_id][]', $item['id'] ?? null, ['class'=>'form-control d-none', 'autocomplete'=>'off']) !!}
