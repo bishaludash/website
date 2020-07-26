@@ -1,4 +1,5 @@
 <style>
+
     .section{
         margin: 10px 0;
     }
@@ -77,7 +78,7 @@
             <li>{{ sprintf("%s %s", $resume['first_name'], $resume['last_name'])  }}</li>
             <li>{{$resume['email']}}</li>
             <li>{{$resume['phone']}}</li>
-            <li>{{ sprintf("%s, %s", $resume['state_province'] ?? null, $resume['city']??null) }}</li>
+            <li style="text-transform: capitalize">{{ sprintf("%s, %s", $resume['state_province'] ?? null, $resume['city']??null) }}</li>
         </ul>
     </div>
 

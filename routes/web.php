@@ -70,6 +70,11 @@ Route::group(['namespace' => 'Resume'], function () {
     Route::post('resume-builder/build', 'ResumeController@saveBuild')->name('resume.save');
     Route::get('resume-builder/theme', 'ResumeController@showThemes')->name('resume.theme');
     Route::get('resume-builder/theme/{theme}', 'ResumeController@pickTheme')->name('pick.theme');
-    Route::get('resume-builder/search', 'ResumeController@searchGeneratedResume')->name('resume.search');
     Route::get('resume-generate', 'ResumeController@generate')->name('resume.generate');
+    Route::get('resume-builder/search', 'ResumeController@searchGeneratedResume')->name('resume.search');
+
+    // Resume Edit
+    Route::get('resume-builder/edit/{uuid}', 'ResumeEditController@showEditPage')->name('resume.edit');
+    Route::post('resume-builder/edit/{resumeid}', 'ResumeEditController@updateResume');
+    Route::get('resume-builder/{resumeid}/softDelete/{typeid}', 'ResumeEditController@softDeleteItem')->name('resume.softDelete');
 });

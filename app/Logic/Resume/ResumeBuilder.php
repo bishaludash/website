@@ -165,25 +165,10 @@ class ResumeBuilder
             Log::debug('Begin populating resume jobs.');
             // try to flattern the data
             $data = $data['job'];
-            $job_count = count($data['title']);
-            $batch = [];
-            for ($i = 0; $i < $job_count; $i++) {
-                $job = [];
-                foreach ($data as $key => $value) {
-                    // handle for I am currently working in this role
-                    if ($key == 'end_date') {
-                        $data[$key][$i] = $data[$key][$i] == "" ? null : $data[$key][$i];
-                    }
-                    //rename key : add job_ prefix
-                    $nkey = $key != 'job_details' ? 'job_' . $key : $key;
-                    $job[$nkey] = $data[$key][$i];
-                    $job['resume_id'] = $resume_id;
-                    $job['is_deleted'] = false;
-                }
-                array_push($batch, $job);
-            }
+            $batch_jobs = $this->transformJobsData($data, $resume_id);
+
             // bulk insert
-            $status = DB::table('resume_jobs')->insert($batch);
+            $status = DB::table('resume_jobs')->insert($batch_jobs);
             if ($status) {
                 Log::debug('Resume jobs populated sucesfully.');
             }
@@ -211,29 +196,10 @@ class ResumeBuilder
             Log::debug('Begin populating resume education into database.');
             // try to flattern the data
             $data = $data['school'];
-            $edu_count = count($data['name']);
+            $batch_data = $this->transformEducationData($data, $resume_id);
 
-            $batch = [];
-            for ($i = 0; $i < $edu_count; $i++) {
-                $edu = [];
-                foreach ($data as $key => $value) {
-
-                    //rename key : change date column
-                    $nkey = $key;
-                    if (in_array($key, ['start_year', 'end_year'])) {
-                        $nkey = 'edu_' . $key;
-                        $data[$key][$i] = Carbon::parse($data[$key][$i])->format('M Y');
-                    } elseif (in_array($key, ['name', 'location'])) {
-                        $nkey = 'school_' . $key;
-                    }
-                    $edu[$nkey] = $data[$key][$i];
-                    $edu['resume_id'] = $resume_id;
-                    $edu['is_deleted'] = false;
-                }
-                array_push($batch, $edu);
-            }
             // bulk insert
-            $status = DB::table('resume_education')->insert($batch);
+            $status = DB::table('resume_education')->insert($batch_data);
             if ($status) {
                 Log::debug('Resume education populated sucesfully.');
             }
@@ -245,6 +211,53 @@ class ResumeBuilder
             ]);
             throw $e;
         }
+    }
+
+    public function transformEducationData($data, $resume_id)
+    {
+        $edu_count = count($data['name']);
+        $batch = [];
+        for ($i = 0; $i < $edu_count; $i++) {
+            $edu = [];
+            foreach ($data as $key => $value) {
+
+                //rename key : change date column
+                $nkey = $key;
+                if (in_array($key, ['start_year', 'end_year'])) {
+                    $nkey = 'edu_' . $key;
+                    $data[$key][$i] = Carbon::parse($data[$key][$i])->format('M Y');
+                } elseif (in_array($key, ['name', 'location'])) {
+                    $nkey = 'school_' . $key;
+                }
+                $edu[$nkey] = $data[$key][$i];
+                $edu['resume_id'] = $resume_id;
+                $edu['is_deleted'] = false;
+            }
+            array_push($batch, $edu);
+        }
+        return $batch;
+    }
+
+    public function transformJobsData($data, $resume_id)
+    {
+        $job_count = count($data['title']);
+        $batch = [];
+        for ($i = 0; $i < $job_count; $i++) {
+            $job = [];
+            foreach ($data as $key => $value) {
+                // handle for I am currently working in this role
+                if ($key == 'end_date') {
+                    $data[$key][$i] = $data[$key][$i] == "" ? null : $data[$key][$i];
+                }
+                //rename key : add job_ prefix
+                $nkey = $key != 'job_details' ? 'job_' . $key : $key;
+                $job[$nkey] = $data[$key][$i];
+                $job['resume_id'] = $resume_id;
+                $job['is_deleted'] = false;
+            }
+            array_push($batch, $job);
+        }
+        return $batch;
     }
 
     private $validate_rules = [

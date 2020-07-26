@@ -43,21 +43,21 @@ class  ResumeDataGenerator
 
 
             // fetch resume user, jobs, edu
-            $resume_user_query = "select r_user_fname as first_name,r_user_lname as last_name, r_user_avatar as avatar,
+            $resume_user_query = "select id,resume_id, r_user_fname as first_name,r_user_lname as last_name, r_user_avatar as avatar,
                                     city, state_province, zip, phone, email, skills, summary as user_summary
                                     from resume_users where resume_id = :resumeid";
             $resume_data = $this->selectFirstQuery($resume_user_query, ['resumeid' => $resume_id]);
 
             // fetch jobs
-            $jobs_query = "select job_title, job_employer, job_city, job_start_date,
+            $jobs_query = "select id, job_title, job_employer, job_city, job_start_date,
                         job_end_date, job_details from resume_jobs where is_deleted='f'
-                        and resume_id = :resumeid";
+                        and resume_id = :resumeid order by id asc";
             $resume_data['jobs'] = $this->selectQuery($jobs_query, ['resumeid' => $resume_id]);
 
             // fetch school
-            $school_query = "select school_name, school_location, degree, field_of_study,
+            $school_query = "select id,school_name, school_location, degree, field_of_study,
                             achievements, edu_start_year, edu_end_year from resume_education
-                            where resume_id = :resumeid and is_deleted='f'";
+                            where resume_id = :resumeid and is_deleted='f' order by id asc";
             $resume_data['school'] = $this->selectQuery($school_query, ['resumeid' => $resume_id]);
 
 

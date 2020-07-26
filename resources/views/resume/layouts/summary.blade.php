@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="form-group ">
                         {!! Form::label('user_summary', 'Summary')!!}
-                        {!! Form::textarea('user_summary', null,['class'=>'form-control, tiny_mce']) !!}
+                        {!! Form::textarea('user_summary',$resume['user_summary'] ?? null,['class'=>'form-control, tiny_mce']) !!}
                     </div>
                     <span class="bg-danger btn-sm text-white d-none validation_error user_summary"></span>
                 </div>

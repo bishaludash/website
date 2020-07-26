@@ -154,6 +154,28 @@ $(document).ready(function () {
         jobs_count -= 1;
     })
 
+    // edit resume, delete education/jobs logic
+    $(document).on('click', '.delModal', function () {
+        let title = $(this).attr('data-title');
+        let url = $(this).attr('data-url');
+        let itemName = $(this).attr('data-displayname');
+
+        // change modal data
+        $('.modal-title').text(title);
+        $('.modal-body-item').text(itemName);
+
+        $('.commit-action').click(function () {
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+                    location.reload(true);
+                }
+            })
+        })
+    })
+
+
     // close alert
     $(document).on('click', '.close-alert', function () {
         $('.alert-box').removeClass('visible').addClass('invisible');
@@ -162,16 +184,28 @@ $(document).ready(function () {
 
 
     // Handle ajax requests
-    var result = {};
+    var sections = {
+        "personal info": ['email', 'first_name', 'last_name', 'phone'],
+        "work experience": ['job.title.0', 'job.employer.0',
+            'job.title.1', 'job.employer.1',
+            'job.title.2', 'job.employer.2',
+            'job.title.3', 'job.employer.3'
+        ],
+        "education": ['school.name.0', 'school.location.0', 'school.degree.0',
+            'school.field_of_study.0', 'school.end_year.0', 'school.start_year.0'
+        ],
+        'skills': ['skills'],
+        'summary': ['user_summary'],
+    }
+
     $(document).on('submit', '.resume-builder-form', function (e) {
         e.preventDefault();
         var url = $(this).attr('action');
-        var current_form = $(this);
         var request_data = {};
 
         // transform the form data into required json object
         transformData(request_data);
-        console.log(JSON.stringify(request_data));
+        // console.log(JSON.stringify(request_data));
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': request_data._token
@@ -192,8 +226,23 @@ $(document).ready(function () {
 
                 }
                 if (response.status === 'fail') {
+                    // error keys comes from ajax response
+                    let errorKeys = Object.keys(response.errors);
+                    let validate_message = "Validation failed in section : ";
+
+                    for (let secKey in sections) {
+                        let sectionItem = sections[secKey];
+
+                        for (let i = 0; i < errorKeys.length; i++) {
+                            if (sectionItem.includes(errorKeys[i])) {
+                                validate_message += secKey + ", ";
+                                break;
+                            }
+                        }
+                    }
+
                     $('.alert-box').removeClass('invisible').addClass('visible');
-                    $('.flash-message').text("Validation failed.");
+                    $('.flash-message').css('textTransform', 'capitalize').text(validate_message);
                     for (var key in response.errors) {
                         var error_message = response.errors[key];
                         if (key.includes('.')) {
