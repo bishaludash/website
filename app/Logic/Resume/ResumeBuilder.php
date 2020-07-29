@@ -163,8 +163,9 @@ class ResumeBuilder
     {
         try {
             Log::debug('Begin populating resume jobs.');
-            // try to flattern the data
+            // try to flattern the data and exclude the id key as it is not present while inserting
             $data = $data['job'];
+            unset($data['id']);
             $batch_jobs = $this->transformJobsData($data, $resume_id);
 
             // bulk insert
@@ -194,8 +195,9 @@ class ResumeBuilder
     {
         try {
             Log::debug('Begin populating resume education into database.');
-            // try to flattern the data
+            // try to flattern the data and exclude the id key as it is not present while inserting
             $data = $data['school'];
+            unset($data['school_id']);
             $batch_data = $this->transformEducationData($data, $resume_id);
 
             // bulk insert

@@ -45,22 +45,29 @@ class ResumeEditController extends Controller
      * POST Request : Update the resume data
      *
      * @param Int $resumeid Id of resume to be updated.
-     * @return type
      **/
-    public function updateResume(Request $request, $resumeid)
+    public function updateResume(Request $request, $uuid)
     {
-        // $input =  $request->json()->all();
-        $input =  $request->all();
-        $obj = new ResumeBuilder();
+        $input =  $request->json()->all();
+        $updaterObj = new ResumeUpdater();
+        // get resumeid
+        $resumeid = $updaterObj->getResumeID($uuid);
 
         // validate input data and if any error found raise exception
-        $validation_error = $obj->validateInput($input);
+        // ResumeUpdater extends from resume builder
+        $validation_error = $updaterObj->validateInput($input);
         if (!is_null($validation_error) || !empty($validation_error)) {
             return $validation_error;
         }
+        $status = $updaterObj->updateResume($input, $resumeid);
 
-        $updaterObj = new ResumeUpdater();
-        $res = $updaterObj->updateResume($input, $resumeid);
-        return $res;
+        if ($status) {
+            session()->flash('message', 'Resume updated successfully, select a theme to preview.');
+            return [
+                'status' => 'success',
+                'message' => 'Resume updated successfully.',
+                'url' => route('resume.theme', ['uuid' => $uuid])
+            ];
+        }
     }
 }

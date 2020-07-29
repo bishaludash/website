@@ -59,9 +59,10 @@ class ResumeController extends Controller
 		// Insert Resume details to DB
 		$resume_uuid =  $obj->buildResume($input);
 		if (!is_null($resume_uuid)) {
+			session()->flash('message', 'Resume build successfully.');
 			return [
-				'status' => 'pass',
-				'errors' => 'Resume build successfully.',
+				'status' => 'success',
+				'message' => 'Resume build successfully.',
 				'url' => route('resume.theme', ['uuid' => $resume_uuid])
 			];
 		}

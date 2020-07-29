@@ -39,8 +39,8 @@
         </div>
         
         <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="endDateCheck0">
-            <label class="custom-control-label" for="endDateCheck0">I am currently working in this role</label>
+            <input type="checkbox" class="custom-control-input" id="endDateCheck{{$item['id']}}">
+            <label class="custom-control-label" for="endDateCheck{{$item['id']}}">I am currently working in this role</label>
         </div>
         
     </div>
@@ -54,6 +54,5 @@
         </div>
         
     </div>
+    {!! Form::number('job[id][]', $item['id'] ?? null, ['class'=>'form-control d-none item_id', 'autocomplete'=>'off']) !!}    
 </div>
-
-{!! Form::number('job[id][]', $item['id'] ?? null, ['class'=>'form-control d-none', 'autocomplete'=>'off']) !!}    

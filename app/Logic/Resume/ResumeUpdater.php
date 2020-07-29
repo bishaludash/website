@@ -43,12 +43,14 @@ class ResumeUpdater extends ResumeBuilder
                 $this->updateUserEducation($data, $resume_id);
             });
             Log::debug("Resume updated successfully.");
+            return true;
         } catch (Exception $e) {
             Log::error('Failed building resume.', [
                 'File' => $this->filename,
                 'Line' => $e->getLine(),
                 'Message' => $e->getMessage()
             ]);
+            return false;
         }
     }
 
@@ -65,7 +67,7 @@ class ResumeUpdater extends ResumeBuilder
             Log::debug("Inside soft delete school/job function.");
 
             // fetch resumeid
-            $resumeid = $this->selectFirstQuery('select id from resume_collects where uuid = :uuid', ['uuid' => $uuid])['id'];
+            $resumeid = $this->getResumeID($uuid);
             if (is_null($resumeid)) {
                 Log::debug("Incorrect resume uuid, stopping further action.");
                 throw new Exception("Incorrect resume uuid, stopping further action.");
@@ -122,14 +124,40 @@ class ResumeUpdater extends ResumeBuilder
     {
         try {
             Log::debug('Begin updating resume jobs.');
-            // try to flattern the data
+            // try to flattern the data and perform bulk insert
             $data = $data['job'];
-            $batch_jobs = $this->transformJobsData($data, $resumeid);
-            // bulk insert
-            $status = false;
-            if ($status) {
-                Log::debug('Resume jobs updated sucesfully.');
+            $batch_data = $this->transformJobsData($data, $resumeid);
+            $count = 0;
+
+            $insert_query = "insert into resume_jobs(job_title,job_employer, resume_id,job_city,
+                            job_details,job_start_date, job_end_date,is_deleted)
+                            values (?,?,?,?,?,?,?,?)";
+
+            foreach ($batch_data as $item) {
+                if ($item['job_id'] == "" || is_null($item['job_id'])) {
+                    DB::insert($insert_query, [
+                        $item['job_title'], $item['job_employer'], $item['resume_id'], $item['job_city'],
+                        $item['job_details'],  $item['job_start_date'], $item['job_end_date'], 'f'
+                    ]);
+                    continue;
+                }
+
+                DB::table('resume_jobs')
+                    ->where('resume_id', $resumeid)
+                    ->where('id', $item['job_id'])
+                    ->update([
+                        "job_title" => $item['job_title'],
+                        "is_deleted" => 'f',
+                        "job_employer" => $item['job_employer'],
+                        "job_city" => $item['job_city'],
+                        "job_start_date" => $item['job_start_date'],
+                        "job_end_date" => $item['job_end_date'],
+                        "job_details" => $item['job_details']
+                    ]);
+                $count += 1;
             }
+
+            // Log::debug('Resume jobs updated sucesfully. Item : ', ['count' => $count]);
         } catch (Exception $e) {
             Log::warning("Failed to update resume jobs info.");
             throw $e;
@@ -138,17 +166,50 @@ class ResumeUpdater extends ResumeBuilder
 
     public function updateUserEducation($data, $resumeid)
     {
-        Log::debug('Begin updating resume education.');
-        // try to flattern the data
-        $data = $data['school'];
-        $batch_data = $this->transformEducationData($data, $resumeid);
-        dd($batch_data);
+        try {
+            Log::debug('Begin updating resume education.');
+            // try to flattern the data
+            $data = $data['school'];
+            $batch_data = $this->transformEducationData($data, $resumeid);
+            $count = 0;
 
+            $insert_query = "insert into resume_education(school_name,school_location, resume_id,
+                            degree,edu_end_year,edu_start_year, field_of_study,is_deleted,achievements)
+                            values (?,?,?,?,?,?,?,?,?)";
+            foreach ($batch_data as $key => $item) {
+                if ($item['school_id'] == "" || is_null($item['school_id'])) {
+                    DB::insert($insert_query, [
+                        $item['school_name'], $item['school_location'], $item['resume_id'], $item['degree'],
+                        $item['edu_end_year'], $item['edu_start_year'], $item['field_of_study'], 'f', $item['achievements']
+                    ]);
+                    continue;
+                }
 
-        // bulk insert
-        $status = false;
-        if ($status) {
+                DB::table('resume_education')
+                    ->where('resume_id', $resumeid)
+                    ->where('id', $item['school_id'])
+                    ->update([
+                        "school_name" => $item['school_name'],
+                        "is_deleted" => 'f',
+                        "school_location" => $item['school_location'],
+                        "degree" => $item['degree'],
+                        "field_of_study" => $item['field_of_study'],
+                        "edu_start_year" => $item['edu_start_year'],
+                        "edu_end_year" => $item['edu_end_year'],
+                        "achievements" => $item['achievements'],
+                    ]);
+                $count += 1;
+            }
+
             Log::debug('Resume education populated sucesfully.');
+        } catch (Exception $e) {
+            Log::warning("Failed to update resume education.");
+            throw $e;
         }
+    }
+
+    public function getResumeID($uuid)
+    {
+        return $this->selectFirstQuery('select id from resume_collects where uuid = :uuid', ['uuid' => $uuid])['id'];
     }
 }

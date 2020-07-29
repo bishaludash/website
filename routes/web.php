@@ -75,6 +75,6 @@ Route::group(['namespace' => 'Resume'], function () {
 
     // Resume Edit
     Route::get('resume-builder/edit/{uuid}', 'ResumeEditController@showEditPage')->name('resume.edit');
-    Route::post('resume-builder/edit/{resumeid}', 'ResumeEditController@updateResume');
+    Route::post('resume-builder/edit/{uuid}', 'ResumeEditController@updateResume')->name('resume.update');
     Route::get('resume-builder/{uuid}/softDelete/{typeid}', 'ResumeEditController@softDeleteItem')->name('resume.softDelete');
 });

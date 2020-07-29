@@ -21,10 +21,9 @@
 		<div class="row">
 			<div class="col-lg-10 col-sm-12">
 				{!! Form::open(['method'=>'POST', 
-				'action'=>['Resume\ResumeEditController@updateResume', $resume['resume_id']], 'files'=>true, 
-				// 'class'=>'resume-builder-form',
+				'action'=>['Resume\ResumeEditController@updateResume', $uuid], 'files'=>true, 
+				'class'=>'resume-builder-form',
 				'novalidate'=>"novalidate"]) !!}
-				{{-- {{dd($resume)}} --}}
 				{{-- Form template --}}
 				@include('resume.layouts.info')
 				@include('resume.layouts.editJobs')

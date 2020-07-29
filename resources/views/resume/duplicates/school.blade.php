@@ -64,6 +64,5 @@
         </div>
     </div>
 
+    {!! Form::number('school[school_id][]', $item['id'] ?? null, ['class'=>'form-control d-none item_id', 'autocomplete'=>'off']) !!}
 </div>
-
-{!! Form::number('school[school_id][]', $item['id'] ?? null, ['class'=>'form-control d-none', 'autocomplete'=>'off']) !!}

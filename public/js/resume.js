@@ -62,8 +62,11 @@ $(document).ready(function () {
 
             // Remove TinyMCE instance, clone the education element and add tinymce class
             tinymce.remove('.tiny_mce');
-            var ele = $('.education-block').children().clone()
+            var ele = $('.education-block').children().clone();
             ele.find('textarea').attr("class", "tiny_mce");
+
+            // specific to update only
+            ele.find('.item_id').attr("value", "");
 
             // update to new error message class, remove the old
             ele.find('.school_name_0').removeClass('school_name_0').addClass(`d-none school_name_${edu_count}`);
@@ -101,12 +104,15 @@ $(document).ready(function () {
             var ele = $('.jobs-block').children().clone()
             ele.find('textarea').attr("class", "tiny_mce");
 
+            // specific to update only
+            ele.find('.item_id').attr("value", "");
+
             // update to new error message class, remove the old
             ele.find('.job_title_0').addClass(`d-none job_title_${jobs_count}`).removeClass('job_title_0');
             ele.find('.job_employer_0').addClass(`d-none job_employer_${jobs_count}`).removeClass('job_employer_0');
 
             // update disable job_end date
-            ele.find('#endDateCheck0').attr('id', `endDateCheck${jobs_count}`);
+            ele.find('.custom-control-input').attr('id', `endDateCheck${jobs_count}`);
             ele.find('.custom-control-label').attr('for', `endDateCheck${jobs_count}`);
 
             // empty input fields
@@ -193,7 +199,9 @@ $(document).ready(function () {
             'job.title.3', 'job.employer.3'
         ],
         "education": ['school.name.0', 'school.location.0', 'school.degree.0',
-            'school.field_of_study.0', 'school.end_year.0', 'school.start_year.0'
+            'school.field_of_study.0', 'school.end_year.0', 'school.start_year.0',
+            'school.name.1', 'school.location.1', 'school.degree.1',
+            'school.field_of_study.1', 'school.end_year.1', 'school.start_year.1'
         ],
         'skills': ['skills'],
         'summary': ['user_summary'],
@@ -222,9 +230,8 @@ $(document).ready(function () {
                 var request_data = {};
                 console.log(response);
                 $('.validation_error').addClass('d-none');
-                if (response.status === 'pass') {
+                if (response.status === 'success') {
                     window.location = response.url;
-
                 }
                 if (response.status === 'fail') {
                     // error keys comes from ajax response
@@ -271,6 +278,7 @@ $(document).ready(function () {
         request_data.email = $("input[name='email']").val();
         request_data.skills = tinyMCE.get("skills").getContent();
         request_data.user_summary = tinyMCE.get("user_summary").getContent();
+        request_data.user_id = $("input[name='user_id']").val() ?? "";
 
         request_data.job = {
             "title": getFormInput('job[title][]'),
@@ -278,6 +286,7 @@ $(document).ready(function () {
             "city": getFormInput('job[city][]'),
             "start_date": getFormInput('job[start_date][]'),
             "end_date": getFormInput('job[end_date][]'),
+            "id": getFormInput('job[id][]') ?? "",
             "job_details": getFormTextarea('job[job_details][]')
         }
 
@@ -288,6 +297,7 @@ $(document).ready(function () {
             "field_of_study": getFormInput('school[field_of_study][]'),
             "start_year": getFormInput('school[start_year][]'),
             "end_year": getFormInput('school[end_year][]'),
+            "school_id": getFormInput('school[school_id][]') ?? "",
             "achievements": getFormTextarea('school[achievements][]'),
         }
     }

@@ -59,11 +59,6 @@
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-{{-- <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> --}}
-{{-- introduction --}}
-
-
-
 
 <div class="section">
     {{-- avatar section --}}
@@ -102,11 +97,11 @@
     {{-- {{dd($school)}} --}}
     <div class="school">
         <div class="info">
-            <div class="school-info">{{ sprintf("%s, %s", $school['degree'], $school['field_of_study'])  }}</div>
+            <div class="school-info">{{ sprintf("%s ( %s )", $school['school_name'], $school['school_location'])  }}</div>
             <div class="school-year">{{sprintf("%s - %s", $school['edu_start_year'], $school['edu_end_year'])}}</div>
         </div>
         <div class="info-secondary">
-            <span>{{$school['school_location']}}</span>
+            <span >{{ sprintf("%s, %s", $school['degree'], $school['field_of_study'])  }}</span>
         </div>
         <div class="achievements">
             {!!$school['achievements']!!}
@@ -124,7 +119,7 @@
     {{-- {{dd($job)}} --}}
     <div class="job">
         <div class="info">
-            <div class="job-info">{{$job['job_title']}}</div>
+            <div class="job-info">{{ sprintf("%s ( %s )", $job['job_employer'], $job['job_city']) }}</div>
             <div class="job-year">
                 {{sprintf("%s - %s", 
                 date('M Y', strtotime($job['job_start_date'])),
@@ -132,7 +127,7 @@
             </div>
         </div>
         <div class="info-secondary">
-            <span>{{sprintf("%s, %s", $job['job_employer'], $job['job_city'])}} and city</span>
+            <span>{{ $job['job_title']}} </span>
         </div>
         <div class="achievements">
             {!! $job['job_details']!!}
