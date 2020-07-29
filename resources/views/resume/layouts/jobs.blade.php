@@ -4,7 +4,7 @@
             Work Experience
             <span class="float-right"><i class="ion-minus-circled"></i></span>
         </div>
-        <div class="text-danger">Now, let’s fill out your work history</div>
+        <div class="text-danger">Now, let’s fill out your work history. (Place the latest work at <strong>first</strong>)</div>
     </div>
     <div id="collapse-work" class="collapse show">	
         <div class="card-body">

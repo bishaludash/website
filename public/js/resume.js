@@ -62,8 +62,11 @@ $(document).ready(function () {
 
             // Remove TinyMCE instance, clone the education element and add tinymce class
             tinymce.remove('.tiny_mce');
-            var ele = $('.education-block').children().clone()
+            var ele = $('.education-block').children().clone();
             ele.find('textarea').attr("class", "tiny_mce");
+
+            // specific to update only
+            ele.find('.item_id').attr("value", "");
 
             // update to new error message class, remove the old
             ele.find('.school_name_0').removeClass('school_name_0').addClass(`d-none school_name_${edu_count}`);
@@ -101,12 +104,15 @@ $(document).ready(function () {
             var ele = $('.jobs-block').children().clone()
             ele.find('textarea').attr("class", "tiny_mce");
 
+            // specific to update only
+            ele.find('.item_id').attr("value", "");
+
             // update to new error message class, remove the old
             ele.find('.job_title_0').addClass(`d-none job_title_${jobs_count}`).removeClass('job_title_0');
             ele.find('.job_employer_0').addClass(`d-none job_employer_${jobs_count}`).removeClass('job_employer_0');
 
             // update disable job_end date
-            ele.find('#endDateCheck0').attr('id', `endDateCheck${jobs_count}`);
+            ele.find('.custom-control-input').attr('id', `endDateCheck${jobs_count}`);
             ele.find('.custom-control-label').attr('for', `endDateCheck${jobs_count}`);
 
             // empty input fields
@@ -154,6 +160,29 @@ $(document).ready(function () {
         jobs_count -= 1;
     })
 
+    // edit resume, delete education/jobs logic
+    $(document).on('click', '.delModal', function () {
+        let title = $(this).attr('data-title');
+        let url = $(this).attr('data-url');
+        let itemName = $(this).attr('data-displayname');
+
+        // change modal data
+        $('.modal-title').text(title);
+        $('.modal-body-item').text(itemName);
+
+        $('.commit-action').click(function () {
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (response) {
+                    console.log(response);
+                    location.reload(true);
+                }
+            })
+        })
+    })
+
+
     // close alert
     $(document).on('click', '.close-alert', function () {
         $('.alert-box').removeClass('visible').addClass('invisible');
@@ -162,16 +191,30 @@ $(document).ready(function () {
 
 
     // Handle ajax requests
-    var result = {};
+    var sections = {
+        "personal info": ['email', 'first_name', 'last_name', 'phone'],
+        "work experience": ['job.title.0', 'job.employer.0',
+            'job.title.1', 'job.employer.1',
+            'job.title.2', 'job.employer.2',
+            'job.title.3', 'job.employer.3'
+        ],
+        "education": ['school.name.0', 'school.location.0', 'school.degree.0',
+            'school.field_of_study.0', 'school.end_year.0', 'school.start_year.0',
+            'school.name.1', 'school.location.1', 'school.degree.1',
+            'school.field_of_study.1', 'school.end_year.1', 'school.start_year.1'
+        ],
+        'skills': ['skills'],
+        'summary': ['user_summary'],
+    }
+
     $(document).on('submit', '.resume-builder-form', function (e) {
         e.preventDefault();
         var url = $(this).attr('action');
-        var current_form = $(this);
         var request_data = {};
 
         // transform the form data into required json object
         transformData(request_data);
-        console.log(JSON.stringify(request_data));
+        // console.log(JSON.stringify(request_data));
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': request_data._token
@@ -187,13 +230,27 @@ $(document).ready(function () {
                 var request_data = {};
                 console.log(response);
                 $('.validation_error').addClass('d-none');
-                if (response.status === 'pass') {
+                if (response.status === 'success') {
                     window.location = response.url;
-
                 }
                 if (response.status === 'fail') {
+                    // error keys comes from ajax response
+                    let errorKeys = Object.keys(response.errors);
+                    let validate_message = "Validation failed in section : ";
+
+                    for (let secKey in sections) {
+                        let sectionItem = sections[secKey];
+
+                        for (let i = 0; i < errorKeys.length; i++) {
+                            if (sectionItem.includes(errorKeys[i])) {
+                                validate_message += secKey + ", ";
+                                break;
+                            }
+                        }
+                    }
+
                     $('.alert-box').removeClass('invisible').addClass('visible');
-                    $('.flash-message').text("Validation failed.");
+                    $('.flash-message').css('textTransform', 'capitalize').text(validate_message);
                     for (var key in response.errors) {
                         var error_message = response.errors[key];
                         if (key.includes('.')) {
@@ -221,6 +278,7 @@ $(document).ready(function () {
         request_data.email = $("input[name='email']").val();
         request_data.skills = tinyMCE.get("skills").getContent();
         request_data.user_summary = tinyMCE.get("user_summary").getContent();
+        request_data.user_id = $("input[name='user_id']").val() ?? "";
 
         request_data.job = {
             "title": getFormInput('job[title][]'),
@@ -228,6 +286,7 @@ $(document).ready(function () {
             "city": getFormInput('job[city][]'),
             "start_date": getFormInput('job[start_date][]'),
             "end_date": getFormInput('job[end_date][]'),
+            "id": getFormInput('job[id][]') ?? "",
             "job_details": getFormTextarea('job[job_details][]')
         }
 
@@ -238,6 +297,7 @@ $(document).ready(function () {
             "field_of_study": getFormInput('school[field_of_study][]'),
             "start_year": getFormInput('school[start_year][]'),
             "end_year": getFormInput('school[end_year][]'),
+            "school_id": getFormInput('school[school_id][]') ?? "",
             "achievements": getFormTextarea('school[achievements][]'),
         }
     }
