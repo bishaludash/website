@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Logic\Resume\ResumeBuilder;
 use App\Logic\Resume\ResumeDataGenerator;
+use App\Traits\DBUtils;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class ResumeController extends Controller
 {
+	use DBUtils;
 
 	private $themeTemplateString = 'resume.template.';
 	private $themes = [
@@ -69,19 +71,6 @@ class ResumeController extends Controller
 	}
 
 	/**
-	 * Function to Upload the user image and gives the path
-	 * for uploaded image. Return view with uploaded image.
-	 * 
-	 * @param file image
-	 * @return view 
-	 */
-	public function uploadUserAvatar()
-	{
-		// save user image into disk
-		// return the path of saved file
-	}
-
-	/**
 	 * Redirects to theme templates page  
 	 *
 	 * @param String $uuid uuid is sent via sting query parameter
@@ -134,5 +123,33 @@ class ResumeController extends Controller
 
 		$pdf = \PDF::loadView($theme, compact('resume'));
 		return $pdf->download('resume.pdf');
+	}
+
+
+	public function searchGeneratedResume()
+	{
+		return view('resume.layouts.searchResume');
+	}
+
+	public function getGeneratedResume(Request $request)
+	{
+		// check if uuid is present
+		$uuid =  $request->input('resume_uuid') ?? null;
+		if (is_null($uuid)) {
+			session()->flash('message', 'Resume unique ID cannot be empty.');
+			return redirect()->back();
+		}
+
+		// check if resume exists for that uuid
+		$get_resumeid_query = "select id from resume_collects where uuid = :uuid";
+		$resume_id = $this->selectFirstQuery($get_resumeid_query, ['uuid' => $uuid])['id'];
+
+		if (is_null($resume_id)) {
+			session()->flash('message', 'Resume could not be found.');
+			return redirect()->back();
+		}
+
+		session()->flash('message', 'Resume found. Please select a theme to view it.');
+		return redirect()->route('resume.theme', ['uuid' => $uuid]);
 	}
 }

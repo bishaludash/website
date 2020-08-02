@@ -82,6 +82,7 @@ class  ResumeDataGenerator
         return $input = [
             "first_name" => $faker->firstName(),
             "last_name" => $faker->lastName(),
+            "avatar" => 'storage/budash.jpg',
             "city" => $faker->city(),
             "state_province" =>  $faker->state(),
             "zip" =>  $faker->postcode(),

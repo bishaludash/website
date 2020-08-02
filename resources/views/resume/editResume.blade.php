@@ -7,6 +7,7 @@
 
 @section('blog-css')
 <link href={{ asset('css/resume.css') }} rel="stylesheet">
+<link href={{ asset('css/avatar.css') }} rel="stylesheet">
 @endsection
 
 @section('blog_head')
@@ -20,6 +21,8 @@
 		<p class="font-weight-bold" style="font-size: 1.5rem">Edit resume</p>
 		<div class="row">
 			<div class="col-lg-10 col-sm-12">
+				@include('resume.layouts.avatar')
+				
 				{!! Form::open(['method'=>'POST', 
 				'action'=>['Resume\ResumeEditController@updateResume', $uuid], 'files'=>true, 
 				'class'=>'resume-builder-form',
@@ -79,4 +82,6 @@
 <script src="{{asset('admin/js/core/bootstrap.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.1.2/tinymce.min.js"></script>
 <script src="{{asset('js/resume.js')}}"></script>
+<script src="{{asset('js/avatar.js')}}"></script>
+
 @endsection

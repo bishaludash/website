@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"  class="no-js">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -47,5 +47,12 @@
         </p>
     </footer>
     @yield('footer-js')
+    {{-- for replacing upload file style --}}
+    <script>
+    (function (e, t, n) { 
+        var r = e.querySelectorAll("html")[0]; 
+        r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2") }
+    )(document, window, 0);
+    </script>
 </body>
 </html>

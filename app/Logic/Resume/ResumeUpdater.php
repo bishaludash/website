@@ -101,6 +101,7 @@ class ResumeUpdater extends ResumeBuilder
                 ->update([
                     "r_user_fname" => $data['first_name'],
                     "r_user_lname" => $data['last_name'],
+                    "r_user_avatar" => $data['user_avatar'],
                     "city" => $data['city'],
                     "state_province" => $data['state_province'],
                     "zip" => $data['zip'],

@@ -72,9 +72,13 @@ Route::group(['namespace' => 'Resume'], function () {
     Route::get('resume-builder/theme/{theme}', 'ResumeController@pickTheme')->name('pick.theme');
     Route::get('resume-generate', 'ResumeController@generate')->name('resume.generate');
     Route::get('resume-builder/search', 'ResumeController@searchGeneratedResume')->name('resume.search');
+    Route::post('resume-builder/search', 'ResumeController@getGeneratedResume')->name('resume.get');
 
     // Resume Edit
     Route::get('resume-builder/edit/{uuid}', 'ResumeEditController@showEditPage')->name('resume.edit');
     Route::post('resume-builder/edit/{uuid}', 'ResumeEditController@updateResume')->name('resume.update');
     Route::get('resume-builder/{uuid}/softDelete/{typeid}', 'ResumeEditController@softDeleteItem')->name('resume.softDelete');
+
+    // Resume Avatar
+    Route::post('resume-builder/avatar', 'AvatarController@uploadAvatar')->name('avatar.upload');
 });

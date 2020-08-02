@@ -1,5 +1,5 @@
 <style>
-
+    
     .section{
         margin: 10px 0;
     }
@@ -18,25 +18,24 @@
     }
     
     .user_image{
-       width: 100%;
-       height: auto;
+        width: 100%;
+        height: auto;
     }
-
+    
     .contact{
         list-style: none;
         padding: 0;
-        margin-left: 30px;
     }
-
+    
     .icon{
         margin-right: 10px;
         vertical-align: middle;
     }
-
+    
     .info{
         display: flex;
     }
-        
+    
     /* school and jobs */
     .school, .job{
         margin-bottom: 25px;
@@ -61,11 +60,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 <div class="section">
+    {{-- {{dd($resume)}} --}}
     {{-- avatar section --}}
-    <div style="float: left; width: 20%;">
-            <img src="{{asset('storage/budash.jpg')}}" class="user_image" alt="">
+    @if (!is_null($resume['avatar']))
+    <div style="float: left; width: 20%;margin-right: 30px;">
+        <img src="{{asset($resume['avatar'])}}" class="user_image" alt="">
     </div>
-
+    @endif
+    
+    
     {{-- contact--}}
     <div style="float: left; width:40%;">
         <ul class="contact">
@@ -73,16 +76,16 @@
             <li>{{ sprintf("%s %s", $resume['first_name'], $resume['last_name'])  }}</li>
             <li>{{$resume['email']}}</li>
             <li>{{$resume['phone']}}</li>
-            <li style="text-transform: capitalize">{{ sprintf("%s, %s", $resume['state_province'] ?? null, $resume['city']??null) }}</li>
+            <li style="text-transform: capitalize">{{ sprintf("%s %s", $resume['state_province'] ?? null, $resume['city']??null) }}</li>
         </ul>
     </div>
-
+    
     {{-- social --}}
     <div style="float: left; width:40%;">
         
     </div>
     <br style="clear: left;" />
-
+    
     <div class="summary-wrapper">
         <p class="section-header">Career Summary</p>
         <div></div>

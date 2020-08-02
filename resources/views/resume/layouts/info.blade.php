@@ -9,7 +9,6 @@
     				
     <div id="collapseOne" class="collapse show ">
         <div class="card-body">
-            
             <div class="form-group">
                 <div class="row">
                     <div class="col-lg-6">
@@ -77,6 +76,8 @@
 
             {!! Form::number('user_id', $resume['user_id'] ?? null, ['class'=>'form-control d-none', 'autocomplete'=>'off']) !!}            
             
+            {!! Form::text('user_avatar', $resume['avatar'] ?? null, ['class'=>'form-control d-none user_avatar',]) !!} 
+
         </div>
     </div>
 </div>

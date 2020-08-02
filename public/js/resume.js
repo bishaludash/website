@@ -110,6 +110,7 @@ $(document).ready(function () {
             // update to new error message class, remove the old
             ele.find('.job_title_0').addClass(`d-none job_title_${jobs_count}`).removeClass('job_title_0');
             ele.find('.job_employer_0').addClass(`d-none job_employer_${jobs_count}`).removeClass('job_employer_0');
+            ele.find('.job_start_date_0').addClass(`d-none job_start_date_${jobs_count}`).removeClass('job_start_date_0');
 
             // update disable job_end date
             ele.find('.custom-control-input').attr('id', `endDateCheck${jobs_count}`);
@@ -193,10 +194,10 @@ $(document).ready(function () {
     // Handle ajax requests
     var sections = {
         "personal info": ['email', 'first_name', 'last_name', 'phone'],
-        "work experience": ['job.title.0', 'job.employer.0',
-            'job.title.1', 'job.employer.1',
-            'job.title.2', 'job.employer.2',
-            'job.title.3', 'job.employer.3'
+        "work experience": ['job.title.0', 'job.employer.0', 'job.start_date.0',
+            'job.title.1', 'job.employer.1', 'job.start_date.1',
+            'job.title.2', 'job.employer.2', 'job.start_date.2',
+            'job.title.3', 'job.employer.3', 'job.start_date.3'
         ],
         "education": ['school.name.0', 'school.location.0', 'school.degree.0',
             'school.field_of_study.0', 'school.end_year.0', 'school.start_year.0',
@@ -279,6 +280,7 @@ $(document).ready(function () {
         request_data.skills = tinyMCE.get("skills").getContent();
         request_data.user_summary = tinyMCE.get("user_summary").getContent();
         request_data.user_id = $("input[name='user_id']").val() ?? "";
+        request_data.user_avatar = $('.user_avatar').val();
 
         request_data.job = {
             "title": getFormInput('job[title][]'),

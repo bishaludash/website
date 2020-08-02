@@ -10,15 +10,15 @@
 
 			<ul class="pl-3 list-unstyled">
 				<li>
-					<i class="ion-android-checkbox-outline text-success mr-2 display-5"></i>
+					<i class="ion-checkmark-circled text-success mr-2 display-5"></i>
 					No gimmicks
 				</li>
 				<li>
-					<i class="ion-android-checkbox-outline text-success mr-2 display-5" ></i>
+					<i class="ion-checkmark-circled text-success mr-2 display-5" ></i>
 					No sign up
 				</li>
 				<li>
-					<i class="ion-android-checkbox-outline text-success mr-2 display-5" ></i>
+					<i class="ion-checkmark-circled text-success mr-2 display-5" ></i>
 					No freemium features
 				</li>
 			</ul>
@@ -26,7 +26,7 @@
 			</p>
 			<div>
 				<a href={{route('resume.build')}} class="btn btn-primary mb-2 mr-2">Build your resume</a>
-				<a href="#" class="btn btn-outline-danger mb-2">Download your resume</a>
+			<a href="{{route('resume.search')}}" class="btn btn-outline-danger mb-2">Download your resume</a>
 			</div>
 
 		</div>
