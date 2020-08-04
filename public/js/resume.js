@@ -279,7 +279,7 @@ $(document).ready(function () {
         request_data.email = $("input[name='email']").val();
         request_data.skills = tinyMCE.get("skills").getContent();
         request_data.user_summary = tinyMCE.get("user_summary").getContent();
-        request_data.user_id = $("input[name='user_id']").val() ?? "";
+        request_data.user_id = $("input[name='user_id']").val();
         request_data.user_avatar = $('.user_avatar').val();
 
         request_data.job = {
@@ -288,7 +288,7 @@ $(document).ready(function () {
             "city": getFormInput('job[city][]'),
             "start_date": getFormInput('job[start_date][]'),
             "end_date": getFormInput('job[end_date][]'),
-            "id": getFormInput('job[id][]') ?? "",
+            "id": getFormInput('job[id][]'),
             "job_details": getFormTextarea('job[job_details][]')
         }
 
@@ -299,7 +299,7 @@ $(document).ready(function () {
             "field_of_study": getFormInput('school[field_of_study][]'),
             "start_year": getFormInput('school[start_year][]'),
             "end_year": getFormInput('school[end_year][]'),
-            "school_id": getFormInput('school[school_id][]') ?? "",
+            "school_id": getFormInput('school[school_id][]'),
             "achievements": getFormTextarea('school[achievements][]'),
         }
     }

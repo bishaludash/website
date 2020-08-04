@@ -27,6 +27,7 @@ class AvatarController extends Controller
     public function uploadAvatar(Request $request)
     {
         try {
+            DB::enableQueryLog();
             // Handle when pressed escape while uploading file
             if (!$request->hasFile('user_avatar')) {
                 return "no file";

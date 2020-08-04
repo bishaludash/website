@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Resume;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendResumeGeneratedMailJob;
 use Illuminate\Http\Request;
 use App\Logic\Resume\ResumeBuilder;
 use App\Logic\Resume\ResumeDataGenerator;
+use App\Mail\SendResumeGeneratedMail;
 use App\Traits\DBUtils;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -18,6 +22,11 @@ class ResumeController extends Controller
 	private $themes = [
 		"template1" => "template1",
 	];
+
+	public function __construct()
+	{
+		DB::enableQueryLog();
+	}
 
 	/** 
 	 * Return main index page view.
@@ -49,7 +58,7 @@ class ResumeController extends Controller
 	 **/
 	public function saveBuild(Request $request)
 	{
-		Log::debug("Begin entry function");
+		Log::debug("Begin saveBuild entry function");
 		$input =  $request->json()->all();
 		$obj = new ResumeBuilder();
 
@@ -60,6 +69,10 @@ class ResumeController extends Controller
 		}
 		// Insert Resume details to DB
 		$resume_uuid =  $obj->buildResume($input);
+
+		// send email in queue
+		$this->sendResumeGeneratedMail($resume_uuid, $input);
+
 		if (!is_null($resume_uuid)) {
 			session()->flash('message', 'Resume build successfully.');
 			return [
@@ -116,6 +129,7 @@ class ResumeController extends Controller
 		return view('resume.themes.picktheme', compact(['template', 'resume']));
 	}
 
+	/* Function to generate pdf resume */
 	public function generate(Request $request)
 	{
 		$theme = $request->input('theme');
@@ -124,7 +138,6 @@ class ResumeController extends Controller
 		$pdf = \PDF::loadView($theme, compact('resume'));
 		return $pdf->download('resume.pdf');
 	}
-
 
 	public function searchGeneratedResume()
 	{
@@ -151,5 +164,20 @@ class ResumeController extends Controller
 
 		session()->flash('message', 'Resume found. Please select a theme to view it.');
 		return redirect()->route('resume.theme', ['uuid' => $uuid]);
+	}
+
+	/**
+	 * Job to send email after resume is build
+	 *
+	 * @param String uuid
+	 **/
+	public function sendResumeGeneratedMail($uuid, $data)
+	{
+		Log::info("Resume build successfully, sending email to user.");
+		$job = (new SendResumeGeneratedMailJob($uuid, $data))
+			->delay(Carbon::now()->addSeconds(5));
+
+		dispatch($job);
+		Log::info("Resume build successfully, sending email to user.");
 	}
 }

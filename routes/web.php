@@ -12,6 +12,10 @@
 */
 
 // Auth, Use controllers
+
+use App\Jobs\SendResumeGeneratedMailJob;
+use Carbon\Carbon;
+
 Route::get('/be-login', 'BE\UserAuthController@index')->name('be.login');
 Route::post('/be-login', 'BE\UserAuthController@login');
 Route::get('/be-logout', 'BE\UserAuthController@logout')->name('be.logout');

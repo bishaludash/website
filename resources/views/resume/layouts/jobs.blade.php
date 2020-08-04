@@ -38,7 +38,7 @@
                 <div class="row form-group ">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            {!! Form::label('job[start_date][]', 'Start Date') !!}
+                            {!! Form::label('job[start_date][]', 'Start Date *') !!}
                             {!! Form::date('job[start_date][]', null, ['class'=>'form-control', 'autocomplete'=>'off']) !!}
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error job_start_date_0"></span>
