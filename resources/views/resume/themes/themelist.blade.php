@@ -2,14 +2,10 @@
 <div class="container">
     <div class="row">
         @foreach ($themes as $item)
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow">
                 <div class="card-body">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab nostrum dicta quis repellendus quisquam recusandae velit eum odio ipsam nulla.
-                    
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat perferendis soluta saepe excepturi similique obcaecati fugit omnis necessitatibus, cumque tempore.
-                    </p>
+                    <img src="{{asset('storage/theme-template.png')}}" class= "img-fluid" alt="">
                 </div>
 
                 {{-- Select theme button based on uuid --}}
@@ -25,7 +21,7 @@
         @endforeach  
 
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow">
                 <div class="card-body">
                     <p>Comming soon</p>
