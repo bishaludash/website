@@ -62,7 +62,7 @@
 <div class="section">
     {{-- {{dd($resume)}} --}}
     {{-- avatar section --}}
-    @if (!is_null($resume['avatar']))
+    @if (!is_null($resume['avatar']) && $resume['avatar'] != "")
     <div style="float: left; width: 20%;margin-right: 30px;">
         <img src="{{asset($resume['avatar'])}}" class="user_image" alt="">
     </div>

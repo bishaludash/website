@@ -6,6 +6,7 @@ use Exception;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Log;
 use App\Traits\DBUtils;
+use Illuminate\Support\Facades\DB;
 
 class  ResumeDataGenerator
 {
@@ -14,6 +15,7 @@ class  ResumeDataGenerator
 
     public function __construct()
     {
+        DB::enableQueryLog();
         $this->filename = basename(__FILE__);
     }
 

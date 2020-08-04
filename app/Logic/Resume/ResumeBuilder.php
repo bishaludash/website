@@ -19,6 +19,7 @@ class ResumeBuilder
 
     public function __construct()
     {
+        DB::enableQueryLog();
         $this->filename = basename(__FILE__);
     }
 
