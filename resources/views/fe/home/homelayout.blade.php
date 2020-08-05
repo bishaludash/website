@@ -51,6 +51,7 @@
             box-shadow: 2px 2px #000;
         }
     </style>
+    @yield('css')
 </head>
 <body class="mt-5">
     <div class="container full-height">
@@ -66,5 +67,6 @@
         
         @yield('home_content')
     </div>
+    @yield('js')
 </body>
 </html>

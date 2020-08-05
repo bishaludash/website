@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\AboutUser;
 use App\Project;
+use App\Traits\DBUtils;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    use DBUtils;
+
     public function home()
     {
         $aboutUser = AboutUser::first(['about', 'experience']);
@@ -18,9 +21,17 @@ class HomeController extends Controller
 
     public function projects()
     {
-        $projects = Project::where('is_archived', '=', 'false')
-            ->latest()->get();
-        // return $projects;
+        $query = "select p.project_title, p.project_body, p.project_url, x.images
+            from projects p left join(
+            select foreign_id ,string_agg(image_path,',') as images from image_managers im 
+            where source ='projects' group by im.foreign_id
+        ) x on p.id = x.foreign_id
+        where p.is_archived = 'f' 
+        order by created_at desc";
+        $projects = $this->selectQuery($query);
+        foreach ($projects as $key => $item) {
+            $projects[$key]['images'] = explode(",", $projects[$key]['images']);
+        }
         return view('fe.home.projects', compact('projects'));
     }
 
