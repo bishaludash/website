@@ -39,26 +39,28 @@ class ProjectsController extends Controller
     public function store(Request $request)
     {
         $this->validateProject($request);
-            
+
         $input = $request->all();
         // validate bulk image, if error flash message.
-        if ($request->hasFile('project_image')){
+        if ($request->hasFile('project_image')) {
             $image_handler = new FileHandler();
-            $errors=$image_handler->validateImage($input['project_image']);
+            $errors = $image_handler->validateImage($input['project_image']);
 
             if (!empty($errors) || !is_null($errors)) {
-                session()->flash('message_danger', 
-                'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
+                session()->flash(
+                    'message_danger',
+                    'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>' . $errors . '<b>'
+                );
                 return back()->withInput();
             }
         }
 
         $project = Project::create([
-            'project_title'=>$input['project_title'],
-            'project_url'=>$input['project_url'],
-            'project_body'=>$input['project_body']
+            'project_title' => $input['project_title'],
+            'project_url' => $input['project_url'],
+            'project_body' => $input['project_body']
         ]);
-        
+
         // upload bulk image
         if ($request->hasFile('project_image')) {
             $image_handler->uploadFile($input['project_image'], $project->id, $this->image_bucket);
@@ -67,7 +69,7 @@ class ProjectsController extends Controller
         return back();
     }
 
-    
+
     /**
      * Display the specified resource.
      *
@@ -86,15 +88,14 @@ class ProjectsController extends Controller
         left join image_managers im on p.id=im.foreign_id 
         where p.id=:id and im.source =:source
         group by p.id";
-        
-        $project = $this->SelectQuery($project_query, ['id'=>$id, 'source'=>$this->image_bucket]);
+
+        $project = $this->SelectQuery($project_query, ['id' => $id, 'source' => $this->image_bucket]);
         if (!is_null($project) && !empty($project)) {
             $project = $project[0];
             $project['files'] = json_decode($project['files'], true);
-        }else{
+        } else {
             $project = Project::find($id);
             $project['files'] = null;
-
         }
 
         return view('backend.projects.show', compact('project'));
@@ -106,7 +107,7 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        $files = $this->selectQuery('select * from image_managers where foreign_id=:id', ['id'=>$project['id']]);
+        $files = $this->selectQuery('select * from image_managers where foreign_id=:id', ['id' => $project['id']]);
         return view('backend.projects.edit', compact('project', 'files'));
     }
 
@@ -120,21 +121,23 @@ class ProjectsController extends Controller
 
         $input = $request->all();
         // validate bulk image, if error flash message.
-        if ($request->hasFile('project_image')){
+        if ($request->hasFile('project_image')) {
             $image_handler = new FileHandler();
-            $errors=$image_handler->validateImage($input['project_image']);
+            $errors = $image_handler->validateImage($input['project_image']);
 
             if (!empty($errors) || !is_null($errors)) {
-                session()->flash('message_danger', 
-                'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>'.$errors.'<b>');
+                session()->flash(
+                    'message_danger',
+                    'Please upload a valid image (jpg, jpeg, png, gif). <br>Invalid file : <b>' . $errors . '<b>'
+                );
                 return back()->withInput();
             }
         }
         // dd($input);
         $project->update([
-            'project_title'=>$input['project_title'],
-            'project_url'=>$input['project_url'],
-            'project_body'=>$input['project_body']
+            'project_title' => $input['project_title'],
+            'project_url' => $input['project_url'],
+            'project_body' => $input['project_body']
         ]);
 
         if ($request->hasFile('project_image')) {
@@ -169,9 +172,9 @@ class ProjectsController extends Controller
         // delete from storage
         $filee_handler = new FileHandler();
         $filee_handler->deleteFiles($files, $this->image_bucket, $this->disk);
-        
+
         // delete from imagemanager
-        
+
 
         $project->delete();
         session()->flash('message_success', 'Project deleted');
@@ -179,12 +182,13 @@ class ProjectsController extends Controller
         return back();
     }
 
-    public function validateProject($input){
+    public function validateProject($input)
+    {
         $input->validate([
             'project_title' => 'required',
             'project_body' => 'required',
-        ],[
-            'project_body.required'=>'Project details feild is required'
+        ], [
+            'project_body.required' => 'Project details feild is required'
         ]);
-    } 
+    }
 }
