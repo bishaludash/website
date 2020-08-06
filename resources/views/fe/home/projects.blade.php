@@ -100,7 +100,7 @@
 
 <h2 class="mt-4 mb-3 border-bottom">Projects</h2>
 @foreach ($projects as $item)
-<div class="project-wrapper mb-5 ">
+<div class="project-wrapper mb-5 pb-5">
     
     <h4>
         @if (!is_null($item['project_url']) || $item['project_url'] !="")
@@ -109,7 +109,7 @@
             <i class="ion-earth ml-2"></i>
         </a>
         @else
-        {{$item['project_title']}}
+        <span class=" text-capitalize">{{$item['project_title']}}</span>
         @endif
     </h4>
     
@@ -126,7 +126,6 @@
         </div>        
         @endforeach
     </div>
-    
 </div>
 
 @endforeach

@@ -21,6 +21,7 @@ class ResumeController extends Controller
 	private $themeTemplateString = 'resume.template.';
 	private $themes = [
 		"template1" => "template1",
+		"template2" => "template2",
 	];
 
 	public function __construct()
