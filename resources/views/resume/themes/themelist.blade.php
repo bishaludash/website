@@ -1,11 +1,11 @@
-
+{{-- {{dd($themes)}} --}}
 <div class="container">
     <div class="row">
         @foreach ($themes as $item)
         <div class="col-md-3">
             <div class="card shadow">
-                <div class="card-body">
-                    <img src="{{asset('storage/theme-template.png')}}" class= "img-fluid" alt="">
+                <div class="card-body" style="max-height: 280px;"> 
+                    <img src="{{asset('storage/'.$item.'.png')}}" class= "img-fluid" alt="">
                 </div>
 
                 {{-- Select theme button based on uuid --}}
