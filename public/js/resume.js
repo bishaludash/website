@@ -221,7 +221,6 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': request_data._token
             }
         });
-
         $.ajax({
             type: "POST",
             url: url,
@@ -281,6 +280,7 @@ $(document).ready(function () {
         request_data.user_summary = tinyMCE.get("user_summary").getContent();
         request_data.user_id = $("input[name='user_id']").val();
         request_data.user_avatar = $('.user_avatar').val();
+        request_data.social = $("input[name='social']").val();
 
         request_data.job = {
             "title": getFormInput('job[title][]'),

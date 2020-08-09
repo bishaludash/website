@@ -38,8 +38,7 @@
 				<div class="row my-5">
 					<div class="col-lg-12">
 						{!! Form::submit('Save and Next', ['class'=>'btn btn-success float-right']) !!}
-						<div class="btn btn-secondary float-right px-5 mr-3">Cancel</div>
-						
+						<a href="{{route('resume.home')}}" class="btn btn-secondary float-right px-5 mr-3">Cancel</a>
 					</div>
 				</div>
 				{!! Form::close() !!}

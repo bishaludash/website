@@ -71,6 +71,14 @@
                         </div>
                         <span class="bg-danger btn-sm text-white d-none validation_error email"></span>
                     </div>
+
+                    <div class="col-lg-6 mt-3">
+                        <div class="form-group mb-2">
+                            {!! Form::label('social', 'Social link') !!}
+                            {!! Form::email('social',$resume['social'] ?? null, ['class'=>'form-control', 
+                            'autocomplete'=>'off', 'placeholder'=>'Linkedin, Personal website']) !!}
+                        </div>
+                    </div>
                 </div>
             </div>
 

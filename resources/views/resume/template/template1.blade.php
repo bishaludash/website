@@ -77,6 +77,7 @@
             <li>{{$resume['email']}}</li>
             <li>{{$resume['phone']}}</li>
             <li style="text-transform: capitalize">{{ sprintf("%s %s", $resume['state_province'] ?? null, $resume['city']?", ".$resume['city'] : null) }}</li>
+            <li>{{$resume['social'] ?? null}} </li>
         </ul>
     </div>
     

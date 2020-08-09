@@ -138,7 +138,8 @@ class ResumeBuilder
                 "email" => $data['email'],
                 "skills" => $data['skills'],
                 "summary" => $data['user_summary'],
-                "is_deleted" => 'f'
+                "is_deleted" => 'f',
+                'social' => $data['social']
             ]);
 
             if ($status) {

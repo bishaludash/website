@@ -106,10 +106,13 @@
                 <strong>Location : </strong>  <br>
                 {{ sprintf("%s %s", $resume['state_province'] ?? null, $resume['city']?", ".$resume['city'] : null) }}
             </li>
+            @if (!is_null($resume['social'] || $resume['social'] != ""))
             <li style="line-height: 1; margin-bottom: 10px;">
                 <strong>Social : </strong>  <br>
-                {{$resume['phone']}}
+                {{$resume['social']}}
             </li>
+            @endif
+            
         </ul>
     </div>
     
