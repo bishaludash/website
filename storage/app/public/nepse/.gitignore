@@ -1,3 +1,4 @@
-__pycache__
-todayshare.json
-todays_share.html
+*
+!.gitignore
+!shares.py
+!download_scheduler.py
