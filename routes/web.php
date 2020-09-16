@@ -13,6 +13,8 @@
 
 // Auth, Use controllers
 
+use App\Http\Controllers\Share\ShareController;
+
 Route::get('/be-login', 'BE\UserAuthController@index')->name('be.login');
 Route::post('/be-login', 'BE\UserAuthController@login');
 Route::get('/be-logout', 'BE\UserAuthController@logout')->name('be.logout');
@@ -82,4 +84,10 @@ Route::group(['namespace' => 'Resume'], function () {
 
     // Resume Avatar
     Route::post('resume-builder/avatar', 'AvatarController@uploadAvatar')->name('avatar.upload');
+});
+
+
+Route::group(['namespace' => 'Share'], function () {
+    Route::get('nepse-home', 'ShareController@index')->name('nepse.home');
+    Route::get('nepse/api/todayshare', 'ShareController@getTodayshareApi')->name('api.todayshare');
 });
