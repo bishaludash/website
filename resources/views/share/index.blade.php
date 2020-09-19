@@ -29,8 +29,18 @@ NEPSE Api
 				<th>Api</th>
 			</thead>
 			<tbody>
-            <td><a href="{{asset('/storage/nepse/todays_share.html')}}">Todays Share</a></td>
-				<td><a href="{{route('api.todayshare')}}">Todays Share api</a></td>
+				<tr>
+					<td><a href="{{asset('/storage/nepse/templates/todays_share.html')}}">Todays Share</a></td>
+					<td><a href="{{route('api.todayshare')}}">Todays Share api</a></td>
+				</tr>
+				<tr>
+					<td><a href="{{asset('/storage/nepse/templates/gainers.html')}}">Top Gainers</a></td>
+					<td><a href="{{route('api.gainers')}}">Top Gainers api</a></td>
+				</tr>
+				<tr>
+					<td><a href="{{asset('/storage/nepse/templates/losers.html')}}">Top Losers</a></td>
+					<td><a href="{{route('api.losers')}}">Top Losers api</a></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

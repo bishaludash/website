@@ -90,4 +90,6 @@ Route::group(['namespace' => 'Resume'], function () {
 Route::group(['namespace' => 'Share'], function () {
     Route::get('nepse-home', 'ShareController@index')->name('nepse.home');
     Route::get('nepse/api/todayshare', 'ShareController@getTodayshareApi')->name('api.todayshare');
+    Route::get('nepse/api/gainers', 'ShareController@getGainersApi')->name('api.gainers');
+    Route::get('nepse/api/losers', 'ShareController@getLosersApi')->name('api.losers');
 });
